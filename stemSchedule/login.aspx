@@ -34,7 +34,7 @@
 		<form id="form2" runat="server">
 		<div class="container">
 			<div class="header">
-				<h1 class="header-heading">STEMschedule</h1>
+				<h1 class="header-heading">STEMscheduletest</h1>
 			</div>
 			<div class="nav-bar">
 				<ul class="nav">
