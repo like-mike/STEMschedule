@@ -31,18 +31,6 @@
 			.auto-style1 {
 				width: 100%;
 			}
-			.auto-style13 {
-				width: 186px;
-			}
-			.auto-style14 {
-				width: 191px;
-			}
-			.auto-style15 {
-				width: 214px;
-			}
-			.auto-style16 {
-				width: 379px;
-			}
 			.auto-style17 {
 				width: 186px;
 				height: 55px;

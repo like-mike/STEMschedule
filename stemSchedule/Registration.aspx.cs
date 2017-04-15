@@ -6,19 +6,35 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;//
 using System.Configuration;//
+using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace stemSchedule
 {
     public partial class Registration : System.Web.UI.Page
     {
+        
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if(IsPostBack)
             {
-                SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                string server = "cs.spu.edu";
+                string database = "stemschedule";
+                string uid = "stemschedule";
+                string password = "stemschedule.stemschedule";
+
+                string connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+                        database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+
+                MySqlConnection conn = new MySqlConnection(connectionString);
+
+
                 conn.Open();
                 string checkuser = "select count(*) from userdata where UserName='" + UNTextBox.Text + "'";
-                SqlCommand com = new SqlCommand(checkuser,conn);
+                MySqlCommand com = new MySqlCommand(checkuser,conn);
                 int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
                 if(temp==1)
                 {
@@ -34,11 +50,19 @@ namespace stemSchedule
             try
             {
                 Guid newGUID = Guid.NewGuid();//unique global id
+                string server = "cs.spu.edu";
+                string database = "stemschedule";
+                string uid = "stemschedule";
+                string password = "stemschedule.stemschedule";
 
-                SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                string connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+                        database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
+
+                MySqlConnection conn = new MySqlConnection(connectionString);
+                //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
                 conn.Open();
                 string insertQuery = "insert into userdata (Id,UserName,Email,Password) values (@id,@Uname,@email,@password)";
-                SqlCommand com = new SqlCommand(insertQuery, conn);
+                MySqlCommand com = new MySqlCommand(insertQuery, conn);
                 //need to create GUID, id is primary key in table
                 com.Parameters.AddWithValue("@id",newGUID.ToString());
                 com.Parameters.AddWithValue("@Uname", UNTextBox.Text);
@@ -46,7 +70,7 @@ namespace stemSchedule
                 com.Parameters.AddWithValue("@password", passTextBox.Text);
                 
                 com.ExecuteNonQuery();
-                Response.Redirect("Manager.aspx");
+                //Response.Redirect("Manager.aspx");
                 Response.Write("Registration Successful");
 
                 conn.Close();
