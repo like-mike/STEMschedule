@@ -36,7 +36,7 @@
 	  </div>
 	  <div class="row center">
 		<!-- table here -->
-		  <asp:GridView ID="GridView1" runat="server" class ="striped" AllowPaging="True" OnRowDataBound="GridView1_RowDataBound">
+		  <asp:GridView ID="GridView1" runat="server" class ="striped" AllowPaging="True" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
 		  </asp:GridView>
 	  </div>
 	  
@@ -196,7 +196,7 @@
 	  <div class="row">
 		<div class="col s12">
 		
-		<asp:GridView ID="GridView2" runat="server">
+		<asp:GridView ID="GridView2" runat="server" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged">
             </asp:GridView>
 &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
