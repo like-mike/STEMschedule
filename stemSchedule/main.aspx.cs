@@ -63,9 +63,9 @@ namespace stemSchedule
 
         private void Initialize()
         {
-            
+
         }
-        
+
         protected void Button_Push_Click(object sender, EventArgs e)
         {
             //foreach (DataGridViewCell oneCell in dataGridView1.SelectedCells)
@@ -89,7 +89,7 @@ namespace stemSchedule
                     GridViewRow row = GridView2.SelectedRow;
                     command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";", connection);
                     int numRowsUpdated = command.ExecuteNonQuery();
-                    command = new MySqlCommand("UPDATE schedule AS schedule INNER JOIN schedule AS s1 ON schedule.CRN <> s1.CRN set schedule.conflict = CASE" 
+                    command = new MySqlCommand("UPDATE schedule AS schedule INNER JOIN schedule AS s1 ON schedule.CRN <> s1.CRN set schedule.conflict = CASE"
                         + " WHEN schedule.Room = s1.Room THEN " + (int)timeConflict.Room
                         + " WHEN schedule.Faculty = s1.Faculty THEN " + (int)timeConflict.Faculty
                         + " WHEN schedule.Year = s1.Year THEN " + (int)timeConflict.Year
@@ -115,7 +115,7 @@ namespace stemSchedule
                 e.Row.BackColor = System.Drawing.Color.DarkRed;
                 e.Row.ForeColor = System.Drawing.Color.White;
                 e.Row.ToolTip = "this is a fun tip!";
-            }   
+            }
         }
 
         protected void Button_AddClass_Click1(object sender, EventArgs e)
@@ -126,7 +126,7 @@ namespace stemSchedule
             command = new MySqlCommand(insertQuery, connection);
 
             //string instructor = Session["New"].ToString();
-            
+
             command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
             command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
             command.Parameters.AddWithValue("@ClassNum", TextBox_Class.Text);
