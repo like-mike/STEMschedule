@@ -43,22 +43,22 @@
 		<div style="float:left">
 		
 		  <!-- Dropdown Trigger -->
-		    
-            <button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
-            
-            <button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
+			
+			<button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
+			
+			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
 		  </div>
 		  <div style="float:right">
   <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_ShowDept_SelectedIndexChanged">
-                  <asp:ListItem></asp:ListItem>
-                  <asp:ListItem></asp:ListItem>
-                  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
 			  </asp:DropDownList>
 			  
   <asp:DropDownList ID="DropDownList_ShowMajor" runat="server" class="browser-default" Width="200px">
-                  <asp:ListItem></asp:ListItem>
-                  <asp:ListItem></asp:ListItem>
-                  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
 			  </asp:DropDownList>
 			  
 &nbsp;</div>
@@ -248,7 +248,7 @@
 
 
 
-    
+	
 	
 
 
