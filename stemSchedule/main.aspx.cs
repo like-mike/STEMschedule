@@ -15,8 +15,20 @@ namespace stemSchedule
     {
         // "#defines"
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
-        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 1";
-        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 0";
+        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 1";
+        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 0";
+
+        public const int CRN_COLUMN = 1;
+        public const int FACUTLY_COLUMN = 2;
+        public const int START_COLUMN = 5;
+        public const int END_COLUMN = 6;
+        public const int TERM_COLUMN = 6;
+        public const int ROOM_COLUMN = 8;
+        public const int YEAR_COLUMN = 10;
+        public const int M1_COLUMN = 11;
+        public const int M2_COLUMN = 12;
+        public const int M3_COLUMN = 13;
+        public const int M4_COLUMN = 14;
 
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
@@ -28,8 +40,6 @@ namespace stemSchedule
 
         enum yearTypicallyTaken { Freshman, Sophomore, Junior, Senior, Multiple };
 
-
-        
         protected void Page_Load(object sender, EventArgs e)
         {
             // public schedule
@@ -65,34 +75,36 @@ namespace stemSchedule
             //        dataGridView1.Rows.RemoveAt(oneCell.RowIndex);
             //        int loannumber = dataGridView1.Rows[oneCell.RowIndex].Cells['index of loannumber column in datagridview'].Value; // assuming loannmber is integer
             //        string username = dataGridView1.Rows[oneCell.RowIndex].Cells['index of username column in datagridview'].Value; // assuming username is string
-                                                                                                                                    /* Now create an object of MySqlConnection and MySqlCommand
-                                                                                                                                     * and the execute following query
-                                                                                                                                     */
+            /* Now create an object of MySqlConnection and MySqlCommand
+             * and the execute following query
+             */
             //        string query = string.Format("DELETE FROM table_name WHERE loannumber = {0} AND username = '{1}'", loannumber, username);
             //    }
             //}
-
-            //activecell.EntireRow.select();
-            //row.RowIndex == GridView2.SelectedIndex
             connection.Open();
-            foreach (GridViewRow row in GridView2.Rows)
+            foreach (GridViewRow privateRow in GridView2.Rows)
             {
-                if (row.RowIndex == GridView2.SelectedIndex)
+                if (privateRow.RowIndex == GridView2.SelectedIndex)
                 {
-                   // string CRN = row.Rows[GridView2.SelectedIndex].Cells['index of loannumber column in datagridview'].Value;
-
+                    GridViewRow row = GridView2.SelectedRow;
+                    command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";", connection);
+                    int numRowsUpdated = command.ExecuteNonQuery();
+                    command = new MySqlCommand("UPDATE schedule AS schedule INNER JOIN schedule AS s1 ON schedule.CRN <> s1.CRN set schedule.conflict = CASE" 
+                        + " WHEN schedule.Room = s1.Room THEN " + (int)timeConflict.Room
+                        + " WHEN schedule.Faculty = s1.Faculty THEN " + (int)timeConflict.Faculty
+                        + " WHEN schedule.Year = s1.Year THEN " + (int)timeConflict.Year
+                        + " WHEN schedule.M1 = s1.M1 THEN " + (int)timeConflict.Major_1
+                        + " WHEN schedule.M2 = s1.M2 THEN " + (int)timeConflict.Major_2
+                        + " WHEN schedule.M3 = s1.M3 THEN " + (int)timeConflict.Major_3
+                        + " WHEN schedule.M4 = s1.M4 THEN " + (int)timeConflict.Major_4
+                        + " ELSE " + (int)timeConflict.None
+                        + " END"
+                        + " WHERE (schedule.StartTime <= s1.EndTime AND schedule.EndTime >= s1.StartTime) AND (schedule.Public = 1 AND s1.Public = 1)", connection);
+                    numRowsUpdated = command.ExecuteNonQuery();
                 }
             }
-                command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE public = 0", connection);
-            int numRowsUpdated = command.ExecuteNonQuery();
             connection.Close();
             Response.Redirect("main.aspx");
-            /*SELECT*
-           FROM mytable a
-           JOIN mytable b on a.starttime <= b.endtime
-           and a.endtime >= b.starttime
-           and a.name != b.name;*/
-
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -136,16 +148,6 @@ namespace stemSchedule
             Response.Redirect("main.aspx");
             Response.Write("Add Class Success");
 
-            /*create trigger mytable_no_overlap
-            before insert on mytable
-            for each row
-            begin
-                if exists(select * from mytable
-                        where starttime <= new.endtime
-                        and endtime >= new.starttime) then
-                    signal sqlstate '45000' SET MESSAGE_TEXT = 'Overlaps with existing data';
-                end if;
-            end;*/
             connection.Close();
         }
 
