@@ -7,6 +7,9 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Data.OleDb;
+using System.Configuration;
 
 
 namespace stemSchedule
@@ -27,9 +30,9 @@ namespace stemSchedule
         enum timeConflict { None, Room, Faculty, Year, Major_1, Major_2, Major_3, Major_4 };
 
         enum yearTypicallyTaken { Freshman, Sophomore, Junior, Senior, Multiple };
+        GridView GridView_hidden = new GridView();
 
 
-        
         protected void Page_Load(object sender, EventArgs e)
         {
             // public schedule
@@ -48,6 +51,31 @@ namespace stemSchedule
             data.Fill(table);
             GridView2.DataSource = table;
             GridView2.DataBind();
+            connection.Close();
+
+            
+            command = new MySqlCommand("SELECT * from schedule where public = 1", connection);
+            table = new DataTable();
+            data = new MySqlDataAdapter(command);
+            data.Fill(table);
+            GridView_hidden.DataSource = table;
+            GridView_hidden.DataBind();
+            connection.Close();
+
+            connection.Open();
+            using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DropDownList_ShowDept.DataSource = reader;
+                        DropDownList_ShowDept.DataValueField = "department";
+                        DropDownList_ShowDept.DataTextField = "department";
+                        DropDownList_ShowDept.DataBind();
+                    }
+                }
+            }
             connection.Close();
         }
 
@@ -181,6 +209,200 @@ namespace stemSchedule
                     row.ToolTip = "Click to select this row.";
                 }
             }
+        }
+
+        private void Import_To_Grid(string FilePath, string Extension, string isHDR)
+        {
+            string conStr = "";
+            switch (Extension)
+            {
+                case ".xls": //Excel 97-03
+                    conStr = ConfigurationManager.ConnectionStrings["Excel03ConString"]
+                             .ConnectionString;
+                    break;
+                case ".xlsx": //Excel 07
+                    conStr = ConfigurationManager.ConnectionStrings["Excel07ConString"]
+                              .ConnectionString;
+                    break;
+            }
+            conStr = String.Format(conStr, FilePath, isHDR);
+            OleDbConnection connExcel = new OleDbConnection(conStr);
+            OleDbCommand cmdExcel = new OleDbCommand();
+            OleDbDataAdapter oda = new OleDbDataAdapter();
+            DataTable dt = new DataTable();
+            cmdExcel.Connection = connExcel;
+
+            //Get the name of First Sheet
+            connExcel.Open();
+            DataTable dtExcelSchema;
+            dtExcelSchema = connExcel.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, null);
+            string SheetName = dtExcelSchema.Rows[0]["TABLE_NAME"].ToString();
+            connExcel.Close();
+
+            //Read Data from First Sheet
+            connExcel.Open();
+            cmdExcel.CommandText = "SELECT * From [" + SheetName + "]";
+            oda.SelectCommand = cmdExcel;
+            oda.Fill(dt);
+            connExcel.Close();
+
+            //Bind Data to GridView
+            GridView3.Caption = Path.GetFileName(FilePath);
+            GridView3.DataSource = dt;
+            GridView3.DataBind();
+            
+        }
+
+        protected void btnUpload_Click(object sender, EventArgs e)
+        {
+            if (FileUpload1.HasFile)
+            {
+                string FileName = Path.GetFileName(FileUpload1.PostedFile.FileName);
+                string Extension = Path.GetExtension(FileUpload1.PostedFile.FileName);
+                string FolderPath = ConfigurationManager.AppSettings["FolderPath"];
+
+                string FilePath = Server.MapPath(FolderPath + FileName);
+                FileUpload1.SaveAs(FilePath);
+                Import_To_Grid(FilePath, Extension, rbHDR.SelectedItem.Text);
+            }
+        }
+
+        protected void button_Save_Click(object sender, EventArgs e)
+        {
+            int rows = GridView1.Rows.Count;
+
+
+            string CRN;
+            string Faculty;
+            string ClassNum;
+            string Days;
+            string StartTime;
+            string EndTime;
+            string Term;
+            string Room;
+            string EnrollNum;
+            string Year, Credits;
+            string M1, M2, M3, M4;
+            for (int i = 0; i < rows; i++)
+            {
+
+                try
+                {
+                    CRN = GridView3.Rows[i].Cells[0].Text;
+                    Faculty = GridView3.Rows[i].Cells[1].Text;
+                    ClassNum = GridView3.Rows[i].Cells[2].Text;
+                    Days = GridView3.Rows[i].Cells[3].Text;
+                    StartTime = GridView3.Rows[i].Cells[4].Text;
+                    EndTime = GridView3.Rows[i].Cells[5].Text;
+                    Term = GridView3.Rows[i].Cells[6].Text;
+                    Room = GridView3.Rows[i].Cells[7].Text;
+                    EnrollNum = GridView3.Rows[i].Cells[8].Text;
+                    Year = GridView3.Rows[i].Cells[9].Text;
+                    M1 = GridView3.Rows[i].Cells[10].Text;
+                    M2 = GridView3.Rows[i].Cells[11].Text;
+                    M3 = GridView3.Rows[i].Cells[12].Text;
+                    M4 = GridView3.Rows[i].Cells[13].Text;
+                    Credits = GridView3.Rows[i].Cells[14].Text;
+
+
+                    connection.Open();
+                    //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                    string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public)";
+                    command = new MySqlCommand(insertQuery, connection);
+
+                    //string instructor = Session["New"].ToString();
+
+                    command.Parameters.AddWithValue("@CRN", CRN);
+                    command.Parameters.AddWithValue("@Faculty", Faculty);
+                    command.Parameters.AddWithValue("@ClassNum", ClassNum);
+                    command.Parameters.AddWithValue("@Days", Days);
+                    command.Parameters.AddWithValue("@StartTime", StartTime);
+                    command.Parameters.AddWithValue("@EndTime", EndTime);
+                    command.Parameters.AddWithValue("@Term", Term);
+                    command.Parameters.AddWithValue("@Room", Room);
+                    command.Parameters.AddWithValue("@EnrollNum", EnrollNum);
+                    command.Parameters.AddWithValue("@Year", Year);
+                    command.Parameters.AddWithValue("@M1", M1);
+                    command.Parameters.AddWithValue("@M2", M2);
+                    command.Parameters.AddWithValue("@M3", M3);
+                    command.Parameters.AddWithValue("@M4", M4);
+                    command.Parameters.AddWithValue("@Credits", Credits);
+                    command.Parameters.AddWithValue("@Conflict", 0);//conflicts
+                    command.Parameters.AddWithValue("@Public", 0);//conflicts
+                    command.ExecuteNonQuery();
+                    //Response.Redirect("main.aspx");
+                    //Response.Write("Add Class Success");
+                }
+                catch
+                {
+
+                }
+
+
+            }
+        }
+
+        protected void Button_changePrivate_Click(object sender, EventArgs e)
+        {
+            string command = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
+            connection.Open();
+            MySqlCommand cmd = new MySqlCommand(command,connection);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+            Response.Redirect("main.aspx");
+        }
+
+        protected void DropDownList_ShowDept_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            String department = DropDownList_ShowDept.SelectedValue.ToString();
+            connection.Open();
+            command = new MySqlCommand("SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule", connection);
+            table = new DataTable();
+            data = new MySqlDataAdapter(command);
+            data.Fill(table);
+            GridView1.DataSource = table;
+            GridView1.DataBind();
+            connection.Close();
+        }
+
+        protected void ExportToExcel(object sender, EventArgs e)
+        {
+            Response.Clear();
+            Response.Buffer = true;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.Charset = "";
+            string FileName = "STEMschedule" + DateTime.Now + ".xlsx";
+            StringWriter strwritter = new StringWriter();
+            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
+            GridView_hidden.GridLines = GridLines.Both;
+            GridView_hidden.HeaderStyle.Font.Bold = true;
+            GridView_hidden.RenderControl(htmltextwrtter);
+            Response.Write(strwritter.ToString());
+            Response.End();
+
+        }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+            //required to avoid the runtime error "  
+            //Control 'GridView1' of type 'GridView' must be placed inside a form tag with runat=server."  
+        }
+
+        protected void Button_delete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string command = "DELETE from SCHEDULE WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
+                connection.Open();
+                MySqlCommand cmd = new MySqlCommand(command, connection);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+                Response.Redirect("main.aspx");
+            }
+            catch { }
         }
     }
 }

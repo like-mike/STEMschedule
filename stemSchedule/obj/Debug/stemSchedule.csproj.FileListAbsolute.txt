@@ -291,3 +291,33 @@ C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\zh-Hant\System.Spa
 C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\obj\Debug\stemSchedule.csprojResolveAssemblyReference.cache
 C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\obj\Debug\stemSchedule.dll
 C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\obj\Debug\stemSchedule.pdb
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\WebMatrix.WebData.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\WebMatrix.Data.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.Razor.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.Helpers.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.Razor.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\WebMatrix.WebData.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\WebMatrix.Data.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.Razor.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.Helpers.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.Razor.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\Excel.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\ICSharpCode.SharpZipLib.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\Excel.pdb
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\AutoMapper.Net4.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\ACE.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\AutoMapper.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\EasyNetQ.DI.Ninject.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\EasyNetQ.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\Ninject.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\RabbitMQ.Client.dll
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\AutoMapper.pdb
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\AutoMapper.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\AutoMapper.Net4.pdb
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\EasyNetQ.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\Ninject.xml
+C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\RabbitMQ.Client.xml

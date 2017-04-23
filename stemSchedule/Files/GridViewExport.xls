@@ -1,0 +1,11 @@
+<style> .textmode { } </style><div>
+	<table cellspacing="0" rules="all" border="1" id="GridView1" style="border-collapse:collapse;">
+		<tr>
+			<th scope="col">CRN</th><th scope="col">Faculty</th><th scope="col">ClassNum</th><th scope="col">Days</th><th scope="col">StartTime</th><th scope="col">EndTime</th><th scope="col">Term</th><th scope="col">Room</th><th scope="col">EnrollNum</th><th scope="col">Year</th><th scope="col">M1</th><th scope="col">M2</th><th scope="col">M3</th><th scope="col">M4</th><th scope="col">Credits</th>
+		</tr><tr>
+			<td>1</td><td>1</td><td>1</td><td>1</td><td>01:00 PM</td><td>01:00 PM</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td>
+		</tr><tr>
+			<td>1234</td><td>1234</td><td>asdf</td><td>234</td><td>02:34 PM</td><td>02:34 PM</td><td>asf</td><td>asf</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td>
+		</tr>
+	</table>
+</div>
