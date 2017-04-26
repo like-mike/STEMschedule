@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Drawing;
-
+using System.Globalization;
 
 namespace stemSchedule
 {
@@ -22,13 +22,14 @@ namespace stemSchedule
         public const int FACUTLY_COLUMN = 2;
         public const int START_COLUMN = 5;
         public const int END_COLUMN = 6;
-        public const int TERM_COLUMN = 6;
+        public const int TERM_COLUMN = 7;
         public const int ROOM_COLUMN = 8;
         public const int YEAR_COLUMN = 10;
         public const int M1_COLUMN = 11;
         public const int M2_COLUMN = 12;
         public const int M3_COLUMN = 13;
         public const int M4_COLUMN = 14;
+        public const int CONFLICT_COLUMN = 16;
 
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
@@ -36,30 +37,105 @@ namespace stemSchedule
         public static DataTable table;
         public static MySqlDataAdapter data;
 
-        enum timeConflict { None, Room, Faculty, Year, Major_1, Major_2, Major_3, Major_4 };
+        enum timeConflict { None, Major_4, Major_3, Major_2, Major_1, Year, Faculty, Room };
+
+        enum term { Autumn, Winter, Spring, Summer };
 
         enum yearTypicallyTaken { Freshman, Sophomore, Junior, Senior, Multiple };
 
-        protected void Page_Load(object sender, EventArgs e)
+        void sendSqlCommand(string sqlCommand)
         {
-            // public schedule
-            connection.Open();
-            command = new MySqlCommand(PUBLIC_SCHEDULE, connection);
-            table = new DataTable();
-            data = new MySqlDataAdapter(command);
-            data.Fill(table);
-            GridView1.DataSource = table;
-            GridView1.DataBind();
-
-            //private schedule
-            command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
-            table = new DataTable();
-            data = new MySqlDataAdapter(command);
-            data.Fill(table);
-            GridView2.DataSource = table;
-            GridView2.DataBind();
-            connection.Close();
+            try
+            {
+                connection.Open();
+                command = new MySqlCommand(sqlCommand, connection);
+                int numRowsUpdated = command.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                int errorcode = ex.Number;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
+
+        DateTime getTime(string textTime)
+        {
+            int hour = Int32.Parse(textTime.Substring(0, 2));
+            int min = Int32.Parse(textTime.Substring(3, 2));
+            if (textTime.Substring(6, 2).ToUpper() == "PM")
+                hour += 12;
+            var time = new DateTime(1988, 10, 13, hour, min, 0);
+            return time;
+        }
+
+        void detectTimeConflict(int possibleConflict, GridViewRow newRow, GridViewRow oldRow)
+        {
+            int oldConflict = 0;
+            int newConflict = 0;
+            var newStartTime = getTime(newRow.Cells[START_COLUMN].Text);
+            var newEndTime = getTime(newRow.Cells[END_COLUMN].Text);
+            var oldStartTime = getTime(oldRow.Cells[START_COLUMN].Text);
+            var oldEndTime = getTime(oldRow.Cells[END_COLUMN].Text);
+            if (newStartTime < oldEndTime || newEndTime < oldStartTime)
+            {
+                int.TryParse(newRow.Cells[CONFLICT_COLUMN].Text, out newConflict);
+                int.TryParse(oldRow.Cells[CONFLICT_COLUMN].Text, out oldConflict);
+                if (possibleConflict > newConflict)
+                    sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + newRow.Cells[CRN_COLUMN].Text + ";");
+                if (possibleConflict > oldConflict)
+                    sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + oldRow.Cells[CRN_COLUMN].Text + ";");
+            }
+        }
+
+        void detectConflict(GridViewRow newRow)
+        {
+            foreach (GridViewRow oldRow in GridView1.Rows)
+            {
+                if (newRow.Cells[TERM_COLUMN].Text == oldRow.Cells[TERM_COLUMN].Text)
+                {
+                    if (newRow.Cells[ROOM_COLUMN].Text == oldRow.Cells[ROOM_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Room, newRow, oldRow);
+                    else if (newRow.Cells[FACUTLY_COLUMN].Text == oldRow.Cells[FACUTLY_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Faculty, newRow, oldRow);
+                    else if (newRow.Cells[YEAR_COLUMN].Text == oldRow.Cells[YEAR_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Year, newRow, oldRow);
+                    else if (newRow.Cells[M1_COLUMN].Text == oldRow.Cells[M1_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_1, newRow, oldRow);
+                    else if (newRow.Cells[M2_COLUMN].Text == oldRow.Cells[M2_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_2, newRow, oldRow);
+                    else if (newRow.Cells[M3_COLUMN].Text == oldRow.Cells[M3_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_3, newRow, oldRow);
+                    else if (newRow.Cells[M4_COLUMN].Text == oldRow.Cells[M4_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_4, newRow, oldRow);
+                }
+            }
+            Response.Redirect("main.aspx");
+        }
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        // public schedule
+        connection.Open();
+        command = new MySqlCommand(PUBLIC_SCHEDULE, connection);
+        table = new DataTable();
+        data = new MySqlDataAdapter(command);
+        data.Fill(table);
+        GridView1.DataSource = table;
+        GridView1.DataBind();
+
+        //private schedule
+        command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
+        table = new DataTable();
+        data = new MySqlDataAdapter(command);
+        data.Fill(table);
+        GridView2.DataSource = table;
+        GridView2.DataBind();
+        connection.Close();
+    }
+            
 
         private void Initialize()
         {
@@ -68,43 +144,15 @@ namespace stemSchedule
         
         protected void Button_Push_Click(object sender, EventArgs e)
         {
-            //foreach (DataGridViewCell oneCell in dataGridView1.SelectedCells)
-            //{
-            //    if (oneCell.Selected)
-            //    {
-            //        dataGridView1.Rows.RemoveAt(oneCell.RowIndex);
-            //        int loannumber = dataGridView1.Rows[oneCell.RowIndex].Cells['index of loannumber column in datagridview'].Value; // assuming loannmber is integer
-            //        string username = dataGridView1.Rows[oneCell.RowIndex].Cells['index of username column in datagridview'].Value; // assuming username is string
-            /* Now create an object of MySqlConnection and MySqlCommand
-             * and the execute following query
-             */
-            //        string query = string.Format("DELETE FROM table_name WHERE loannumber = {0} AND username = '{1}'", loannumber, username);
-            //    }
-            //}
-            connection.Open();
             foreach (GridViewRow privateRow in GridView2.Rows)
             {
                 if (privateRow.RowIndex == GridView2.SelectedIndex)
                 {
-                    GridViewRow row = GridView2.SelectedRow;
-                    command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";", connection);
-                    int numRowsUpdated = command.ExecuteNonQuery();
-                    command = new MySqlCommand("UPDATE schedule AS schedule INNER JOIN schedule AS s1 ON schedule.CRN <> s1.CRN set schedule.conflict = CASE" 
-                        + " WHEN schedule.Room = s1.Room THEN " + (int)timeConflict.Room
-                        + " WHEN schedule.Faculty = s1.Faculty THEN " + (int)timeConflict.Faculty
-                        + " WHEN schedule.Year = s1.Year THEN " + (int)timeConflict.Year
-                        + " WHEN schedule.M1 = s1.M1 THEN " + (int)timeConflict.Major_1
-                        + " WHEN schedule.M2 = s1.M2 THEN " + (int)timeConflict.Major_2
-                        + " WHEN schedule.M3 = s1.M3 THEN " + (int)timeConflict.Major_3
-                        + " WHEN schedule.M4 = s1.M4 THEN " + (int)timeConflict.Major_4
-                        + " ELSE " + (int)timeConflict.None
-                        + " END"
-                        + " WHERE (schedule.StartTime <= s1.EndTime AND schedule.EndTime >= s1.StartTime) AND (schedule.Public = 1 AND s1.Public = 1)", connection);
-                    numRowsUpdated = command.ExecuteNonQuery();
+                    detectConflict(privateRow);
+                    sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + privateRow.Cells[CRN_COLUMN].Text + ";");
+                    Response.Redirect("main.aspx");
                 }
             }
-            connection.Close();
-            Response.Redirect("main.aspx");
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
