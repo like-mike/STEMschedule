@@ -142,8 +142,8 @@
 								</tr>
 								<tr>
 									<td class="auto-style10">
-                                        <asp:Label ID="Label_deleteError" runat="server" ForeColor="Red" Text="Error"></asp:Label>
-                                    </td>
+										<asp:Label ID="Label_deleteError" runat="server" ForeColor="Red" Text="Error"></asp:Label>
+									</td>
 									<td class="auto-style11">
 										<asp:Button ID="Button_delete" runat="server" Text="Delete" OnClick="Button_delete_Click1" />
 										<asp:Button ID="Button_hide" runat="server" Text="Hide" />

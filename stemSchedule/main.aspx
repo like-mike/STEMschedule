@@ -41,12 +41,27 @@
 	  </div>
 	  
 		<div style="float:left">
-		<a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect red darken-4">Delete Class</a>
+		
 		  <!-- Dropdown Trigger -->
+			
+			<button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
+			
+			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
 		  </div>
 		  <div style="float:right">
-  <a class='dropdown-button btn red darken-4' href='#' data-activates='dropdown1' align="right">Drop Me!</a>
-</div>
+  <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_ShowDept_SelectedIndexChanged">
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+			  </asp:DropDownList>
+			  
+  <asp:DropDownList ID="DropDownList_ShowMajor" runat="server" class="browser-default" Width="200px">
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+				  <asp:ListItem></asp:ListItem>
+			  </asp:DropDownList>
+			  
+&nbsp;</div>
   <!-- Dropdown Structure -->
   <ul id='dropdown1' class='dropdown-content'>
 	<li><a href="#!">one</a></li>
@@ -197,23 +212,44 @@
 		<div class="col s12">
 		
 		<asp:GridView ID="GridView2" runat="server" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged">
-            </asp:GridView>
+			</asp:GridView>
 &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
-		<a href="http://materializecss.com/getting-started.html" id="download-button" class="waves-effect waves-light btn red darken-4">Delete</a>
+		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Push</button>
+		<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>
   
 	  
 <!-- Add Class Modal Structure -->
-  <div id="modal1" class="modal modal-fixed-footer">
+  <div id="modal2" class="modal modal-fixed-footer">
 	<div class="modal-content">
-	  <h4>Modal Header</h4>
+	  <h4>Import Excel Spreadsheet</h4>
 	  <p>A bunch of text</p>
+		<div>
+	<asp:FileUpload ID="FileUpload1" runat="server" />
+<asp:Button ID="btnUpload" runat="server" Text="Upload"
+			OnClick="btnUpload_Click" />
+			<asp:Button ID="button_Save" runat="server" OnClick="button_Save_Click" Text="Save" />
+<br />
+<asp:Label ID="Label1" runat="server" Text="Has Header ?" />
+<asp:RadioButtonList ID="rbHDR" runat="server">
+	<asp:ListItem Text = "Yes" Value = "Yes" Selected = "True" >
+	</asp:ListItem>
+	<asp:ListItem Text = "No" Value = "No"></asp:ListItem>
+</asp:RadioButtonList>
+<asp:GridView ID="GridView3" runat="server">
+</asp:GridView>
+	</div>
 	</div>
 	<div class="modal-footer">
-	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
 	</div>
   </div>
+
+
+
+	
+	
 
 
 		
