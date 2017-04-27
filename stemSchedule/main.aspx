@@ -36,7 +36,7 @@
 	  </div>
 	  <div class="row center">
 		<!-- table here -->
-		  <asp:GridView ID="GridView1" runat="server" class ="striped" AllowPaging="True" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" PersistedSelection="true" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
 		  </asp:GridView>
 	  </div>
 	  

@@ -19,8 +19,8 @@ namespace stemSchedule
     {
         // "#defines"
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
-        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 1";
-        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 0";
+        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 1";
+        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 0";
 
         public const int CRN_COLUMN = 1;
         public const int FACUTLY_COLUMN = 2;
@@ -33,6 +33,7 @@ namespace stemSchedule
         public const int M2_COLUMN = 12;
         public const int M3_COLUMN = 13;
         public const int M4_COLUMN = 14;
+        public const int CREDITS_COLUMN = 15;
         public const int CONFLICT_COLUMN = 16;
 
         // global variables
@@ -120,44 +121,26 @@ namespace stemSchedule
             Response.Redirect("main.aspx");
         }
 
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        // public schedule
-        connection.Open();
-        command = new MySqlCommand(PUBLIC_SCHEDULE, connection);
-        table = new DataTable();
-        data = new MySqlDataAdapter(command);
-        data.Fill(table);
-        GridView1.DataSource = table;
-        GridView1.DataBind();
-
-        //private schedule
-        command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
-        table = new DataTable();
-        data = new MySqlDataAdapter(command);
-        data.Fill(table);
-        GridView2.DataSource = table;
-        GridView2.DataBind();
-        connection.Close();
-    }
-            
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            // public schedule
+            connection.Open();
+            command = new MySqlCommand(PUBLIC_SCHEDULE, connection);
+            table = new DataTable();
+            data = new MySqlDataAdapter(command);
+            data.Fill(table);
+            GridView1.DataSource = table;
+            GridView1.DataBind();
+            connection.Close();
 
             //private schedule
+            connection.Open();
             command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
             table = new DataTable();
             data = new MySqlDataAdapter(command);
             data.Fill(table);
             GridView2.DataSource = table;
             GridView2.DataBind();
-            connection.Close();
-
-
-            command = new MySqlCommand("SELECT * from schedule where public = 1", connection);
-            table = new DataTable();
-            data = new MySqlDataAdapter(command);
-            data.Fill(table);
-            GridView_hidden.DataSource = table;
-            GridView_hidden.DataBind();
             connection.Close();
 
             connection.Open();
@@ -184,29 +167,14 @@ namespace stemSchedule
 
         protected void Button_Push_Click(object sender, EventArgs e)
         {
-            //foreach (DataGridViewCell oneCell in dataGridView1.SelectedCells)
-            //{
-            //    if (oneCell.Selected)
-            //    {
-            //        dataGridView1.Rows.RemoveAt(oneCell.RowIndex);
-            //        int loannumber = dataGridView1.Rows[oneCell.RowIndex].Cells['index of loannumber column in datagridview'].Value; // assuming loannmber is integer
-            //        string username = dataGridView1.Rows[oneCell.RowIndex].Cells['index of username column in datagridview'].Value; // assuming username is string
-            /* Now create an object of MySqlConnection and MySqlCommand
-             * and the execute following query
-             */
-            //        string query = string.Format("DELETE FROM table_name WHERE loannumber = {0} AND username = '{1}'", loannumber, username);
-            //    }
-            //}
-
-            //activecell.EntireRow.select();
-            //row.RowIndex == GridView2.SelectedIndex
-            connection.Open();
             foreach (GridViewRow row in GridView2.Rows)
             {
                 if (row.RowIndex == GridView2.SelectedIndex)
                 {
-                    detectConflict(privateRow);
-                    sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + privateRow.Cells[CRN_COLUMN].Text + ";");
+                    sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";");
+
+                    detectConflict(row);
+                    
                     Response.Redirect("main.aspx");
                 }
             }
@@ -214,12 +182,40 @@ namespace stemSchedule
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            Response.Write("test");
-            if (e.Row.Cells[0].Text.Equals("1234"))
+            if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Room)
             {
-                e.Row.BackColor = System.Drawing.Color.DarkRed;
-                e.Row.ForeColor = System.Drawing.Color.White;
-                e.Row.ToolTip = "this is a fun tip!";
+                e.Row.BackColor = System.Drawing.Color.LightPink;
+                e.Row.ToolTip = timeConflict.Room.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Faculty)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightGoldenrodYellow;
+                e.Row.ToolTip = timeConflict.Faculty.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Year)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightYellow;
+                e.Row.ToolTip = timeConflict.Year.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_1)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightSteelBlue;
+                e.Row.ToolTip = timeConflict.Major_1.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_2)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightSkyBlue;
+                e.Row.ToolTip = timeConflict.Major_2.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_3)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightCyan;
+                e.Row.ToolTip = timeConflict.Major_3.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_3)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightBlue;
+                e.Row.ToolTip = timeConflict.Major_4.ToString() + " Conflict";
             }
         }
 

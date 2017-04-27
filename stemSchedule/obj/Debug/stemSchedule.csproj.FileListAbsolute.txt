@@ -321,3 +321,19 @@ C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSc
 C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\EasyNetQ.xml
 C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\Ninject.xml
 C:\Users\Michael Reese\Documents\Visual Studio 2015\Projects\stemSchedule\stemSchedule\bin\RabbitMQ.Client.xml
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\AutoMapper.Net4.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\ACE.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\AutoMapper.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\EasyNetQ.DI.Ninject.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\EasyNetQ.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\Excel.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\ICSharpCode.SharpZipLib.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\Ninject.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\RabbitMQ.Client.dll
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\AutoMapper.pdb
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\AutoMapper.xml
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\AutoMapper.Net4.pdb
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\EasyNetQ.xml
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\Excel.pdb
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\Ninject.xml
+C:\Users\joewa_000\Source\Repos\STEMschedule\stemSchedule\bin\RabbitMQ.Client.xml
