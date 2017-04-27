@@ -19,8 +19,8 @@ namespace stemSchedule
     {
         // "#defines"
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
-        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict, ConflictCRN FROM schedule WHERE Public = 1";
-        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict, ConflictCRN FROM schedule WHERE Public = 0";
+        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 1";
+        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 0";
 
         public const int CRN_COLUMN = 1;
         public const int FACUTLY_COLUMN = 2;
@@ -35,7 +35,6 @@ namespace stemSchedule
         public const int M4_COLUMN = 14;
         public const int CREDITS_COLUMN = 15;
         public const int CONFLICT_COLUMN = 16;
-        public const int CONFLICT_CRN_COLUMN = 17;
 
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
@@ -91,15 +90,9 @@ namespace stemSchedule
                 int.TryParse(newRow.Cells[CONFLICT_COLUMN].Text, out newConflict);
                 int.TryParse(oldRow.Cells[CONFLICT_COLUMN].Text, out oldConflict);
                 if (possibleConflict > newConflict)
-                {
                     sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + newRow.Cells[CRN_COLUMN].Text + ";");
-                    sendSqlCommand("UPDATE schedule SET ConflictCRN = " + oldRow.Cells[CRN_COLUMN].Text + " WHERE CRN = " + newRow.Cells[CRN_COLUMN].Text + "; ");
-                }
                 if (possibleConflict > oldConflict)
-                {
                     sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + oldRow.Cells[CRN_COLUMN].Text + ";");
-                    sendSqlCommand("UPDATE schedule SET ConflictCRN = " + newRow.Cells[CRN_COLUMN].Text +  " WHERE CRN = " + oldRow.Cells[CRN_COLUMN].Text + "; ");
-                }
             }
         }
 
@@ -273,11 +266,6 @@ namespace stemSchedule
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-          
-            e.Row.Cells[CRN_COLUMN].Visible = false;
-            e.Row.Cells[CONFLICT_COLUMN].Visible = false;
-            e.Row.Cells[CONFLICT_CRN_COLUMN].Visible = false;
-
             if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Room)
             {
                 e.Row.BackColor = System.Drawing.Color.LightPink;
@@ -392,6 +380,11 @@ namespace stemSchedule
                     row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
                     row.ToolTip = string.Empty;
                 }
+                else
+                {
+                    row.BackColor = ColorTranslator.FromHtml("#FFFFFF");
+                    row.ToolTip = "Click to select this row.";
+                }
             }
         }
 
@@ -403,6 +396,11 @@ namespace stemSchedule
                 {
                     row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
                     row.ToolTip = string.Empty;
+                }
+                else
+                {
+                    row.BackColor = ColorTranslator.FromHtml("#FFFFFF");
+                    row.ToolTip = "Click to select this row.";
                 }
             }
         }
