@@ -7,10 +7,11 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Drawing;
+
 using System.IO;
 using System.Data.OleDb;
 using System.Configuration;
-
+using System.Globalization;
 
 namespace stemSchedule
 {
@@ -18,20 +19,23 @@ namespace stemSchedule
     {
         // "#defines"
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
-        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 1";
-        
+        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict, ConflictCRN FROM schedule WHERE Public = 1";
+        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict, ConflictCRN FROM schedule WHERE Public = 0";
 
         public const int CRN_COLUMN = 1;
         public const int FACUTLY_COLUMN = 2;
         public const int START_COLUMN = 5;
         public const int END_COLUMN = 6;
-        public const int TERM_COLUMN = 6;
+        public const int TERM_COLUMN = 7;
         public const int ROOM_COLUMN = 8;
         public const int YEAR_COLUMN = 10;
         public const int M1_COLUMN = 11;
         public const int M2_COLUMN = 12;
         public const int M3_COLUMN = 13;
         public const int M4_COLUMN = 14;
+        public const int CREDITS_COLUMN = 15;
+        public const int CONFLICT_COLUMN = 16;
+        public const int CONFLICT_CRN_COLUMN = 17;
 
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
@@ -39,11 +43,90 @@ namespace stemSchedule
         public static DataTable table;
         public static MySqlDataAdapter data;
 
-        enum timeConflict { None, Room, Faculty, Year, Major_1, Major_2, Major_3, Major_4 };
+        enum timeConflict { None, Major_4, Major_3, Major_2, Major_1, Year, Faculty, Room };
+
+        enum term { Autumn, Winter, Spring, Summer };
 
         enum yearTypicallyTaken { Freshman, Sophomore, Junior, Senior, Multiple };
         GridView GridView_hidden = new GridView();
 
+        void sendSqlCommand(string sqlCommand)
+        {
+            try
+            {
+                connection.Open();
+                command = new MySqlCommand(sqlCommand, connection);
+                int numRowsUpdated = command.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                int errorcode = ex.Number;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        DateTime getTime(string textTime)
+        {
+            int hour = Int32.Parse(textTime.Substring(0, 2));
+            int min = Int32.Parse(textTime.Substring(3, 2));
+            if (textTime.Substring(6, 2).ToUpper() == "PM")
+                hour += 12;
+            var time = new DateTime(1988, 10, 13, hour, min, 0);
+            return time;
+        }
+
+        void detectTimeConflict(int possibleConflict, GridViewRow newRow, GridViewRow oldRow)
+        {
+            int oldConflict = 0;
+            int newConflict = 0;
+            var newStartTime = getTime(newRow.Cells[START_COLUMN].Text);
+            var newEndTime = getTime(newRow.Cells[END_COLUMN].Text);
+            var oldStartTime = getTime(oldRow.Cells[START_COLUMN].Text);
+            var oldEndTime = getTime(oldRow.Cells[END_COLUMN].Text);
+            if (newStartTime < oldEndTime || newEndTime < oldStartTime)
+            {
+                int.TryParse(newRow.Cells[CONFLICT_COLUMN].Text, out newConflict);
+                int.TryParse(oldRow.Cells[CONFLICT_COLUMN].Text, out oldConflict);
+                if (possibleConflict > newConflict)
+                {
+                    sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + newRow.Cells[CRN_COLUMN].Text + ";");
+                    sendSqlCommand("UPDATE schedule SET ConflictCRN = " + oldRow.Cells[CRN_COLUMN].Text + " WHERE CRN = " + newRow.Cells[CRN_COLUMN].Text + "; ");
+                }
+                if (possibleConflict > oldConflict)
+                {
+                    sendSqlCommand("UPDATE schedule SET conflict = " + possibleConflict + " WHERE CRN =" + oldRow.Cells[CRN_COLUMN].Text + ";");
+                    sendSqlCommand("UPDATE schedule SET ConflictCRN = " + newRow.Cells[CRN_COLUMN].Text +  " WHERE CRN = " + oldRow.Cells[CRN_COLUMN].Text + "; ");
+                }
+            }
+        }
+
+        void detectConflict(GridViewRow newRow)
+        {
+            foreach (GridViewRow oldRow in GridView1.Rows)
+            {
+                if (newRow.Cells[TERM_COLUMN].Text == oldRow.Cells[TERM_COLUMN].Text)
+                {
+                    if (newRow.Cells[ROOM_COLUMN].Text == oldRow.Cells[ROOM_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Room, newRow, oldRow);
+                    else if (newRow.Cells[FACUTLY_COLUMN].Text == oldRow.Cells[FACUTLY_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Faculty, newRow, oldRow);
+                    else if (newRow.Cells[YEAR_COLUMN].Text == oldRow.Cells[YEAR_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Year, newRow, oldRow);
+                    else if (newRow.Cells[M1_COLUMN].Text == oldRow.Cells[M1_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_1, newRow, oldRow);
+                    else if (newRow.Cells[M2_COLUMN].Text == oldRow.Cells[M2_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_2, newRow, oldRow);
+                    else if (newRow.Cells[M3_COLUMN].Text == oldRow.Cells[M3_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_3, newRow, oldRow);
+                    else if (newRow.Cells[M4_COLUMN].Text == oldRow.Cells[M4_COLUMN].Text)
+                        detectTimeConflict((int)timeConflict.Major_4, newRow, oldRow);
+                }
+            }
+            Response.Redirect("main.aspx");
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -62,9 +145,10 @@ namespace stemSchedule
             data.Fill(table);
             GridView1.DataSource = table;
             GridView1.DataBind();
+            connection.Close();
 
             //private schedule
-            string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 0";
+            connection.Open();
             command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
             table = new DataTable();
             data = new MySqlDataAdapter(command);
@@ -178,43 +262,56 @@ namespace stemSchedule
             {
                 if (row.RowIndex == GridView2.SelectedIndex)
                 {
-                    GridViewRow row = GridView2.SelectedRow;
-                    command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";", connection);
-                    int numRowsUpdated = command.ExecuteNonQuery();
-                    command = new MySqlCommand("UPDATE schedule AS schedule INNER JOIN schedule AS s1 ON schedule.CRN <> s1.CRN set schedule.conflict = CASE"
-                        + " WHEN schedule.Room = s1.Room THEN " + (int)timeConflict.Room
-                        + " WHEN schedule.Faculty = s1.Faculty THEN " + (int)timeConflict.Faculty
-                        + " WHEN schedule.Year = s1.Year THEN " + (int)timeConflict.Year
-                        + " WHEN schedule.M1 = s1.M1 THEN " + (int)timeConflict.Major_1
-                        + " WHEN schedule.M2 = s1.M2 THEN " + (int)timeConflict.Major_2
-                        + " WHEN schedule.M3 = s1.M3 THEN " + (int)timeConflict.Major_3
-                        + " WHEN schedule.M4 = s1.M4 THEN " + (int)timeConflict.Major_4
-                        + " ELSE " + (int)timeConflict.None
-                        + " END"
-                        + " WHERE (schedule.StartTime <= s1.EndTime AND schedule.EndTime >= s1.StartTime) AND (schedule.Public = 1 AND s1.Public = 1)", connection);
-                    numRowsUpdated = command.ExecuteNonQuery();
+                    sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";");
+
+                    detectConflict(row);
+                    
+                    Response.Redirect("main.aspx");
                 }
             }
-            command = new MySqlCommand("UPDATE schedule SET public = 1 WHERE public = 0", connection);
-            int numRowsUpdated = command.ExecuteNonQuery();
-            connection.Close();
-            Response.Redirect("main.aspx");
-            /*SELECT*
-           FROM mytable a
-           JOIN mytable b on a.starttime <= b.endtime
-           and a.endtime >= b.starttime
-           and a.name != b.name;*/
-
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            
-            if (e.Row.Cells[0].Text.Equals("1234"))
+          
+            e.Row.Cells[CRN_COLUMN].Visible = false;
+            e.Row.Cells[CONFLICT_COLUMN].Visible = false;
+            e.Row.Cells[CONFLICT_CRN_COLUMN].Visible = false;
+
+            if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Room)
             {
-                e.Row.BackColor = System.Drawing.Color.DarkRed;
-                e.Row.ForeColor = System.Drawing.Color.White;
-                e.Row.ToolTip = "this is a fun tip!";
+                e.Row.BackColor = System.Drawing.Color.LightPink;
+                e.Row.ToolTip = timeConflict.Room.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Faculty)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightGoldenrodYellow;
+                e.Row.ToolTip = timeConflict.Faculty.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Year)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightYellow;
+                e.Row.ToolTip = timeConflict.Year.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_1)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightSteelBlue;
+                e.Row.ToolTip = timeConflict.Major_1.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_2)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightSkyBlue;
+                e.Row.ToolTip = timeConflict.Major_2.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_3)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightCyan;
+                e.Row.ToolTip = timeConflict.Major_3.ToString() + " Conflict";
+            }
+            else if (Convert.ToInt16(DataBinder.Eval(e.Row.DataItem, "Conflict")) == (int)timeConflict.Major_3)
+            {
+                e.Row.BackColor = System.Drawing.Color.LightBlue;
+                e.Row.ToolTip = timeConflict.Major_4.ToString() + " Conflict";
             }
         }
 
@@ -295,11 +392,6 @@ namespace stemSchedule
                     row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
                     row.ToolTip = string.Empty;
                 }
-                else
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#FFFFFF");
-                    row.ToolTip = "Click to select this row.";
-                }
             }
         }
 
@@ -311,11 +403,6 @@ namespace stemSchedule
                 {
                     row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
                     row.ToolTip = string.Empty;
-                }
-                else
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#FFFFFF");
-                    row.ToolTip = "Click to select this row.";
                 }
             }
         }
