@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-	<title>Settings</title>
+	<title>Settings -- STEMschedule</title>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
@@ -15,10 +15,10 @@
  <nav class="red darken-4" role="navigation">
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
-		<li><a href="#">Schedule</a></li>
+		<li><a href="main.aspx">Schedule</a></li>
 		<li class="active"><a href="#">Settings</a></li>
 		<li><a href="#">Admin</a></li>
-		<li><a href="#">Logout</a></li>
+		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 		
 	  </ul>
 
@@ -114,7 +114,7 @@
 		  <label for="UserName">Confirm New Department</label>
 		  <br><br><br>
 		  
-            <asp:Button ID="Button_addDepartment" runat="server" OnClick="Button_addDepartment_Click1" Text="Confirm" />
+			<asp:Button ID="Button_addDepartment" runat="server" OnClick="Button_addDepartment_Click1" Text="Confirm" />
 			
 		</div>
 	  </div>

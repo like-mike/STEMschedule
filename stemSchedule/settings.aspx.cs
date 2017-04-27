@@ -28,6 +28,11 @@ namespace stemSchedule
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["New"] == null)
+            {
+                Response.Redirect("start.aspx");
+            }
+
             // public schedule
             connection.Open();
             command = new MySqlCommand("select department from department", connection);
@@ -36,30 +41,38 @@ namespace stemSchedule
             data.Fill(table);
             GridView_departments.DataSource = table;
             GridView_departments.DataBind();
+            connection.Close();
         }
-        
+
+        protected void Button_Logout_Click(object sender, EventArgs e)
+        {
+            Session["New"] = null;
+            Response.Redirect("start.aspx");
+        }
+
 
         protected void Button_addDepartment_Click1(object sender, EventArgs e)
         {
-            
-
-
-            //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
             connection.Open();
-            string insertQuery = "insert into department (Department) values (@dept)";
-            MySqlCommand com = new MySqlCommand(insertQuery, connection);
-
+      
+            string tickFinder = "select count(*) from department";
             
+            MySqlCommand comm = new MySqlCommand(tickFinder, connection);
+            int temp = Convert.ToInt32(comm.ExecuteScalar().ToString());
+            
+            
+            string insertQuery = "insert into department (iddepartment,department) values (@id,@dept)";
 
+            MySqlCommand com = new MySqlCommand(insertQuery, connection);
+            String id = temp.ToString();
+            com.Parameters.AddWithValue("@id", id);
             com.Parameters.AddWithValue("@dept", "test");
             
 
             com.ExecuteNonQuery();
+            connection.Close();
             Response.Redirect("settings.aspx");
             Response.Write("Add Class Success");
-
-
-            connection.Close();
         }
     }
 }

@@ -1,0 +1,17 @@
+<div>
+	<table cellspacing="0" rules="all" border="1" style="border-collapse:collapse;">
+		<tr style="font-weight:bold;">
+			<th scope="col">CRN</th><th scope="col">Faculty</th><th scope="col">ClassNum</th><th scope="col">Days</th><th scope="col">StartTime</th><th scope="col">EndTime</th><th scope="col">Term</th><th scope="col">Room</th><th scope="col">EnrollNum</th><th scope="col">Year</th><th scope="col">M1</th><th scope="col">M2</th><th scope="col">M3</th><th scope="col">M4</th><th scope="col">Credits</th><th scope="col">Conflict</th><th scope="col">Public</th>
+		</tr><tr>
+			<td>12</td><td>billy</td><td>123</td><td>123</td><td>10:45:00</td><td>11:45:00</td><td>45</td><td>sdf</td><td>45</td><td>4</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>0</td><td>1</td>
+		</tr><tr>
+			<td>1234</td><td>1234</td><td>asdf</td><td>234</td><td>10:01:00</td><td>11:00:00</td><td>asf</td><td>asf</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>0</td><td>1</td>
+		</tr><tr>
+			<td>2342</td><td>test</td><td>tset</td><td>234</td><td>10:00:00</td><td>13:00:00</td><td>234</td><td>234</td><td>23</td><td>23</td><td>34</td><td>42</td><td>234</td><td>234</td><td>234</td><td>0</td><td>1</td>
+		</tr><tr>
+			<td>234234</td><td>tes</td><td>234</td><td>234</td><td>14:34:00</td><td>14:34:00</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>234</td><td>0</td><td>1</td>
+		</tr><tr>
+			<td>7879</td><td>Weltz</td><td>789</td><td>789</td><td>10:30:00</td><td>11:30:00</td><td>789</td><td>sdf</td><td>678</td><td>1</td><td>678</td><td>678</td><td>67</td><td>678</td><td>678</td><td>0</td><td>1</td>
+		</tr>
+	</table>
+</div>

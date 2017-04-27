@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head runat="server">
+		<title>Schedule -- STEMschedule</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
@@ -14,9 +15,9 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a href="#">Settings</a></li>
-		<li><a href="#">Admin</a></li>
-		<li><a href="#">Logout</a></li>
+		<li><a href="settings.aspx">Settings</a></li>
+		<li><a href="admin.aspx">Admin</a></li>
+		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
 	  <ul id="nav-mobile" class="side-nav">
@@ -50,9 +51,8 @@
 		  </div>
 		  <div style="float:right">
   <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_ShowDept_SelectedIndexChanged">
-				  <asp:ListItem></asp:ListItem>
-				  <asp:ListItem></asp:ListItem>
-				  <asp:ListItem></asp:ListItem>
+	  <asp:ListItem Selected="True">Show Only</asp:ListItem>
+				  
 			  </asp:DropDownList>
 			  
   <asp:DropDownList ID="DropDownList_ShowMajor" runat="server" class="browser-default" Width="200px">
@@ -118,7 +118,9 @@
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Major 1</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_M1" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_M1" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True">None</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -130,7 +132,9 @@
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Major 2</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_Major2" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_M2" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True">None</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -142,7 +146,9 @@
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Major 3</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_Major3" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_M3" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True">None</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -154,7 +160,9 @@
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Major 4</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_Major4" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_M4" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True">None</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -216,12 +224,12 @@
 &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
-		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Push</button>
+		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
 		<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>
   
 	  
 <!-- Add Class Modal Structure -->
-  <div id="modal2" class="modal modal-fixed-footer">
+  <div id="modal2" class="modal modal-fixed-footer" data-backdrop="static">
 	<div class="modal-content">
 	  <h4>Import Excel Spreadsheet</h4>
 	  <p>A bunch of text</p>

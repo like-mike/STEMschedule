@@ -247,10 +247,6 @@
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
     <Content Include="admin.aspx" />
-    <Content Include="App_Data\Registration.mdf" />
-    <Content Include="App_Data\Registration_log.ldf">
-      <DependentUpon>Registration.mdf</DependentUpon>
-    </Content>
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -581,6 +577,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="assets\" />
   </ItemGroup>
   <PropertyGroup>

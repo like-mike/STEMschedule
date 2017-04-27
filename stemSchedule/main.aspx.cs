@@ -19,7 +19,7 @@ namespace stemSchedule
         // "#defines"
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
         public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 1";
-        public const string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 0";
+        
 
         public const int CRN_COLUMN = 1;
         public const int FACUTLY_COLUMN = 2;
@@ -47,6 +47,13 @@ namespace stemSchedule
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["New"] == null)
+            {
+                Response.Redirect("start.aspx");
+            }
+            
+                
+            
             // public schedule
             connection.Open();
             command = new MySqlCommand(PUBLIC_SCHEDULE, connection);
@@ -57,13 +64,14 @@ namespace stemSchedule
             GridView1.DataBind();
 
             //private schedule
+            string PRIVATE_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule WHERE Public = 0";
             command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
             table = new DataTable();
             data = new MySqlDataAdapter(command);
             data.Fill(table);
             GridView2.DataSource = table;
             GridView2.DataBind();
-            connection.Close();
+            
 
 
             command = new MySqlCommand("SELECT * from schedule where public = 1", connection);
@@ -72,10 +80,10 @@ namespace stemSchedule
             data.Fill(table);
             GridView_hidden.DataSource = table;
             GridView_hidden.DataBind();
-            connection.Close();
-
-            connection.Open();
-            using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
+            
+            
+            //M1
+            using (var cmd = new MySqlCommand("SELECT department FROM department", connection))
             {
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -87,7 +95,51 @@ namespace stemSchedule
                         DropDownList_ShowDept.DataBind();
                     }
                 }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DropDownList_M1.DataSource = reader;
+                        DropDownList_M1.DataValueField = "department";
+                        DropDownList_M1.DataTextField = "department";
+                        DropDownList_M1.DataBind();
+                    }
+                }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DropDownList_M2.DataSource = reader;
+                        DropDownList_M2.DataValueField = "department";
+                        DropDownList_M2.DataTextField = "department";
+                        DropDownList_M2.DataBind();
+                    }
+                }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DropDownList_M3.DataSource = reader;
+                        DropDownList_M3.DataValueField = "department";
+                        DropDownList_M3.DataTextField = "department";
+                        DropDownList_M3.DataBind();
+                    }
+                }
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        DropDownList_M4.DataSource = reader;
+                        DropDownList_M4.DataValueField = "department";
+                        DropDownList_M4.DataTextField = "department";
+                        DropDownList_M4.DataBind();
+                    }
+                }
             }
+
+
+
+
             connection.Close();
         }
 
@@ -98,6 +150,13 @@ namespace stemSchedule
 
         protected void Button_Push_Click(object sender, EventArgs e)
         {
+            string command = "UPDATE schedule SET PUBLIC = 1 WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
+            connection.Open();
+            MySqlCommand cmd = new MySqlCommand(command, connection);
+            cmd.ExecuteNonQuery();
+            connection.Close();
+            Response.Redirect("main.aspx");
+
             //foreach (DataGridViewCell oneCell in dataGridView1.SelectedCells)
             //{
             //    if (oneCell.Selected)
@@ -114,8 +173,8 @@ namespace stemSchedule
 
             //activecell.EntireRow.select();
             //row.RowIndex == GridView2.SelectedIndex
-            connection.Open();
-            foreach (GridViewRow row in GridView2.Rows)
+            //connection.Open();
+            /*foreach (GridViewRow row in GridView2.Rows)
             {
                 if (row.RowIndex == GridView2.SelectedIndex)
                 {
@@ -150,7 +209,7 @@ namespace stemSchedule
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            Response.Write("test");
+            
             if (e.Row.Cells[0].Text.Equals("1234"))
             {
                 e.Row.BackColor = System.Drawing.Color.DarkRed;
@@ -159,33 +218,58 @@ namespace stemSchedule
             }
         }
 
+        public string convTime(string s)
+        {
+            string[] space = s.Split(' ');
+
+            if (space[1] == "PM")
+            {
+                string[] colon = space[0].Split(':');
+                int hr = Convert.ToInt32(colon[0]);
+                hr += 12;
+                int min = Convert.ToInt32(colon[1]);
+                return hr.ToString() + ":" + min.ToString();
+            }
+            else
+                return space[0].ToString();
+            
+        }
+
         protected void Button_AddClass_Click1(object sender, EventArgs e)
         {
             connection.Open();
-            //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
-            string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public)";
-            command = new MySqlCommand(insertQuery, connection);
+            try
+            {
+                //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public)";
+                command = new MySqlCommand(insertQuery, connection);
 
-            //string instructor = Session["New"].ToString();
+                //string instructor = Session["New"].ToString();
 
-            command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
-            command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
-            command.Parameters.AddWithValue("@ClassNum", TextBox_Class.Text);
-            command.Parameters.AddWithValue("@Days", TextBox_Days.Text);
-            command.Parameters.AddWithValue("@StartTime", TextBox_StartTime.Text);
-            command.Parameters.AddWithValue("@EndTime", TextBox_EndTime.Text);
-            command.Parameters.AddWithValue("@Term", TextBox_Term.Text);
-            command.Parameters.AddWithValue("@Room", TextBox_Classroom.Text);
-            command.Parameters.AddWithValue("@EnrollNum", TextBox_Enrollment.Text);
-            command.Parameters.AddWithValue("@Year", TextBox_YearTaken.Text);
-            command.Parameters.AddWithValue("@M1", TextBox_M1.Text);
-            command.Parameters.AddWithValue("@M2", TextBox_Major2.Text);
-            command.Parameters.AddWithValue("@M3", TextBox_Major3.Text);
-            command.Parameters.AddWithValue("@M4", TextBox_Major4.Text);
-            command.Parameters.AddWithValue("@Credits", TextBox_Credits.Text);
-            command.Parameters.AddWithValue("@Conflict", 0);//conflicts
-            command.Parameters.AddWithValue("@Public", 0);//conflicts
-            command.ExecuteNonQuery();
+                command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
+                command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
+                command.Parameters.AddWithValue("@ClassNum", TextBox_Class.Text);
+                command.Parameters.AddWithValue("@Days", TextBox_Days.Text);
+                //string newStart = convTime(TextBox_Days.Text.ToString());
+                command.Parameters.AddWithValue("@StartTime", TextBox_StartTime.Text);
+                //string newEnd = convTime(TextBox_EndTime.Text.ToString());
+                command.Parameters.AddWithValue("@EndTime", TextBox_EndTime.Text);
+                command.Parameters.AddWithValue("@Term", TextBox_Term.Text);
+                command.Parameters.AddWithValue("@Room", TextBox_Classroom.Text);
+                command.Parameters.AddWithValue("@EnrollNum", TextBox_Enrollment.Text);
+                command.Parameters.AddWithValue("@Year", TextBox_YearTaken.Text);
+                command.Parameters.AddWithValue("@M1", DropDownList_M1.SelectedValue.ToString());
+                command.Parameters.AddWithValue("@M2", DropDownList_M2.SelectedValue.ToString());
+                command.Parameters.AddWithValue("@M3", DropDownList_M3.SelectedValue.ToString());
+                command.Parameters.AddWithValue("@M4", DropDownList_M4.SelectedValue.ToString());
+                command.Parameters.AddWithValue("@Credits", TextBox_Credits.Text);
+                command.Parameters.AddWithValue("@Conflict", 0);//conflicts
+                command.Parameters.AddWithValue("@Public", 0);//conflicts
+                command.ExecuteNonQuery();
+            }
+            catch { }
+
+            connection.Close();
             Response.Redirect("main.aspx");
             Response.Write("Add Class Success");
 
@@ -199,7 +283,7 @@ namespace stemSchedule
                     signal sqlstate '45000' SET MESSAGE_TEXT = 'Overlaps with existing data';
                 end if;
             end;*/
-            connection.Close();
+            
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -397,7 +481,7 @@ namespace stemSchedule
             Response.ClearContent();
             Response.ClearHeaders();
             Response.Charset = "";
-            string FileName = "STEMschedule" + DateTime.Now + ".xlsx";
+            string FileName = "STEMschedule" + DateTime.Now + ".xls";
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -416,6 +500,12 @@ namespace stemSchedule
             //Control 'GridView1' of type 'GridView' must be placed inside a form tag with runat=server."  
         }
 
+        protected void Button_Logout_Click(object sender, EventArgs e)
+        {
+            Session["New"] = null;
+            Response.Redirect("start.aspx");
+        }
+
         protected void Button_delete_Click(object sender, EventArgs e)
         {
             try
@@ -430,4 +520,6 @@ namespace stemSchedule
             catch { }
         }
     }
+
+
 }

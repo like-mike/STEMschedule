@@ -112,13 +112,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Class;
         
         /// <summary>
-        /// TextBox_M1 control.
+        /// DropDownList_M1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_M1;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_M1;
         
         /// <summary>
         /// TextBox_Term control.
@@ -130,13 +130,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Term;
         
         /// <summary>
-        /// TextBox_Major2 control.
+        /// DropDownList_M2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Major2;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_M2;
         
         /// <summary>
         /// TextBox_Classroom control.
@@ -148,13 +148,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Classroom;
         
         /// <summary>
-        /// TextBox_Major3 control.
+        /// DropDownList_M3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Major3;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_M3;
         
         /// <summary>
         /// TextBox_Days control.
@@ -166,13 +166,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Days;
         
         /// <summary>
-        /// TextBox_Major4 control.
+        /// DropDownList_M4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Major4;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_M4;
         
         /// <summary>
         /// TextBox_StartTime control.

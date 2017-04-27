@@ -26,35 +26,37 @@ namespace stemSchedule
 
         protected void ExportToExcel(object sender, EventArgs e)
         {
-            string s = "12:30 AM";
-            bool AM = true;
-            int hr;
-            string min;
-            string newtime = "";
-            // Split string on spaces.
-            // ... This will separate all the words.
-            string[] space =s.Split(' ');
+            string s = "1:30 PM";
+            string[] space = s.Split(' ');
+            string newtime;
+
+
+
+
+
             if (space[1] == "PM")
-                AM = false;
-            for (int i = 0; i < 2; i++)
-                newtime += space[i];
-            string[] colon = newtime.Split(':');
-            hr = Int32.Parse(colon[0]);
-            min = colon[1];
-
-            if(space[1]=="PM")
             {
+                string[] colon = space[0].Split(':');
+                int hr = Convert.ToInt32(colon[0]);
                 hr += 12;
+                int min = Convert.ToInt32(colon[1]);
+                newtime = hr.ToString() + ":" + min.ToString();
             }
-
+            else
+                newtime = space[0].ToString();
             Response.Write(newtime);
-            
+        }
 
-            
-            
+        protected void TextBox2_TextChanged(object sender, EventArgs e)
+        {
 
         }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Write(TextBox2.Text);
+        }
+    }
         
 
     }
-}
