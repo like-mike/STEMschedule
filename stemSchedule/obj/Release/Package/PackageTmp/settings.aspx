@@ -68,9 +68,13 @@
 	  
 	  
 		  <div style="float:left">
-		  <button data-target="modal_addRoom" class="btn modal-trigger red darken-4">Add Room</button>
+		  <button data-target="modal_addRoom" class="btn modal-trigger red darken-4">Add Room<br />
+              </button>
 		      
 		  </div>
+
+	      <br />
+          <br />
 
 	</div>
 	

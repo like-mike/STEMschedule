@@ -53,6 +53,32 @@ namespace stemSchedule
             GridView_departments.DataSource = table;
             GridView_departments.DataBind();
             connection.Close();
+
+
+            if (!IsPostBack)
+            {
+                try
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                CheckBoxList_majors.DataSource = reader;
+                                CheckBoxList_majors.DataValueField = "department";
+                                CheckBoxList_majors.DataTextField = "department";
+                                CheckBoxList_majors.DataBind();
+                            }
+                        }
+                    }
+
+
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+            }
         }
 
         protected void Button_Logout_Click(object sender, EventArgs e)
@@ -113,6 +139,62 @@ namespace stemSchedule
         protected void GridView_room_RowDataBound(object sender, GridViewRowEventArgs e)
         {
 
+        }
+
+        
+
+        protected void Button_addClass_Click1(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                string insertQuery = "insert into classes (name,M1,M2,M3,M4) values (@name,@M1,@M2,@M3,@M4)";
+                command = new MySqlCommand(insertQuery, connection);
+
+                string[] arr = new string[4];
+                int j = 0;
+                for (int i = 0; i < CheckBoxList_majors.Items.Count; i++)
+                {
+                    if (CheckBoxList_majors.Items[i].Selected)
+                    {
+                        arr[j] = CheckBoxList_majors.Items[i].Value;
+                        j++;
+                    }
+                          
+                }
+                
+
+
+                //string instructor = Session["New"].ToString();
+                command.Parameters.AddWithValue("@name", TextBox_className.Text);
+                command.Parameters.AddWithValue("@M1", arr[0]);
+                command.Parameters.AddWithValue("@M2", arr[1]);
+                command.Parameters.AddWithValue("@M3", arr[2]);
+                command.Parameters.AddWithValue("@M4", arr[3]);
+
+                table = new DataTable();
+                data = new MySqlDataAdapter(command);
+                data.Fill(table);
+                //GridView1.DataSource = table;
+                //GridView1.DataBind();
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Add Class Success!')" +
+                         "</script>");
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Add Class Error')" +
+                         "</script>");
+                Response.Write(ex);
+            }
+            finally { connection.Close(); }
         }
     }
 }
