@@ -3,13 +3,27 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head runat="server">
-        <title>Schedule -- STEMschedule</title>
+		<title>Schedule -- STEMschedule</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
 
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+		<style type="text/css">
+			.auto-style1 {
+				width: 100%;
+			}
+			.auto-style2 {
+				width: 345px;
+			}
+			.auto-style3 {
+				width: 361px;
+			}
+			.auto-style4 {
+				width: 453px;
+			}
+		</style>
 		</head>
  <nav class="red darken-4" role="navigation">
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
@@ -31,37 +45,31 @@
   <div class="section no-pad-bot" id="index-banner">
 <div class="container">
 	  <br><br>
-	  <div class="row center-left">
+	  <div class="row center">
+	   
+  
+	      <asp:Label ID="Label_showSearch" runat="server" BackColor="#B71C1C" Font-Bold="True" Font-Size="Large" ForeColor="White" Text="Showing: ALL" Visible="False"></asp:Label>
 	   
   
 	  </div>
 	  <div class="row center">
 		<!-- table here -->
-		  <asp:GridView ID="GridView1" runat="server" class ="striped" AllowPaging="True" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" UpdateMode="Conditional" PersistedSelection="true" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
 		  </asp:GridView>
 	  </div>
 	  
-		<div style="float:left">
+		<div class="left">
 		
 		  <!-- Dropdown Trigger -->
 			
 			<button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
 			
 			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
+			
 		  </div>
 		  <div style="float:right">
-  <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_ShowDept_SelectedIndexChanged">
-	  <asp:ListItem Selected="True">Show Only</asp:ListItem>
-				  
-			  </asp:DropDownList>
 			  
-  <asp:DropDownList ID="DropDownList_ShowMajor" runat="server" class="browser-default" Width="200px">
-				  <asp:ListItem></asp:ListItem>
-				  <asp:ListItem></asp:ListItem>
-				  <asp:ListItem></asp:ListItem>
-			  </asp:DropDownList>
-			  
-&nbsp;</div>
+  <button data-target="modal_search" class="btn modal-trigger red darken-4">Search</button></div>
   <!-- Dropdown Structure -->
   <ul id='dropdown1' class='dropdown-content'>
 	<li><a href="#!">one</a></li>
@@ -219,9 +227,9 @@
 	  <div class="row">
 		<div class="col s12">
 		
-		<asp:GridView ID="GridView2" runat="server" AllowSorting="True" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged">
-			</asp:GridView>
-&nbsp;<div align="left">
+		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound">
+		    </asp:GridView>
+ &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
@@ -234,7 +242,7 @@
 	  <h4>Import Excel Spreadsheet</h4>
 	  <p>A bunch of text</p>
 		<div>
-	<asp:FileUpload ID="FileUpload1" runat="server" />
+	<input type="file" id="myFile" name="myFile" />
 <asp:Button ID="btnUpload" runat="server" Text="Upload"
 			OnClick="btnUpload_Click" />
 			<asp:Button ID="button_Save" runat="server" OnClick="button_Save_Click" Text="Save" />
@@ -254,14 +262,99 @@
 	</div>
   </div>
 
-
-
-	
-	
-
-
-		
+	<!-- Search Modal -->
+  <div id="modal_search" class="modal modal-fixed-footer" data-backdrop="static">
+	<div class="modal-content">
+		<table class="auto-style1">
+				<tr>
+					<td class="auto-style4">
+						Search by CRN</td>
+					<td class="auto-style2">
+						<asp:TextBox ID="TextBox_searchCRN" runat="server" Width="201px"></asp:TextBox>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">
+						Search by Instructor</td>
+					<td class="auto-style2">
+			  
+  <asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px">
+				  <asp:ListItem Selected="True" Value="0">All</asp:ListItem>
+				  <asp:ListItem Value="1">Freshman</asp:ListItem>
+				  <asp:ListItem Value="2">Sophomore</asp:ListItem>
+				  <asp:ListItem Value="3">Junior</asp:ListItem>
+				  <asp:ListItem Value="4">Senior</asp:ListItem>
+			  </asp:DropDownList>
+			  
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">
+						<asp:RadioButtonList ID="RadioButtonList_ShowClasses" runat="server">
+							<asp:ListItem Selected="True">Show &quot;Everyone&#39;s&quot; Classes</asp:ListItem>
+							<asp:ListItem>Show Only My Classes</asp:ListItem>
+							<asp:ListItem>Show Only Conflicts</asp:ListItem>
+						</asp:RadioButtonList>
+					</td>
+					<td class="auto-style2">&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">Show Major</td>
+					<td class="auto-style2">
+  <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px">
+	  <asp:ListItem Selected="True">Show Only</asp:ListItem>
+				  
+			  </asp:DropDownList>
+			  
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">Show Classroom</td>
+					<td class="auto-style2">&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">Show Year</td>
+					<td class="auto-style2">
+			  
+  <asp:DropDownList ID="DropDownList_ShowYear" runat="server" class="browser-default" Width="200px">
+				  <asp:ListItem Selected="True" Value="0">All</asp:ListItem>
+				  <asp:ListItem Value="1">Freshman</asp:ListItem>
+				  <asp:ListItem Value="2">Sophomore</asp:ListItem>
+				  <asp:ListItem Value="3">Junior</asp:ListItem>
+				  <asp:ListItem Value="4">Senior</asp:ListItem>
+			  </asp:DropDownList>
+			  
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">Show Day of Week</td>
+					<td class="auto-style2">
+			  
+						&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="auto-style4">&nbsp;</td>
+					<td class="auto-style2">
+						<button id="Button_ApplySort" runat="server" OnServerClick="Button_ApplySort_Click" class="btn modal-trigger red darken-4">Search</button>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
 		</div>
+	  
+	
+	</div>
+	            <br />
+	</div>
+	
+			&nbsp;</div>
 		</div>
 
 		

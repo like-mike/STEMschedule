@@ -35,6 +35,17 @@ namespace stemSchedule
 
             // public schedule
             connection.Open();
+            command = new MySqlCommand("select room from classrooms", connection);
+            table = new DataTable();
+            data = new MySqlDataAdapter(command);
+            data.Fill(table);
+            GridView_room.DataSource = table;
+            GridView_room.DataBind();
+            
+
+
+            // public schedule
+            
             command = new MySqlCommand("select department from department", connection);
             table = new DataTable();
             data = new MySqlDataAdapter(command);
@@ -73,6 +84,35 @@ namespace stemSchedule
             connection.Close();
             Response.Redirect("settings.aspx");
             Response.Write("Add Class Success");
+        }
+
+        protected void Button_addRoom_Click(object sender, EventArgs e)
+        {
+            connection.Open();
+
+            string tickFinder = "select count(*) from classrooms";
+
+            MySqlCommand comm = new MySqlCommand(tickFinder, connection);
+            int temp = Convert.ToInt32(comm.ExecuteScalar().ToString());
+
+
+            string insertQuery = "insert into classrooms (classroomsid,room) values (@id,@room)";
+
+            MySqlCommand com = new MySqlCommand(insertQuery, connection);
+            String id = temp.ToString();
+            com.Parameters.AddWithValue("@id", id);
+            com.Parameters.AddWithValue("@room", TextBox_Room.Text);
+
+
+            com.ExecuteNonQuery();
+            connection.Close();
+            Response.Redirect("settings.aspx");
+           
+        }
+
+        protected void GridView_room_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
         }
     }
 }

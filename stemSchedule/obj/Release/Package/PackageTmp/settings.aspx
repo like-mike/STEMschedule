@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title>Settings -- STEMschedule</title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 100%;
+        }
+    </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
@@ -55,10 +60,16 @@
 	  <div style="float:left">
 		<button data-target="modal_addDept" class="btn modal-trigger red darken-4">Add Department</button>
 		  </div>
-		  <br><br><br>
-		  
+		  <br><br>
+	  
+	  
+		  <asp:GridView ID="GridView_room" runat="server" OnRowDataBound="GridView_room_RowDataBound">
+		  </asp:GridView>
+	  
+	  
 		  <div style="float:left">
 		  <button data-target="modal_addRoom" class="btn modal-trigger red darken-4">Add Room</button>
+		      
 		  </div>
 
 	</div>
@@ -124,17 +135,37 @@
 	</div>
   </div>
 
-	</form>
+	
 	
   <div id="modal_addRoom" class="modal modal-fixed-footer">
 	<div class="modal-content">
-	  <h4>Modal Header</h4>
-	  <p>A bunch of text</p>
+	  <table class="auto-style1">
+                  <tr>
+                      <td>Enter Room</td>
+                      <td>
+                          <asp:TextBox ID="TextBox_Room" runat="server"></asp:TextBox>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>Confirm room</td>
+                      <td>
+                          <asp:TextBox ID="TextBox_RoomConfirm" runat="server"></asp:TextBox>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>&nbsp;</td>
+                      <td>
+                          <asp:Button ID="Button_addRoom" runat="server" OnClick="Button_addRoom_Click" Text="Add Room" />
+                      </td>
+                  </tr>
+              </table>
 	</div>
 	<div class="modal-footer">
 	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
 	</div>
   </div>
+
+	
   
   
   
@@ -173,7 +204,7 @@
 
 		
 		
-		
+		</form>
 
 		
 

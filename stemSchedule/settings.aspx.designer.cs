@@ -31,6 +31,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.GridView GridView_departments;
         
         /// <summary>
+        /// GridView_room control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView_room;
+        
+        /// <summary>
         /// department control.
         /// </summary>
         /// <remarks>
@@ -47,5 +56,32 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button_addDepartment;
+        
+        /// <summary>
+        /// TextBox_Room control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox_Room;
+        
+        /// <summary>
+        /// TextBox_RoomConfirm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox_RoomConfirm;
+        
+        /// <summary>
+        /// Button_addRoom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button_addRoom;
     }
 }

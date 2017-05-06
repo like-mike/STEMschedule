@@ -29,35 +29,42 @@ namespace stemSchedule
             string connectionString;
             connectionString = "SERVER=" + server + ";" + "DATABASE=" +
             database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
-
+            int temp = 0;
             MySqlConnection conn = new MySqlConnection(connectionString);
-
-
-            //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
-            conn.Open();
-            string checkuser = "select count(*) from UserData where UserName='" + formUserName + "'";
-            MySqlCommand com = new MySqlCommand(checkuser, conn);
-            int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
-            conn.Close();
+            try
+            {
+                //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                conn.Open();
+                string checkuser = "select count(*) from UserData where UserName='" + formUserName + "'";
+                MySqlCommand com = new MySqlCommand(checkuser, conn);
+                temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+                conn.Close();
+            }
+            catch { }
+            
 
             if (temp == 1)
             {
-                conn.Open();
-                string checkPasswordQuery = "select Password from UserData where UserName='" + formUserName + "'";
-                MySqlCommand passComm = new MySqlCommand(checkPasswordQuery, conn);
-                string pass = passComm.ExecuteScalar().ToString().Replace(" ", "");//remove whitespace
-                //verify password
-                if (pass == formPassword)
+                try
                 {
-                    Session["New"] = formUserName;
-                    Response.Write("Password is correct");
-                    Response.Redirect("main.aspx");
+                    conn.Open();
+                    string checkPasswordQuery = "select Password from UserData where UserName='" + formUserName + "'";
+                    MySqlCommand passComm = new MySqlCommand(checkPasswordQuery, conn);
+                    string pass = passComm.ExecuteScalar().ToString().Replace(" ", "");//remove whitespace
+                                                                                       //verify password
+                    if (pass == formPassword)
+                    {
+                        Session["New"] = formUserName;
+                        Response.Write("Password is correct");
+                        Response.Redirect("main.aspx");
+                    }
+                    else
+                    {
+                        Response.Write("Password is not correct");
+                    }
+                    conn.Close();
                 }
-                else
-                {
-                    Response.Write("Password is not correct");
-                }
-
+                catch { }
 
             }
             else
