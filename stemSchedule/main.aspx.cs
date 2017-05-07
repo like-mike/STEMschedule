@@ -308,10 +308,47 @@ namespace stemSchedule
 
                 //string instructor = Session["New"].ToString();
                 string sclass = DropDownList_class.SelectedValue.ToString();
+
+                string[] arr = new string[7];
+                int j = 0;
+                for (int i = 0; i < CheckBoxList_days.Items.Count; i++)
+                {
+                    if (CheckBoxList_days.Items[i].Selected)
+                    {
+                        arr[j] = CheckBoxList_days.Items[i].Value;
+                        j++;
+                    }
+
+                }
+                //Array.Sort(arr);
+                string days = "";
+                int x = 0;
+                
+                for(int i = 0; i < j; i++)
+                {
+                    if (arr[i] == "1")
+                        days += "M";
+                    else if (arr[i] == "2")
+                        days += "T";
+                    else if (arr[i] == "3")
+                        days += "W";
+                    else if (arr[i] == "4")
+                        days += "Th";
+                    else if (arr[i] == "5")
+                        days += "F";
+                    else if (arr[i] == "6")
+                        days += "Sa";
+                    else if (arr[i] == "7")
+                        days += "Su";
+                }
+                
+                
+
+
                 command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
                 command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
                 command.Parameters.AddWithValue("@ClassNum", sclass);
-                command.Parameters.AddWithValue("@Days", TextBox_Days.Text);
+                command.Parameters.AddWithValue("@Days", days);
                 command.Parameters.AddWithValue("@StartTime", TextBox_StartTime.Text);
                 command.Parameters.AddWithValue("@EndTime", TextBox_EndTime.Text);
                 command.Parameters.AddWithValue("@Term", DropDownList_term.SelectedValue);
@@ -354,6 +391,7 @@ namespace stemSchedule
                 data.Fill(table);
                 GridView1.DataSource = table;
                 GridView1.DataBind();
+                
                 Response.Write(
     "<script type=\"text/javascript\">" +
     "alert('Add Class Success!')" +
@@ -742,5 +780,7 @@ namespace stemSchedule
             e.Row.Cells[CONFLICT_COLUMN].Visible = false;
             e.Row.Cells[CONFLICT_CRN_COLUMN].Visible = false;
         }
+
+        
     }
 }

@@ -67,13 +67,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_CRN;
         
         /// <summary>
-        /// TextBox_Enrollment control.
+        /// DropDownList_year control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Enrollment;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_year;
         
         /// <summary>
         /// TextBox_Faculty control.
@@ -85,13 +85,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Faculty;
         
         /// <summary>
-        /// DropDownList_year control.
+        /// TextBox_StartTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList_year;
+        protected global::System.Web.UI.WebControls.TextBox TextBox_StartTime;
         
         /// <summary>
         /// DropDownList_class control.
@@ -103,13 +103,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.DropDownList DropDownList_class;
         
         /// <summary>
-        /// TextBox_Credits control.
+        /// TextBox_EndTime control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Credits;
+        protected global::System.Web.UI.WebControls.TextBox TextBox_EndTime;
         
         /// <summary>
         /// DropDownList_term control.
@@ -121,6 +121,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.DropDownList DropDownList_term;
         
         /// <summary>
+        /// CheckBoxList_days control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_days;
+        
+        /// <summary>
         /// TextBox_Classroom control.
         /// </summary>
         /// <remarks>
@@ -130,31 +139,22 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.TextBox TextBox_Classroom;
         
         /// <summary>
-        /// TextBox_Days control.
+        /// TextBox_Enrollment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Days;
+        protected global::System.Web.UI.WebControls.TextBox TextBox_Enrollment;
         
         /// <summary>
-        /// TextBox_StartTime control.
+        /// TextBox_Credits control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_StartTime;
-        
-        /// <summary>
-        /// TextBox_EndTime control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_EndTime;
+        protected global::System.Web.UI.WebControls.TextBox TextBox_Credits;
         
         /// <summary>
         /// Button_AddClass control.

@@ -103,9 +103,14 @@
 					  <asp:TextBox ID="TextBox_CRN" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
-				  <td class="auto-style3">Enrollment</td>
+				  <td class="auto-style3">Year</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_Enrollment" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_year" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True" Value="1">Freshman</asp:ListItem>
+					      <asp:ListItem Value="2">Sophomore</asp:ListItem>
+                          <asp:ListItem Value="3">Junior</asp:ListItem>
+                          <asp:ListItem Value="4">Senior</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -115,14 +120,9 @@
 					  <asp:TextBox ID="TextBox_Faculty" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
-				  <td class="auto-style3">Year Taken</td>
+				  <td class="auto-style3">Start Time</td>
 				  <td>
-					  <asp:DropDownList ID="DropDownList_year" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True" Value="Freshman">Freshman</asp:ListItem>
-					      <asp:ListItem Value="Sophomore">Sophomore</asp:ListItem>
-                          <asp:ListItem Value="Junior">Junior</asp:ListItem>
-                          <asp:ListItem Value="Senior">Senior</asp:ListItem>
-					  </asp:DropDownList>
+					  <asp:TextBox ID="TextBox_StartTime" TextMode="Time" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -134,9 +134,9 @@
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
-				  <td class="auto-style3">Credits</td>
+				  <td class="auto-style3">End Time</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_Credits" runat="server"></asp:TextBox>
+					  <asp:TextBox ID="TextBox_EndTime" TextMode="Time" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
@@ -151,9 +151,18 @@
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>
-					  &nbsp;</td>
+				  <td class="auto-style3">Days</td>
+				  <td rowspan="6">
+					  <asp:CheckBoxList ID="CheckBoxList_days" runat="server">
+                          <asp:ListItem Value="1">Monday</asp:ListItem>
+                          <asp:ListItem Value="2">Tuesday</asp:ListItem>
+                          <asp:ListItem Value="3">Wednesday</asp:ListItem>
+                          <asp:ListItem Value="4">Thursday</asp:ListItem>
+                          <asp:ListItem Value="5">Friday</asp:ListItem>
+                          <asp:ListItem Value="6">Saturday</asp:ListItem>
+                          <asp:ListItem Value="7">Sunday</asp:ListItem>
+                      </asp:CheckBoxList>
+                  </td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
@@ -163,41 +172,32 @@
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
-				  <td>
-					  &nbsp;</td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
-				  <td class="auto-style2">Days</td>
+				  <td class="auto-style2">Enrollment</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_Days" runat="server"></asp:TextBox>
+					  <asp:TextBox ID="TextBox_Enrollment" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
-				  <td>
-					  &nbsp;</td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
-				  <td class="auto-style2">Start Time</td>
+				  <td class="auto-style2">Credits</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_StartTime" TextMode="Time" runat="server"></asp:TextBox>
+					  <asp:TextBox ID="TextBox_Credits" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
-				  <td>
-					  &nbsp;</td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
-				  <td class="auto-style2">End Time</td>
+				  <td class="auto-style2">&nbsp;</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_EndTime" TextMode="Time" runat="server"></asp:TextBox>
-				  </td>
+					  &nbsp;</td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
-				  <td>
-					  &nbsp;</td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
@@ -207,7 +207,6 @@
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
 				  <td>&nbsp;</td>
 			  </tr>
 		  </table>
