@@ -23,6 +23,9 @@
 			.auto-style4 {
 				width: 453px;
 			}
+		    .auto-style5 {
+                width: 639px;
+            }
 		</style>
 		</head>
  <nav class="red darken-4" role="navigation">
@@ -88,7 +91,7 @@
 	</div>
   </div>
 <!-- Modal Structure modal modal-fixed-footer-->
-  <!-- Add Class Modal Structure -->
+  <!-- Add Class Modal Structuremodal modal-fixed-footer -->
   <div id="modal1" class="modal modal-fixed-footer">
 	<div class="modal-content">
 	  <h4>Modal Header</h4>
@@ -96,7 +99,7 @@
 		 <table class="auto-style1">
 			  <tr>
 				  <td class="auto-style2">CRN</td>
-				  <td>
+				  <td class="auto-style5">
 					  <asp:TextBox ID="TextBox_CRN" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
@@ -108,76 +111,27 @@
 			  </tr>
 			  <tr>
 				  <td class="auto-style2">Faculty</td>
-				  <td>
+				  <td class="auto-style5">
 					  <asp:TextBox ID="TextBox_Faculty" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Year Taken</td>
 				  <td>
-					  <asp:TextBox ID="TextBox_YearTaken" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_year" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True" Value="Freshman">Freshman</asp:ListItem>
+					      <asp:ListItem Value="Sophomore">Sophomore</asp:ListItem>
+                          <asp:ListItem Value="Junior">Junior</asp:ListItem>
+                          <asp:ListItem Value="Senior">Senior</asp:ListItem>
+					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
 				  <td class="auto-style2">Class</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_Class" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Major 1</td>
-				  <td>
-					  <asp:DropDownList ID="DropDownList_M1" runat="server" class="browser-default" Width="200px">
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_class" runat="server" class="browser-default" Width="200px">
 						  <asp:ListItem Selected="True">None</asp:ListItem>
 					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Term</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_Term" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Major 2</td>
-				  <td>
-					  <asp:DropDownList ID="DropDownList_M2" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True">None</asp:ListItem>
-					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Classroom</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_Classroom" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Major 3</td>
-				  <td>
-					  <asp:DropDownList ID="DropDownList_M3" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True">None</asp:ListItem>
-					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Days</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_Days" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Major 4</td>
-				  <td>
-					  <asp:DropDownList ID="DropDownList_M4" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True">None</asp:ListItem>
-					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Start Time</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_StartTime" TextMode="Time" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Credits</td>
@@ -187,8 +141,57 @@
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
-				  <td class="auto-style2">End Time</td>
+				  <td class="auto-style2">Term</td>
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_term" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True" Value="1">Autumn</asp:ListItem>
+					      <asp:ListItem Value="2">Winter</asp:ListItem>
+                          <asp:ListItem Value="3">Spring</asp:ListItem>
+                          <asp:ListItem Value="4">Summer</asp:ListItem>
+					  </asp:DropDownList>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
 				  <td>
+					  &nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Classroom</td>
+				  <td class="auto-style5">
+					  <asp:TextBox ID="TextBox_Classroom" runat="server"></asp:TextBox>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>
+					  &nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Days</td>
+				  <td class="auto-style5">
+					  <asp:TextBox ID="TextBox_Days" runat="server"></asp:TextBox>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>
+					  &nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Start Time</td>
+				  <td class="auto-style5">
+					  <asp:TextBox ID="TextBox_StartTime" TextMode="Time" runat="server"></asp:TextBox>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>
+					  &nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">End Time</td>
+				  <td class="auto-style5">
 					  <asp:TextBox ID="TextBox_EndTime" TextMode="Time" runat="server"></asp:TextBox>
 				  </td>
 				  <td>&nbsp;</td>
@@ -199,7 +202,7 @@
 			  </tr>
 			  <tr>
 				  <td class="auto-style2">&nbsp;</td>
-				  <td>
+				  <td class="auto-style5">
 					  <asp:Button ID="Button_AddClass" runat="server" Text="Add Class" OnClick="Button_AddClass_Click1" />
 				  </td>
 				  <td>&nbsp;</td>

@@ -194,93 +194,34 @@ namespace stemSchedule
                 catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
-                try
-                {
-                    connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DropDownList_M1.DataSource = reader;
-                                DropDownList_M1.DataValueField = "department";
-                                DropDownList_M1.DataTextField = "department";
-                                DropDownList_M1.DataBind();
-                            }
-                        }
-                    }
-                    //Add blank item at index 0.
-                    DropDownList_M1.Items.Insert(0, new ListItem("", ""));
-                }
-                catch (Exception ex) { Response.Write(ex); }
-                finally { connection.Close(); }
+                
 
                 try
                 {
                     connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
+                    using (var cmd = new MySqlCommand("SELECT * FROM classes", connection))
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
                             {
-                                DropDownList_M2.DataSource = reader;
-                                DropDownList_M2.DataValueField = "department";
-                                DropDownList_M2.DataTextField = "department";
-                                DropDownList_M2.DataBind();
+                                DropDownList_class.DataSource = reader;
+                                DropDownList_class.DataValueField = "name";
+                                DropDownList_class.DataTextField = "name";
+                                DropDownList_class.DataBind();
                             }
                         }
                     }
                     //Add blank item at index 0.
-                    DropDownList_M2.Items.Insert(0, new ListItem("", ""));
+                    //DropDownList_M1.Items.Insert(0, new ListItem("", ""));
                 }
                 catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
-                try
-                {
-                    connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DropDownList_M3.DataSource = reader;
-                                DropDownList_M3.DataValueField = "department";
-                                DropDownList_M3.DataTextField = "department";
-                                DropDownList_M3.DataBind();
-                            }
-                        }
-                    }
-                    //Add blank item at index 0.
-                    DropDownList_M3.Items.Insert(0, new ListItem("", ""));
-                }
-                catch (Exception ex) { Response.Write(ex); }
-                finally { connection.Close(); }
+                
+                
 
-                try
-                {
-                    connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DropDownList_M4.DataSource = reader;
-                                DropDownList_M4.DataValueField = "department";
-                                DropDownList_M4.DataTextField = "department";
-                                DropDownList_M4.DataBind();
-                            }
-                        }
-                    }
-                    //Add blank item at index 0.
-                    DropDownList_M4.Items.Insert(0, new ListItem("", ""));
-                }
-                catch (Exception ex) { Response.Write(ex); }
-                finally { connection.Close(); }
+                
 
             }
             
@@ -366,21 +307,40 @@ namespace stemSchedule
                 command = new MySqlCommand(insertQuery, connection);
 
                 //string instructor = Session["New"].ToString();
-
+                string sclass = DropDownList_class.SelectedValue.ToString();
                 command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
                 command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
-                command.Parameters.AddWithValue("@ClassNum", TextBox_Class.Text);
+                command.Parameters.AddWithValue("@ClassNum", sclass);
                 command.Parameters.AddWithValue("@Days", TextBox_Days.Text);
                 command.Parameters.AddWithValue("@StartTime", TextBox_StartTime.Text);
                 command.Parameters.AddWithValue("@EndTime", TextBox_EndTime.Text);
-                command.Parameters.AddWithValue("@Term", TextBox_Term.Text);
+                command.Parameters.AddWithValue("@Term", DropDownList_term.SelectedValue);
                 command.Parameters.AddWithValue("@Room", TextBox_Classroom.Text);
                 command.Parameters.AddWithValue("@EnrollNum", TextBox_Enrollment.Text);
-                command.Parameters.AddWithValue("@Year", TextBox_YearTaken.Text);
-                command.Parameters.AddWithValue("@M1", DropDownList_M1.SelectedValue.ToString());
-                command.Parameters.AddWithValue("@M2", DropDownList_M2.SelectedValue.ToString());
-                command.Parameters.AddWithValue("@M3", DropDownList_M3.SelectedValue.ToString());
-                command.Parameters.AddWithValue("@M4", DropDownList_M4.SelectedValue.ToString());
+                command.Parameters.AddWithValue("@Year", DropDownList_year.SelectedValue);
+
+                
+                string M1_com = "select M1 from classes where name='" + sclass + "'";
+                MySqlCommand com = new MySqlCommand(M1_com, connection);
+                string M1 = com.ExecuteScalar().ToString();
+
+                string M2_com = "select M2 from classes where name='" + sclass + "'";
+                com = new MySqlCommand(M2_com, connection);
+                string M2 = com.ExecuteScalar().ToString();
+
+                string M3_com = "select M3 from classes where name='" + sclass + "'";
+                com = new MySqlCommand(M3_com, connection);
+                string M3 = com.ExecuteScalar().ToString();
+
+                string M4_com = "select M4 from classes where name='" + sclass + "'";
+                com = new MySqlCommand(M4_com, connection);
+                string M4 = com.ExecuteScalar().ToString();
+
+
+                command.Parameters.AddWithValue("@M1", M1);
+                command.Parameters.AddWithValue("@M2", M2);
+                command.Parameters.AddWithValue("@M3", M3);
+                command.Parameters.AddWithValue("@M4", M4);
 
                 command.Parameters.AddWithValue("@Credits", TextBox_Credits.Text);
                 command.Parameters.AddWithValue("@Conflict", 0);//conflicts
