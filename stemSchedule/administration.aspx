@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="administation.aspx.cs" Inherits="stemSchedule.administation" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="administration.aspx.cs" Inherits="stemSchedule.administation" %>
 
 <!DOCTYPE html>
 
