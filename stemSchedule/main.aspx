@@ -57,7 +57,7 @@
 	  </div>
 	  <div class="row center">
 		<!-- table here -->
-		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" UpdateMode="Conditional" PersistedSelection="true" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" UpdateMode="Conditional" PersistedSelection="true" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowCreated="GridView1_RowCreated">
 		  </asp:GridView>
 	  </div>
 	  
@@ -68,6 +68,7 @@
 			<button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
 			
 			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
+            <button id="button_checkConflict" runat="server" onserverclick="checkSpecific" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
 			
 		  </div>
 		  <div style="float:right">
@@ -85,6 +86,9 @@
 	  </div>
 	  
 	  <br>
+	  
+	  <asp:GridView ID="GridView1_Hidden" runat="server" Visible="False">
+      </asp:GridView>
 	  
 	  <br>
 
@@ -144,10 +148,10 @@
 				  <td class="auto-style2">Term</td>
 				  <td class="auto-style5">
 					  <asp:DropDownList ID="DropDownList_term" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True" Value="1">Autumn</asp:ListItem>
-					      <asp:ListItem Value="2">Winter</asp:ListItem>
-                          <asp:ListItem Value="3">Spring</asp:ListItem>
-                          <asp:ListItem Value="4">Summer</asp:ListItem>
+						  <asp:ListItem Selected="True" Value="Autumn">Autumn</asp:ListItem>
+					      <asp:ListItem Value="Winter">Winter</asp:ListItem>
+                          <asp:ListItem Value="Spring">Spring</asp:ListItem>
+                          <asp:ListItem Value="Summer">Summer</asp:ListItem>
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
@@ -229,7 +233,7 @@
 	  <div class="row">
 		<div class="col s12">
 		
-		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound">
+		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
 		    </asp:GridView>
  &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
