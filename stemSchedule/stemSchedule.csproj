@@ -247,6 +247,7 @@
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
     <Content Include="admin.aspx" />
+    <Content Include="administation.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -436,6 +437,13 @@
     </Compile>
     <Compile Include="admin.aspx.designer.cs">
       <DependentUpon>admin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="administation.aspx.cs">
+      <DependentUpon>administation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="administation.aspx.designer.cs">
+      <DependentUpon>administation.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Data\App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
