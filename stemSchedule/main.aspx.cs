@@ -18,8 +18,8 @@ namespace stemSchedule
     public partial class main : System.Web.UI.Page
     {
         // "#defines"
-        
-    
+
+
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
         public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 1";
         //public const string PUBLIC_SCHEDULE = "SELECT * FROM schedule WHERE Public = 1";
@@ -84,9 +84,9 @@ namespace stemSchedule
             return time;
         }
 
-       
 
-        
+
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -163,7 +163,7 @@ namespace stemSchedule
                 catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
-                
+
 
                 try
                 {
@@ -187,13 +187,13 @@ namespace stemSchedule
                 catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
-                
-                
 
-                
+
+
+
 
             }
-            
+
 
         }
 
@@ -204,20 +204,32 @@ namespace stemSchedule
 
         protected void Button_Push_Click(object sender, EventArgs e)
         {
-            foreach (GridViewRow row in GridView2.Rows)
+            if (GridView2.SelectedIndex == -1)
             {
-                if (row.RowIndex == GridView2.SelectedIndex)
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PRIVATE Class Selected')" +
+                        "</script>");
+            }
+            else
+            {
+                foreach (GridViewRow row in GridView2.Rows)
                 {
-                    sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";");
+                    if (row.RowIndex == GridView2.SelectedIndex)
+                    {
+                        sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";");
 
-                   
 
-                    Response.Redirect("main.aspx");
+
+                        Response.Redirect("main.aspx");
+                    }
                 }
             }
+
+            
         }
 
-        
+
         public void checkConflict(bool changeConflict, String CRN, String Faculty, String ClassNum, String Days, String StartTime, String EndTime, String Term, String Room, String M1, String M2, String M3, String M4, String Credits, String M, String T, String W, String Th, String F, String Sa, String Su, String Fr, String So, String Ju, String Se)
         {
             if (!changeConflict)
@@ -226,7 +238,7 @@ namespace stemSchedule
             string checkNum = "select count(*) from schedule WHERE '" + StartTime + "' >= (startTime)  AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "')";
 
 
-            string conflict = "select * FROM SCHEDULE WHERE '" + StartTime + "' >= (startTime) AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND TERM = '"+ Term +"'";
+            string conflict = "select * FROM SCHEDULE WHERE '" + StartTime + "' >= (startTime) AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND TERM = '" + Term + "'";
             string conflictFound = "";
             int numRoom = 0;
             int numConflicts = 0;
@@ -703,10 +715,10 @@ namespace stemSchedule
                     command.ExecuteNonQuery();
                     //Response.Redirect("main.aspx");
                     //Response.Write("Add Class Success");
-                    
+
                 }
                 catch (Exception ex) {
-                    
+
                 }
                 finally
                 {
@@ -719,20 +731,32 @@ namespace stemSchedule
 
         protected void Button_changePrivate_Click(object sender, EventArgs e)
         {
-            string command = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
-            try
+            if (GridView1.SelectedIndex == -1)
             {
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand(command, connection);
-                cmd.ExecuteNonQuery();
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PUBLIC Class Selected')" +
+                        "</script>");
+            }
+            else
+            {
+                string command = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
+                try
+                {
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(command, connection);
+                    cmd.ExecuteNonQuery();
 
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally
+                {
+                    connection.Close();
+                    Response.Redirect("main.aspx");
+                }
             }
-            catch (Exception ex) { Response.Write(ex); }
-            finally
-            {
-                connection.Close();
-                Response.Redirect("main.aspx");
-            }
+
+            
         }
 
         protected void Button_Logout_Click(object sender, EventArgs e)
@@ -766,7 +790,7 @@ namespace stemSchedule
             Response.ClearContent();
             Response.ClearHeaders();
             Response.Charset = "";
-            string FileName = "STEMschedule" + DateTime.Now + ".xlsx";
+            string FileName = "STEMschedule" + DateTime.Now + ".xls";
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -777,7 +801,6 @@ namespace stemSchedule
             GridView_hidden.RenderControl(htmltextwrtter);
             Response.Write(strwritter.ToString());
             Response.End();
-
         }
         public override void VerifyRenderingInServerForm(Control control)
         {
@@ -787,23 +810,60 @@ namespace stemSchedule
 
         protected void Button_delete_Click(object sender, EventArgs e)
         {
-            try
+            if (GridView2.SelectedIndex == -1)
             {
-                string command = "DELETE from SCHEDULE WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
-                connection.Open();
-                MySqlCommand cmd = new MySqlCommand(command, connection);
-                cmd.ExecuteNonQuery();
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PRIVATE Class Selected')" +
+                        "</script>");
+            }
+            else {
+                try
+                {
+                    string command = "DELETE from SCHEDULE WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(command, connection);
+                    cmd.ExecuteNonQuery();
 
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally
+                {
+                    connection.Close();
+                    Response.Redirect("main.aspx");
+                }
             }
-            catch (Exception ex) { Response.Write(ex); }
-            finally
-            {
-                connection.Close();
-                Response.Redirect("main.aspx");
-            }
+
+            
+
         }
 
-        
+        protected void Button_ShowAll_Click(object sender, EventArgs e)
+        {
+            string update = "Select * from SCHEDULE WHERE PUBLIC = 1";
+            try
+            { // public schedule
+
+                connection.Open();
+                command = new MySqlCommand(update, connection);
+                table = new DataTable();
+                data = new MySqlDataAdapter(command);
+                data.Fill(table);
+                GridView1.DataSource = table;
+                GridView1.DataBind();
+                Label_showSearch.Visible = false;
+              
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex);
+
+            }
+            finally { connection.Close(); }
+        }
+
 
 
 
@@ -924,32 +984,42 @@ namespace stemSchedule
 
         protected void checkSpecific(object sender, EventArgs e)
         {
-            //GridView1.SelectedRow.Cells[1].Text
-            String CRN = GridView1.SelectedRow.Cells[1].Text;
-            String Faculty = GridView1.SelectedRow.Cells[2].Text;
-            String ClassNum = GridView1.SelectedRow.Cells[3].Text;
-            String startTime = GridView1.SelectedRow.Cells[5].Text;
-            String endTime = GridView1.SelectedRow.Cells[6].Text;
-            String term = GridView1.SelectedRow.Cells[7].Text;
-            String room = GridView1.SelectedRow.Cells[8].Text;
-            String M1 = GridView1.SelectedRow.Cells[9].Text;
-            String M2 = GridView1.SelectedRow.Cells[10].Text;
-            String M3 = GridView1.SelectedRow.Cells[11].Text;
-            String M4 = GridView1.SelectedRow.Cells[12].Text;
-            String M = GridView1.SelectedRow.Cells[14].Text;
-            String T = GridView1.SelectedRow.Cells[15].Text;
-            String W = GridView1.SelectedRow.Cells[16].Text;
-            String Th = GridView1.SelectedRow.Cells[17].Text;
-            String F = GridView1.SelectedRow.Cells[18].Text;
-            String Sa = GridView1.SelectedRow.Cells[19].Text;
-            String Su = GridView1.SelectedRow.Cells[20].Text;
-            String Fr = GridView1.SelectedRow.Cells[21].Text;
-            String So = GridView1.SelectedRow.Cells[22].Text;
-            String Jr = GridView1.SelectedRow.Cells[23].Text;
-            String Se = GridView1.SelectedRow.Cells[24].Text;
+            if (GridView1.SelectedIndex == -1)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PUBLIC Class Selected')" +
+                        "</script>");
+            }
+            else
+            {
+                String CRN = GridView1.SelectedRow.Cells[1].Text;
+                String Faculty = GridView1.SelectedRow.Cells[2].Text;
+                String ClassNum = GridView1.SelectedRow.Cells[3].Text;
+                String startTime = GridView1.SelectedRow.Cells[5].Text;
+                String endTime = GridView1.SelectedRow.Cells[6].Text;
+                String term = GridView1.SelectedRow.Cells[7].Text;
+                String room = GridView1.SelectedRow.Cells[8].Text;
+                String M1 = GridView1.SelectedRow.Cells[9].Text;
+                String M2 = GridView1.SelectedRow.Cells[10].Text;
+                String M3 = GridView1.SelectedRow.Cells[11].Text;
+                String M4 = GridView1.SelectedRow.Cells[12].Text;
+                String M = GridView1.SelectedRow.Cells[14].Text;
+                String T = GridView1.SelectedRow.Cells[15].Text;
+                String W = GridView1.SelectedRow.Cells[16].Text;
+                String Th = GridView1.SelectedRow.Cells[17].Text;
+                String F = GridView1.SelectedRow.Cells[18].Text;
+                String Sa = GridView1.SelectedRow.Cells[19].Text;
+                String Su = GridView1.SelectedRow.Cells[20].Text;
+                String Fr = GridView1.SelectedRow.Cells[21].Text;
+                String So = GridView1.SelectedRow.Cells[22].Text;
+                String Jr = GridView1.SelectedRow.Cells[23].Text;
+                String Se = GridView1.SelectedRow.Cells[24].Text;
 
 
-            checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se);
+                checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se);
+            }
+            
 
 
         }

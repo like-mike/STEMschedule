@@ -21,8 +21,9 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li><a href="main.aspx">Schedule</a></li>
-		<li class="active"><a href="#">Settings</a></li>
-		<li><a href="#">Admin</a></li>
+          <li><a href="settings.aspx">Settings</a></li>
+		<li class="active"><a href="#">Admin</a></li>
+		
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 		
 	  </ul>

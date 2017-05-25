@@ -67,6 +67,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlButton button_checkConflict;
         
         /// <summary>
+        /// Button2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton Button2;
+        
+        /// <summary>
         /// GridView1_Hidden control.
         /// </summary>
         /// <remarks>

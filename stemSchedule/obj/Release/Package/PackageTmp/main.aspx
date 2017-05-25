@@ -33,7 +33,7 @@
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
 		<li><a href="settings.aspx">Settings</a></li>
-		<li><a href="admin.aspx">Admin</a></li>
+		<li><a href="administration.aspx">Admin</a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
