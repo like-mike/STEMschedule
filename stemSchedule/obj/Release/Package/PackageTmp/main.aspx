@@ -72,7 +72,7 @@
 			
 		  </div>
 		  <div style="float:right">
-			  
+			  <button id="Button2" runat="server" onserverclick="Button_ShowAll_Click" class="waves-effect waves-light btn red darken-4" >Show All</button>
   <button data-target="modal_search" class="btn modal-trigger red darken-4">Search</button></div>
   <!-- Dropdown Structure -->
   <ul id='dropdown1' class='dropdown-content'>
@@ -239,7 +239,7 @@
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
-		<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>
+		<!--<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>-->
   
 	  
 <!-- Add Class Modal Structure -->

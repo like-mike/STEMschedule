@@ -931,13 +931,46 @@ namespace stemSchedule
 
             if (DropDownList_ShowYear.SelectedIndex != 0 && TextBox_searchCRN.Text == "")
             {
-                if(!where)
+                if (!where)
                 {
-                    update += " WHERE YEAR = '" + DropDownList_ShowYear.SelectedValue.ToString() + "'";
+                    if (DropDownList_ShowYear.SelectedValue.ToString() == "1")
+                    {
+                        update += " WHERE FR = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "2")
+                    {
+                        update += " WHERE SO = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "3")
+                    {
+                        update += " WHERE JU = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "4")
+                    {
+                        update += " WHERE SE = '1'";
+                    }
                     where = true;
                 }
-                else
-                    update += " AND YEAR = '" + DropDownList_ShowYear.SelectedValue.ToString() + "'";
+                else {
+                    if (DropDownList_ShowYear.SelectedValue.ToString() == "1")
+                    {
+                        update += " AND FR = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "2")
+                    {
+                        update += " AND SO = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "3")
+                    {
+                        update += " AND JU = '1'";
+                    }
+                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "4")
+                    {
+                        update += " AND SE = '1'";
+                    }
+                    
+                }
+                    
 
                 showing += "Year = " + DropDownList_ShowYear.SelectedItem.ToString() + " ";
             }
