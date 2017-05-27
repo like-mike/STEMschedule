@@ -23,16 +23,26 @@
 			.auto-style4 {
 				width: 453px;
 			}
-		    .auto-style5 {
-                width: 639px;
-            }
-		</style>
+			.auto-style5 {
+				width: 639px;
+			}
+			</style>
 		</head>
+
+
+
+<!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
+  <li><a href="#!">two</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">three</a></li>
+</ul>
  <nav class="red darken-4" role="navigation">
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a href="settings.aspx">Settings</a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Settings</a></li>
 		<li><a href="administration.aspx">Admin</a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
@@ -51,7 +61,7 @@
 	  <div class="row center">
 	   
   
-	      <asp:Label ID="Label_showSearch" runat="server" BackColor="#B71C1C" Font-Bold="True" Font-Size="Large" ForeColor="White" Text="Showing: ALL" Visible="False"></asp:Label>
+		  <asp:Label ID="Label_showSearch" runat="server" BackColor="#B71C1C" Font-Bold="True" Font-Size="Large" ForeColor="White" Text="Showing: ALL" Visible="False"></asp:Label>
 	   
   
 	  </div>
@@ -68,7 +78,7 @@
 			<button id="Button_changePrivate" runat="server" onserverclick="Button_changePrivate_Click" class="waves-effect waves-light btn red darken-4" >Selected Private</button>
 			
 			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
-            <button id="button_checkConflict" runat="server" onserverclick="checkSpecific" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
+			<button id="button_checkConflict" runat="server" onserverclick="checkSpecific" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
 			
 		  </div>
 		  <div style="float:right">
@@ -88,7 +98,7 @@
 	  <br>
 	  
 	  <asp:GridView ID="GridView1_Hidden" runat="server" Visible="False">
-      </asp:GridView>
+	  </asp:GridView>
 	  
 	  <br>
 
@@ -111,9 +121,9 @@
 				  <td>
 					  <asp:DropDownList ID="DropDownList_year" runat="server" class="browser-default" Width="200px">
 						  <asp:ListItem Selected="True" Value="1">Freshman</asp:ListItem>
-					      <asp:ListItem Value="2">Sophomore</asp:ListItem>
-                          <asp:ListItem Value="3">Junior</asp:ListItem>
-                          <asp:ListItem Value="4">Senior</asp:ListItem>
+						  <asp:ListItem Value="2">Sophomore</asp:ListItem>
+						  <asp:ListItem Value="3">Junior</asp:ListItem>
+						  <asp:ListItem Value="4">Senior</asp:ListItem>
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
@@ -149,24 +159,24 @@
 				  <td class="auto-style5">
 					  <asp:DropDownList ID="DropDownList_term" runat="server" class="browser-default" Width="200px">
 						  <asp:ListItem Selected="True" Value="Autumn">Autumn</asp:ListItem>
-					      <asp:ListItem Value="Winter">Winter</asp:ListItem>
-                          <asp:ListItem Value="Spring">Spring</asp:ListItem>
-                          <asp:ListItem Value="Summer">Summer</asp:ListItem>
+						  <asp:ListItem Value="Winter">Winter</asp:ListItem>
+						  <asp:ListItem Value="Spring">Spring</asp:ListItem>
+						  <asp:ListItem Value="Summer">Summer</asp:ListItem>
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Days</td>
 				  <td rowspan="6">
 					  <asp:CheckBoxList ID="CheckBoxList_days" runat="server">
-                          <asp:ListItem Value="1">Monday</asp:ListItem>
-                          <asp:ListItem Value="2">Tuesday</asp:ListItem>
-                          <asp:ListItem Value="3">Wednesday</asp:ListItem>
-                          <asp:ListItem Value="4">Thursday</asp:ListItem>
-                          <asp:ListItem Value="5">Friday</asp:ListItem>
-                          <asp:ListItem Value="6">Saturday</asp:ListItem>
-                          <asp:ListItem Value="7">Sunday</asp:ListItem>
-                      </asp:CheckBoxList>
-                  </td>
+						  <asp:ListItem Value="1">Monday</asp:ListItem>
+						  <asp:ListItem Value="2">Tuesday</asp:ListItem>
+						  <asp:ListItem Value="3">Wednesday</asp:ListItem>
+						  <asp:ListItem Value="4">Thursday</asp:ListItem>
+						  <asp:ListItem Value="5">Friday</asp:ListItem>
+						  <asp:ListItem Value="6">Saturday</asp:ListItem>
+						  <asp:ListItem Value="7">Sunday</asp:ListItem>
+					  </asp:CheckBoxList>
+				  </td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
@@ -225,6 +235,70 @@
 	</div>
   </div>
 
+<!-- Modal Structure -->
+  <div id="modaltest" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+          
+
+		<!-- Modal Structure modal modal-fixed-footer-->
+  <!-- Modal Structure -->
+  <div id="modal_settings" class="modal">
+	<div class="modal-content">
+	  <h4>Add New User</h4>
+		
+	  <table align="center" class="auto-style1" style="width:50%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="newUser_Text" type="text" class="validate" runat="server">
+		  <label for="newUser_Text">Enter New User Name</label>
+		</div>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmUser_Text" type="text" class="validate" runat="server">
+		  <label for="confirmUser_Text">Confirm New User Name</label>
+		</div>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="newUPass_Text" type="password" class="validate" runat="server">
+		  <label for=newUPass_Text">Enter New Password</label>
+		</div>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    <div class="input-field col s6">
+		  <input id="confirmNewUPass_Text" type="password" class="validate" runat="server">
+		  <label for="confirmNewUPass_Text">Confirm New Password</label>
+					</td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+	   
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	   
+		<a href="#" runat="server" onserverclick="Button_UserAdd_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Add User</a>
+	  
+	</div>
+  </div>
+
 
 <div class="container">
 	<div class="section">
@@ -234,7 +308,7 @@
 		<div class="col s12">
 		
 		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
-		    </asp:GridView>
+			</asp:GridView>
  &nbsp;<div align="left">
 	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
@@ -357,7 +431,7 @@
 	  
 	
 	</div>
-	            <br />
+				<br />
 	</div>
 	
 			&nbsp;</div>
@@ -419,4 +493,6 @@ $(document).ready(function() {
   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
   $('.modal-trigger').leanModal();
 });
+
+
 </script>

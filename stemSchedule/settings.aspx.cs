@@ -103,7 +103,7 @@ namespace stemSchedule
             MySqlCommand com = new MySqlCommand(insertQuery, connection);
             String id = temp.ToString();
             com.Parameters.AddWithValue("@id", id);
-            com.Parameters.AddWithValue("@dept", "test");
+            com.Parameters.AddWithValue("@dept", department.Value.ToString());
             
 
             com.ExecuteNonQuery();

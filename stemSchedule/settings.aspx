@@ -5,18 +5,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title>Settings -- STEMschedule</title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 100%;
-        }
-        .auto-style2 {
-            width: 1453px;
-        }
-        .auto-style3 {
-            width: 1453px;
-            text-align: right;
-        }
-    </style>
+	<style type="text/css">
+		.auto-style1 {
+			width: 100%;
+		}
+		.auto-style2 {
+			width: 1453px;
+		}
+		.auto-style3 {
+			width: 1453px;
+			text-align: right;
+		}
+	</style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
@@ -42,28 +42,28 @@
   </nav>
   <div class="section no-pad-bot" id="index-banner">
 <div class="container">
-     <div class="row">
-      
-      <div class="col s3"><asp:GridView ID="GridView_departments" runat="server">
+	 <div class="row">
+	  
+	  <div class="col s3"><asp:GridView ID="GridView_departments" runat="server">
 		  </asp:GridView>
 	  
 	  
 	  <div style="float:left">
 		<button data-target="modal_addDept" class="btn modal-trigger red darken-4">Add Department</button>
 		  </div></div>
-      <div class="col s3"><asp:GridView ID="GridView_room" runat="server" OnRowDataBound="GridView_room_RowDataBound">
+	  <div class="col s3"><asp:GridView ID="GridView_room" runat="server" OnRowDataBound="GridView_room_RowDataBound">
 		  </asp:GridView>
 	  
 	  
 		  <div style="float:left">
 		  <button data-target="modal_addRoom" class="btn modal-trigger red darken-4">Add Room<br />
-              </button>
-		      
+			  </button>
+			  
 		  </div></div>
-         <div class="col s6"> <button data-target="modal_addClass" class="btn modal-trigger red darken-4">Add Class<br />
-              </button></div>
+		 <div class="col s6"> <button data-target="modal_addClass" class="btn modal-trigger red darken-4">Add Class<br />
+			  </button></div>
 
-    </div>
+	</div>
 	  <br><br>
 	  <div class="row center-left">
 	   
@@ -88,13 +88,13 @@
 	  
 		  
 
-	      <br />
-          <br />
-          <button data-target="modal_addClass" class="btn modal-trigger red darken-4">Add Class<br />
-              </button>
-	      
-	      <br />
-	      
+		  <br />
+		  <br />
+		  <button data-target="modal_addClass" class="btn modal-trigger red darken-4">Add Class<br />
+			  </button>
+		  
+		  <br />
+		  
 	</div>
 	
   </div>
@@ -163,54 +163,54 @@
   <div id="modal_addRoom" class="modal modal-fixed-footer">
 	<div class="modal-content">
 	  <table class="auto-style1">
-                  <tr>
-                      <td>Enter Room</td>
-                      <td>
-                          <asp:TextBox ID="TextBox_Room" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>Confirm room</td>
-                      <td>
-                          <asp:TextBox ID="TextBox_RoomConfirm" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>&nbsp;</td>
-                      <td>
-                          <asp:Button ID="Button_addRoom" runat="server" OnClick="Button_addRoom_Click" Text="Add Room" />
-                      </td>
-                  </tr>
-              </table>
+				  <tr>
+					  <td>Enter Room</td>
+					  <td>
+						  <asp:TextBox ID="TextBox_Room" runat="server"></asp:TextBox>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td>Confirm room</td>
+					  <td>
+						  <asp:TextBox ID="TextBox_RoomConfirm" runat="server"></asp:TextBox>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td>&nbsp;</td>
+					  <td>
+						  <asp:Button ID="Button_addRoom" runat="server" OnClick="Button_addRoom_Click" Text="Add Room" />
+					  </td>
+				  </tr>
+			  </table>
 	</div>
 	<div class="modal-footer">
 	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
 	</div>
   </div>
 
-    <div id="modal_addClass" class="modal modal-fixed-footer">
+	<div id="modal_addClass" class="modal modal-fixed-footer">
 	<div class="modal-content">
 	  <table class="auto-style1">
-              <tr>
-                  <td class="auto-style3">Class name:</td>
-                  <td>
-                      <asp:TextBox ID="TextBox_className" runat="server" Width="275px"></asp:TextBox>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="auto-style3">Applicable Major(s):</td>
-                  <td>
-                      <asp:CheckBoxList ID="CheckBoxList_majors" runat="server" RepeatColumns="2">
-                      </asp:CheckBoxList>
-                  </td>
-              </tr>
-              <tr>
-                  <td class="auto-style2">&nbsp;</td>
-                  <td>
-                      <asp:Button ID="Button_addClass" runat="server" Text="Add Class" OnClick="Button_addClass_Click1" />
-                  </td>
-              </tr>
-          </table>
+			  <tr>
+				  <td class="auto-style3">Class name:</td>
+				  <td>
+					  <asp:TextBox ID="TextBox_className" runat="server" Width="275px"></asp:TextBox>
+				  </td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style3">Applicable Major(s):</td>
+				  <td>
+					  <asp:CheckBoxList ID="CheckBoxList_majors" runat="server" RepeatColumns="2">
+					  </asp:CheckBoxList>
+				  </td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">&nbsp;</td>
+				  <td>
+					  <asp:Button ID="Button_addClass" runat="server" Text="Add Class" OnClick="Button_addClass_Click1" />
+				  </td>
+			  </tr>
+		  </table>
 	</div>
 	<div class="modal-footer">
 	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>

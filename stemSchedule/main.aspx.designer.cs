@@ -193,6 +193,42 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.Button Button_AddClass;
         
         /// <summary>
+        /// newUser_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText newUser_Text;
+        
+        /// <summary>
+        /// confirmUser_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmUser_Text;
+        
+        /// <summary>
+        /// newUPass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword newUPass_Text;
+        
+        /// <summary>
+        /// confirmNewUPass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword confirmNewUPass_Text;
+        
+        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>

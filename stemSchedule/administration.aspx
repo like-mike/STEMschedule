@@ -5,11 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title>Settings -- STEMschedule</title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 100%;
+	<style type="text/css">
+		.auto-style1 {
+			width: 100%;
+		}
+		.auto-style2 {
+            width: 420px;
         }
-        </style>
+        .auto-style3 {
+            width: 573px;
+        }
+		</style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
@@ -21,7 +27,7 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li><a href="main.aspx">Schedule</a></li>
-          <li><a href="settings.aspx">Settings</a></li>
+		  <li><a href="settings.aspx">Settings</a></li>
 		<li class="active"><a href="#">Admin</a></li>
 		
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
@@ -36,14 +42,15 @@
   </nav>
   <div class="section no-pad-bot" id="index-banner">
 <div class="container">
-     <div class="row">
-      
-      <div class="col s12">
-	  <center> <button id="Button_changePrivate" runat="server" onserverclick="Button_ShowUser" class="waves-effect waves-light btn red darken-4" >Add/Delete User</button></center>
+	 <div class="row">
+	  
+	  <div class="col s12">
+	  <center> <button id="Button_changePrivate" runat="server" onserverclick="Button_ShowUser" class="waves-effect waves-light btn red darken-4" >Add/Delete User</button>
+		  <button id="Button5" runat="server" onserverclick="Button_ShowChgPass" class="waves-effect waves-light btn red darken-4" >Change Password</button></center>
 	 
 	  
 
-    
+	
 	
   </div>
 		
@@ -52,58 +59,90 @@
 	  
 	  
 	  <asp:Panel ID="Panel1" runat="server">
-          <asp:GridView ID="GridView_users" runat="server">
-          </asp:GridView>
-          <asp:Panel ID="Panel2" runat="server">
-          </asp:Panel>
-          <br />
-          <center> <button id="Button1" runat="server" onserverclick="Button_showAddUser" class="waves-effect waves-light btn red darken-4" >Add User</button>
-              <button id="Button2" runat="server" onserverclick="Button_showDeleteUser" class="waves-effect waves-light btn red darken-4" >Delete User</button>
+		  <asp:GridView ID="GridView_users" runat="server">
+		  </asp:GridView>
+		  <asp:Panel ID="Panel2" runat="server">
+		  </asp:Panel>
+		  <br />
+		  <center> <button id="Button1" runat="server" onserverclick="Button_showAddUser" class="waves-effect waves-light btn red darken-4" >Add User</button>
+			  <button id="Button2" runat="server" onserverclick="Button_showDeleteUser" class="waves-effect waves-light btn red darken-4" >Delete User</button>
 
 
-          </center>
-          <asp:Panel ID="Panel_addUser" runat="server" Visible="False">
-              <table class="auto-style1">
-                  <tr>
-                      <td class="auto-style5">User Name:</td>
-                      <td class="auto-style8">
-                          <asp:TextBox ID="UNTextBox" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="auto-style5">E-Mail</td>
-                      <td class="auto-style8">
-                          <asp:TextBox ID="emailTextBox" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="auto-style6">Password</td>
-                      <td class="auto-style9">
-                          <asp:TextBox ID="passTextBox" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="auto-style6">Confirm Password</td>
-                      <td class="auto-style9">
-                          <asp:TextBox ID="cpassTextBox" runat="server"></asp:TextBox>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="auto-style6"></td>
-                      <td class="auto-style9">
-                          
-                          <button id="Button3" runat="server" onserverclick="submitButton_Click" class="waves-effect waves-light btn red darken-4" >Submit</button>
-                          <button id="Button4" runat="server" onserverclick="Button_buttonHide_Click" class="waves-effect waves-light btn red darken-4" >Hide</button>
-                          
-                      </td>
-                  </tr>
-              </table>
-          </asp:Panel>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
+		  </center>
+		  <asp:Panel ID="Panel_addUser" runat="server" Visible="False">
+			  <table class="auto-style1">
+				  <tr>
+					  <td class="auto-style5">User Name:</td>
+					  <td class="auto-style8">
+						  <asp:TextBox ID="UNTextBox" runat="server"></asp:TextBox>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td class="auto-style6">Password</td>
+					  <td class="auto-style9">
+						  <asp:TextBox ID="passTextBox" runat="server"></asp:TextBox>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td class="auto-style6">Confirm Password</td>
+					  <td class="auto-style9">
+						  <asp:TextBox ID="cpassTextBox" runat="server"></asp:TextBox>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td class="auto-style6"></td>
+					  <td class="auto-style9">
+						  <button id="Button3" runat="server" class="waves-effect waves-light btn red darken-4" onserverclick="submitButton_Click">
+                              Submit
+                          </button>
+                          <button id="Button4" runat="server" class="waves-effect waves-light btn red darken-4" onserverclick="Button_buttonHide_Click">
+                              Hide
+                          </button>
+					  </td>
+				  </tr>
+			  </table>
+		  </asp:Panel>
+		  <br />
+		  <br />
+		  <br />
+		  <br />
+		  <br />
+	 </asp:Panel>
+	  
+	  
+	  
+	  <asp:Panel ID="Panel3" runat="server">
+          text here<br />
+          <table class="auto-style1">
+              <tr>
+                  <td class="auto-style2">Select User</td>
+                  <td class="auto-style3">&nbsp;</td>
+                  <td>&nbsp;</td>
+              </tr>
+              <tr>
+                  <td class="auto-style2">Enter New Password</td>
+                  <td class="auto-style3">
+                      <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                  </td>
+                  <td>&nbsp;</td>
+              </tr>
+              <tr>
+                  <td class="auto-style2">Confirm New Password</td>
+                  <td class="auto-style3">
+                      <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+                  </td>
+                  <td>&nbsp;</td>
+              </tr>
+              <tr>
+                  <td class="auto-style2">&nbsp;</td>
+                  <td class="auto-style3">
+                      <asp:Button ID="Button_changePassConfirm" runat="server" Text="Submit" />
+                  </td>
+                  <td>
+                      <asp:Button ID="Button_chgPassHide" runat="server" OnClick="Button_chgPassHide_Click" Text="Hide" />
+                  </td>
+              </tr>
+          </table>
      </asp:Panel>
 	  
 	  

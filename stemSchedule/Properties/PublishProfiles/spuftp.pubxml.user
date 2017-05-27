@@ -63,7 +63,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2017 13:39:28</publishTime>
     </File>
     <File Include="administration.aspx">
-      <publishTime>05/24/2017 14:29:28</publishTime>
+      <publishTime>05/25/2017 12:34:33</publishTime>
     </File>
     <File Include="ApplicationInsights.config">
       <publishTime>05/20/2017 13:39:28</publishTime>
@@ -369,7 +369,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2017 13:39:33</publishTime>
     </File>
     <File Include="bin/stemSchedule.dll">
-      <publishTime>05/25/2017 12:07:36</publishTime>
+      <publishTime>05/25/2017 12:48:02</publishTime>
     </File>
     <File Include="bin/System.Spatial.dll">
       <publishTime>03/15/2017 14:57:16</publishTime>
@@ -591,7 +591,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2017 13:39:33</publishTime>
     </File>
     <File Include="settings.aspx">
-      <publishTime>05/24/2017 14:29:28</publishTime>
+      <publishTime>05/25/2017 12:40:09</publishTime>
     </File>
     <File Include="Site.Master">
       <publishTime>05/20/2017 13:39:33</publishTime>

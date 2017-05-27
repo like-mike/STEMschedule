@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 	<title></title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 50%;
+        }
+    </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
@@ -30,6 +35,8 @@
 <div class="container">
 	  <br><br>
 	  <div class="row center-left">
+	   
+  
 	   
   
 	  </div>

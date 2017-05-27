@@ -35,7 +35,7 @@ namespace stemSchedule
             try
             { // user data
                 connection.Open();
-                command = new MySqlCommand("SELECT * FROM USERDATA", connection);
+                command = new MySqlCommand("SELECT UserName FROM USERDATA", connection);
                 table = new DataTable();
                 data = new MySqlDataAdapter(command);
                 data.Fill(table);
@@ -52,6 +52,12 @@ namespace stemSchedule
 
         }
 
+        protected void Button_ShowChgPass(object sender, EventArgs e)
+        {
+            Panel1.Visible = false;
+            Panel3.Visible = true;
+        }
+
         protected void Button_buttonHide_Click(object sender, EventArgs e)
         {
             Panel_addUser.Visible = false;
@@ -60,7 +66,8 @@ namespace stemSchedule
 
         protected void Button_ShowUser(object sender, EventArgs e)
         {
-            
+            Panel1.Visible = true;
+            Panel1.Visible = false;
         }
 
         protected void Button_showDeleteUser(object sender, EventArgs e)
@@ -78,6 +85,11 @@ namespace stemSchedule
         {
             Session["New"] = null;
             Response.Redirect("start.aspx");
+        }
+
+        protected void Button_chgPassHide_Click(object sender, EventArgs e)
+        {
+            Panel3.Visible = false;
         }
     }
 }

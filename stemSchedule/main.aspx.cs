@@ -1073,5 +1073,127 @@ namespace stemSchedule
                 e.Row.Cells[i].Visible = false;
             }
         }
+
+        protected void Button_AddUserShow_Click(object sender, EventArgs e)
+        {
+            //divControl.Attributes("sty") = "height:200px; color:Red"
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+        }
+
+        protected void Button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button_ChangePwShow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button_UserAdd_Click(object sender, EventArgs e)
+        {
+            string newUser = newUser_Text.Value.ToString();
+            string confirmUser = confirmUser_Text.Value.ToString();
+            string pass = newUPass_Text.Value.ToString();
+            string confirmPass = confirmNewUPass_Text.Value.ToString();
+
+            if(newUser != confirmUser)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('User Names Do Not Match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+            }
+            else if(newUser == "")
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('User Name is Empty')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+            }
+            else
+            {
+                if (pass != confirmPass)
+                {
+                    Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Passwords Do Not Match')" +
+                        "</script>");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+                }
+                else
+                {
+                    try
+                    {
+                        connection.Open();
+                        string check = "Select count(*) from UserData where UserName = '" + newUser + "'";
+                        MySqlCommand comm = new MySqlCommand(check, connection);
+                        int existingUser = Convert.ToInt32(comm.ExecuteScalar().ToString());
+
+
+
+                        if (existingUser != 0)
+                        {
+                            Response.Write(
+                                    "<script type=\"text/javascript\">" +
+                                    "alert('Existing User. Please Enter a New User Name')" +
+                                    "</script>");
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+                        }
+                        else
+                        {
+                            
+                            string insertQuery = "insert into userdata (userName,Password) values (@user,@pass)";
+
+                            command = new MySqlCommand(insertQuery, connection);
+                            command.Parameters.AddWithValue("@user", newUser);
+                            command.Parameters.AddWithValue("@pass", pass);
+                            command.ExecuteNonQuery();
+
+                            Response.Write(
+                                    "<script type=\"text/javascript\">" +
+                                    "alert('Successfully Added New User!')" +
+                                    "</script>");
+                        }
+
+                        
+                    }
+                    catch(Exception ex)
+                    {
+                        Response.Write(
+                                    "<script type=\"text/javascript\">" +
+                                    "alert('Error Adding New User. Please make sure valid username/password')" +
+                                    "</script>");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+                        Response.Write(ex.ToString());
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+
+                    
+                }
+
+
+
+            }
+
+            
+        }
+
+        protected void Button_deleteUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button_chgPw_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
