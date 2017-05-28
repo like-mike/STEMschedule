@@ -193,13 +193,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.Button Button_AddClass;
         
         /// <summary>
-        /// userNameDelete_Text control.
+        /// DropDownList_deleteUser control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText userNameDelete_Text;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_deleteUser;
         
         /// <summary>
         /// confirmUserNameDelete_Text control.
@@ -263,6 +263,33 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputPassword Password;
+        
+        /// <summary>
+        /// DropDownList_chgPass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_chgPass;
+        
+        /// <summary>
+        /// chgPass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword chgPass_Text;
+        
+        /// <summary>
+        /// confirmChgPass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword confirmChgPass_Text;
         
         /// <summary>
         /// GridView2 control.
@@ -389,5 +416,14 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton Button_ApplySort;
+        
+        /// <summary>
+        /// Button3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button3;
     }
 }

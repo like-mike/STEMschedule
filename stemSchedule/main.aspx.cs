@@ -90,15 +90,20 @@ namespace stemSchedule
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button3.UniqueID;
             if (!IsPostBack)
             {
                 if (Session["New"] != null)
                 {
                     //label_welcome.Text += Session["New"].ToString();
-
+                    this.Form.DefaultButton = this.Button3.UniqueID;
                 }
                 else
+                {
+                    
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
+                }
+                
                 try
                 { // public schedule
                     connection.Open();
@@ -1109,12 +1114,57 @@ namespace stemSchedule
 
         protected void Button_DeleteUserShow_Click(object sender, EventArgs e)
         {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM UserData ORDER BY UserName ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteUser.DataSource = reader;
+                            DropDownList_deleteUser.DataValueField = "UserName";
+                            DropDownList_deleteUser.DataTextField = "UserName";
+                            DropDownList_deleteUser.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteUser.Items.Insert(0, new ListItem("Select User Name", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
         }
 
         protected void Button_ChangePwShow_Click(object sender, EventArgs e)
         {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM UserData ORDER BY UserName ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_chgPass.DataSource = reader;
+                            DropDownList_chgPass.DataValueField = "UserName";
+                            DropDownList_chgPass.DataTextField = "UserName";
+                            DropDownList_chgPass.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_chgPass.Items.Insert(0, new ListItem("Select User Name", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_chgPass').openModal({ });", true);
         }
 
         protected void Button_UserAdd_Click(object sender, EventArgs e)
@@ -1213,7 +1263,7 @@ namespace stemSchedule
 
         protected void Button_deleteUser_Click(object sender, EventArgs e)
         {
-            string userName = userNameDelete_Text.Value.ToString();
+            string userName = DropDownList_deleteUser.SelectedValue.ToString();
             string confirmUserName = confirmUserNameDelete_Text.Value.ToString();
 
             if(userName != confirmUserName)
@@ -1237,15 +1287,7 @@ namespace stemSchedule
                         "alert('User Successfully Deleted')" +
                         "</script>");
                 }
-                catch(Exception ex)
-                {
-                    Response.Write(
-                        "<script type=\"text/javascript\">" +
-                        "alert('Not a Valid User Name')" +
-                        "</script>");
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
-                    
-                }
+                catch(Exception ex){   }
                 finally
                 {
                     connection.Close();
@@ -1255,7 +1297,47 @@ namespace stemSchedule
 
         protected void Button_chgPw_Click(object sender, EventArgs e)
         {
+            string password = chgPass_Text.Value.ToString();
+            string confirmPass = confirmChgPass_Text.Value.ToString();
 
+            if(DropDownList_chgPass.SelectedIndex == 0)
+            {
+                Response.Write(
+                       "<script type=\"text/javascript\">" +
+                       "alert('No User Name Selected')" +
+                       "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_chgPass').openModal({ });", true);
+            }
+
+            if (password != confirmPass)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Passwords do not match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_chgPass').openModal({ });", true);
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    string update = "UPDATE UserData SET Password = '" + password + "' WHERE UserName = '" + DropDownList_chgPass.SelectedValue.ToString() + "'";
+                    MySqlCommand cmd = new MySqlCommand(update, connection);
+                    cmd.ExecuteNonQuery();
+
+                    if (DropDownList_chgPass.SelectedIndex != 0)
+                    {
+                        Response.Write(
+                                            "<script type=\"text/javascript\">" +
+                                                "alert('Password Successfully Changed')" +
+                                                "</script>");
+                    }
+                        
+                }
+                catch (Exception ex){}
+                finally { connection.Close(); }
+            }
 
 
         }
@@ -1263,6 +1345,9 @@ namespace stemSchedule
         protected void Button_Login_Click(object sender, EventArgs e)
         {
             int temp = 0;
+
+            
+
             string formUserName = UserName.Value.ToString();
             string formPassword = Password.Value.ToString();
             try
@@ -1315,6 +1400,9 @@ namespace stemSchedule
             }
         }
 
-
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
+        }
     }
 }

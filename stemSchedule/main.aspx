@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head runat="server">
-		<title>Schedule -- STEMschedule</title>
+		<title>STEMschedule</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
@@ -35,6 +35,7 @@
 <ul id="dropdown1" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
   <li class="divider"></li>
   <li><a href="#!">three</a></li>
 </ul>
@@ -42,8 +43,8 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Admin</a></li>
-		<li><a href="administration.aspx">Settings</a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">    Admin    </a></li>
+		<li><a href="administration.aspx">    Settings    </a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
@@ -84,15 +85,7 @@
 		  <div style="float:right">
 			  <button id="Button2" runat="server" onserverclick="Button_ShowAll_Click" class="waves-effect waves-light btn red darken-4" >Show All</button>
   <button data-target="modal_search" class="btn modal-trigger red darken-4">Search</button></div>
-  <!-- Dropdown Structure -->
-  <ul id='dropdown1' class='dropdown-content'>
-	<li><a href="#!">one</a></li>
-	<li><a href="#!">two</a></li>
-	<li class="divider"></li>
-	<li><a href="#!">three</a></li>
-	<li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-	<li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-  </ul>
+  
 	  </div>
 	  
 	  <br>
@@ -237,37 +230,35 @@
 
 <!-- Modal Structure -->
   <div id="modal_deleteUser" class="modal">
-    <div class="modal-content">
-      <h4>Delete User</h4>
-      <p>Warning: Deleting User will not delete their classes</p>
+	<div class="modal-content">
+	  <h4>Delete User</h4>
+	  <p>Warning: Deleting User will not delete their classes</p>
 
-    </div>
-    <div class="modal-footer">
-        <table  align="center" class="auto-style1" style="width:75%">
-            <tr>
-                <td>
-                    <div class="input-field col s6">
-		  <input id="userNameDelete_Text" type="text" class="validate" runat="server">
-		  <label for="userNameDelete_Text">Enter User Name to Delete</label>
-		</div>
+	</div>
+	<div class="modal-footer">
+		<table  align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<asp:DropDownList ID="DropDownList_deleteUser" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="input-field col s6">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
 		  <input id="confirmUserNameDelete_Text" type="text" class="validate" runat="server">
 		  <label for="confirmUserNameDelete_Text">Confirm User Name to Delete</label>
 		</div>
 
-                </td>
-            </tr>
-        </table>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
-        <a href="#" runat="server" onserverclick="Button_deleteUser_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete User</a>
-    </div>
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_deleteUser_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete User</a>
+	</div>
   </div>
-          
+		  
 
 		<!-- Modal Structure modal modal-fixed-footer-->
   <!-- Modal Structure -->
@@ -305,7 +296,7 @@
 			</tr>
 			<tr>
 				<td>
-                    <div class="input-field col s6">
+					<div class="input-field col s6">
 		  <input id="confirmNewUPass_Text" type="password" class="validate" runat="server">
 		  <label for="confirmNewUPass_Text">Confirm New Password</label>
 					</td>
@@ -321,40 +312,86 @@
 	</div>
   </div>
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_Login" class="modal">
-    <div class="modal-content">
-      <h4>Login</h4>
-      <p>Please enter username and password.</p>
+	<div class="modal-content">
+	  <h4>Login</h4>
+	  <p>Please enter username and password.</p>
 
 
 
-        <table align="center" class="auto-style1" style="width:75%">
-            <tr>
-                <td>
-                    <div class="input-field col s6">
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
 		  <input id="UserName" type="text" class="validate" runat="server">
 		  <label for="UserName">Enter User Name</label>
 		</div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="input-field col s6">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
 		  <input id="Password" type="password" class="validate" runat="server">
 		  <label for="UserName">Enter Password</label>
 		</div>
-                </td>
-            </tr>
-        </table>
+				</td>
+			</tr>
+		</table>
 
 
 
-    </div>
-    <div class="modal-footer">
-      <a href="#" runat="server" onserverclick="Button_Login_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
-    </div>
+	</div>
+	<div class="modal-footer">
+	  <a href="#" runat="server" onserverclick="Button_Login_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
+	</div>
   </div>
+
+        		<!-- Modal Structure -->
+  <div id="modal_chgPass" class="modal">
+	<div class="modal-content">
+	  <h4>Change Password</h4>
+	  <p>Please select user name and enter new password.</p>
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+                    <asp:DropDownList ID="DropDownList_chgPass" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+
+					</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="chgPass_Text" type="password" class="validate" runat="server">
+		  <label for="chgPass_Text">Enter New Password</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmChgPass_Text" type="password" class="validate" runat="server">
+		  <label for="confirmChgPass_Text">Confirm New Password</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick=" Button_chgPw_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Change Password</a>
+	</div>
+  </div>
+
+
+
 
 
 
@@ -495,7 +532,8 @@
 				<br />
 	</div>
 	
-			&nbsp;</div>
+			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" />
+          </div>
 		</div>
 
 		
