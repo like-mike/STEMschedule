@@ -35,6 +35,7 @@
 <ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
+    <li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
 </ul>
 
@@ -60,8 +61,8 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown_admin">    Admin    </a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown_settings">    Settings    </a></li>
+		<li><a class="dropdown-button" href="#!" data-constrainwidth="false" data-activates="dropdown_admin">Admin</a></li>
+		<li><a class="dropdown-button" href="#!" data-constrainwidth="false" data-activates="dropdown_settings">Settings</a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 

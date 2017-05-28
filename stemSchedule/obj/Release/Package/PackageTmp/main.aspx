@@ -35,22 +35,24 @@
 <ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
+    <li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
 </ul>
 
-    <!-- Dropdown Structure -->
+	<!-- Dropdown Structure -->
 <ul id="dropdown_settings" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddMajorShow_Click">Add Major</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_DeleteMajorShow_Click">Delete Major</a></li>
-    <li class="divider"></li>
+	<li><a href="#" runat="server" onserverclick="Button_DeleteMajorShow_Click">Delete Major</a></li>
+	<li class="divider"></li>
   <li><a href="#" runat="server" onserverclick="Button_AddInstructorShow_Click">Add Instructor</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_DeleteInstructorShow_Click">Delete Instructor</a></li>
-    <li class="divider"></li>
+	<li><a href="#" runat="server" onserverclick="Button_DeleteInstructorShow_Click">Delete Instructor</a></li>
+	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_AddRoomShow_Click">Add Room</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_DeleteRoomShow_Click">Delete Room</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_DeleteRoomShow_Click">Delete Room</a></li>
+	<li class="divider"></li>
     <li class="divider"></li>
-    <li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_DeleteClassShow_Click">Delete Class</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_DeleteClassShow_Click">Delete Class</a></li>
 
 </ul>
 
@@ -59,8 +61,8 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown_admin">    Admin    </a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown_settings">    Settings    </a></li>
+		<li><a class="dropdown-button" href="#!" data-constrainwidth="false" data-activates="dropdown_admin">Admin</a></li>
+		<li><a class="dropdown-button" href="#!" data-constrainwidth="false" data-activates="dropdown_settings">Settings</a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
@@ -443,7 +445,7 @@
   </div>
 
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_addInstructor" class="modal">
 	<div class="modal-content">
 	  <h4>Add New Instructor</h4>
@@ -479,7 +481,7 @@
 	</div>
   </div>
 
-         <!-- Modal Structure -->
+		 <!-- Modal Structure -->
   <div id="modal_addRoom" class="modal">
 	<div class="modal-content">
 	  <h4>Add New Classroom</h4>
@@ -515,7 +517,7 @@
 	</div>
   </div>
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_addClass" class="modal">
 	<div class="modal-content">
 	  <h4>Add New Class</h4>
@@ -542,8 +544,8 @@
 			</tr>
 			<tr>
 				<td>
-                    <p>Applicable Major(s):</p>
-                    
+					<p>Applicable Major(s):</p>
+					
 				  <asp:CheckBoxList ID="CheckBoxList_majors" runat="server" RepeatColumns="2">
 					  </asp:CheckBoxList>
 					</td>
@@ -559,7 +561,7 @@
 	</div>
   </div>
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_deleteMajor" class="modal">
 	<div class="modal-content">
 	  <h4>Delete Major</h4>
@@ -587,6 +589,99 @@
 		</table>
 	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
 		<a href="#" runat="server" onserverclick="Button_deleteMajor_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Major</a>
+	</div>
+  </div>
+
+		<!-- Modal Structure -->
+  <div id="modal_deleteInstructor" class="modal">
+	<div class="modal-content">
+	  <h4>Delete Instructor</h4>
+	 
+
+	</div>
+	<div class="modal-footer">
+		<table  align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<asp:DropDownList ID="DropDownList_deleteInstructor" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmInstructorDelete_Text" type="text" class="validate" runat="server">
+		  <label for="confirmInstructorDelete_Text">Confirm Instructor to Delete</label>
+		</div>
+
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_deleteInstructor_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Instructor</a>
+	</div>
+  </div>
+
+        <!-- Modal Structure -->
+  <div id="modal_deleteRoom" class="modal">
+	<div class="modal-content">
+	  <h4>Delete Room</h4>
+	 
+
+	</div>
+	<div class="modal-footer">
+		<table  align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<asp:DropDownList ID="DropDownList_deleteRoom" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmRoomDelete_Text" type="text" class="validate" runat="server">
+		  <label for="confirmRoomDelete_Text">Confirm Room to Delete</label>
+		</div>
+
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_deleteRoom_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Room</a>
+	</div>
+  </div>
+
+        <!-- Modal Structure -->
+  <div id="modal_deleteClass" class="modal">
+	<div class="modal-content">
+	  <h4>Delete Class</h4>
+	 
+
+	</div>
+	<div class="modal-footer">
+		<table  align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<asp:DropDownList ID="DropDownList_deleteClass" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmClassDelete_Text" type="text" class="validate" runat="server">
+		  <label for="confirmClassDelete_Text">Confirm Room to Delete</label>
+		</div>
+
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_deleteClass_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Class</a>
 	</div>
   </div>
 

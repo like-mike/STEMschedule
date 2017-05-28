@@ -19,26 +19,13 @@ namespace stemSchedule
     {
         // "#defines"
 
-
+        //select *,TIME_FORMAT(StartTime, '%h:%i %p')startTime,TIME_FORMAT(EndTime, '%h:%i %p')EndTime from schedule
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
-        public const string PUBLIC_SCHEDULE = "SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits, Conflict FROM schedule WHERE Public = 1";
-        //public const string PUBLIC_SCHEDULE = "SELECT * FROM schedule WHERE Public = 1";
-        public const string PRIVATE_SCHEDULE = "Select * FROM SCHEDULE WHERE PUBLIC = 0";
+        public string PUBLIC_SCHEDULE = "Select * FROM SCHEDULE WHERE PUBLIC = 1";
+        public string PRIVATE_SCHEDULE = "SELECT * FROM SCHEDULE WHERE PUBLIC = 0";
+       
         public bool G1Selected = false;
-        public const int CRN_COLUMN = 1;
-        public const int FACUTLY_COLUMN = 2;
-        public const int START_COLUMN = 5;
-        public const int END_COLUMN = 6;
-        public const int TERM_COLUMN = 7;
-        public const int ROOM_COLUMN = 8;
-        public const int YEAR_COLUMN = 10;
-        public const int M1_COLUMN = 11;
-        public const int M2_COLUMN = 12;
-        public const int M3_COLUMN = 13;
-        public const int M4_COLUMN = 14;
-        public const int CREDITS_COLUMN = 15;
-        public const int CONFLICT_COLUMN = 16;
-        public const int CONFLICT_CRN_COLUMN = 17;
+        
 
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
@@ -198,28 +185,8 @@ namespace stemSchedule
 
 
             }
-            string update = "Select * from SCHEDULE WHERE PUBLIC = 1";
-            try
-            { // public schedule
-
-                connection.Open();
-                command = new MySqlCommand(update, connection);
-                table = new DataTable();
-                data = new MySqlDataAdapter(command);
-                data.Fill(table);
-                GridView1.DataSource = table;
-                GridView1.DataBind();
-                Label_showSearch.Visible = false;
-
-
-
-            }
-            catch (Exception ex)
-            {
-                Response.Write(ex);
-
-            }
-            finally { connection.Close(); }
+            //string update = "Select * from SCHEDULE WHERE PUBLIC = 1";
+            
 
 
         }
@@ -244,7 +211,7 @@ namespace stemSchedule
                 {
                     if (row.RowIndex == GridView2.SelectedIndex)
                     {
-                        sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[CRN_COLUMN].Text + ";");
+                        sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[1].Text + ";");
 
 
 
@@ -593,6 +560,11 @@ namespace stemSchedule
         {
             foreach (GridViewRow row in GridView1.Rows)
             {
+                row.BackColor = ColorTranslator.FromHtml("");
+            }
+
+            foreach (GridViewRow row in GridView1.Rows)
+            {
                 if (row.RowIndex == GridView1.SelectedIndex)
                 {
                     row.BackColor = ColorTranslator.FromHtml("#A1DCF2");
@@ -603,6 +575,11 @@ namespace stemSchedule
 
         protected void GridView2_SelectedIndexChanged(object sender, EventArgs e)
         {
+            foreach (GridViewRow row in GridView2.Rows)
+            {
+                row.BackColor = ColorTranslator.FromHtml("");
+            }
+
             foreach (GridViewRow row in GridView2.Rows)
             {
                 if (row.RowIndex == GridView2.SelectedIndex)
@@ -1018,7 +995,7 @@ namespace stemSchedule
                 else
                     Label_showSearch.Visible = false;
 
-
+                PUBLIC_SCHEDULE = update;
 
             }
             catch (Exception ex) {
@@ -1388,8 +1365,8 @@ namespace stemSchedule
                     if (pass == formPassword)
                     {
                         Session["New"] = formUserName;
-                        Response.Write("Password is correct");
-                        Response.Redirect("main.aspx");
+                        //Response.Write("Password is correct");
+                        //Response.Redirect("main.aspx");
                     }
                     else
                     {
