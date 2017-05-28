@@ -247,6 +247,24 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlInputPassword confirmNewUPass_Text;
         
         /// <summary>
+        /// UserName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText UserName;
+        
+        /// <summary>
+        /// Password control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputPassword Password;
+        
+        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>

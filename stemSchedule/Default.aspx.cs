@@ -11,7 +11,7 @@ namespace stemSchedule
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("start.aspx");
+            Response.Redirect("main.aspx");
         }
     }
 }

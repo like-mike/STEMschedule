@@ -321,6 +321,45 @@
 	</div>
   </div>
 
+        <!-- Modal Structure -->
+  <div id="modal_Login" class="modal">
+    <div class="modal-content">
+      <h4>Login</h4>
+      <p>Please enter username and password.</p>
+
+
+
+        <table align="center" class="auto-style1" style="width:75%">
+            <tr>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="UserName" type="text" class="validate" runat="server">
+		  <label for="UserName">Enter User Name</label>
+		</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="Password" type="password" class="validate" runat="server">
+		  <label for="UserName">Enter Password</label>
+		</div>
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>
+    <div class="modal-footer">
+      <a href="#" runat="server" onserverclick="Button_Login_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Login</a>
+    </div>
+  </div>
+
+
+
+
+
 
 <div class="container">
 	<div class="section">

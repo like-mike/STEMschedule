@@ -98,7 +98,7 @@ namespace stemSchedule
 
                 }
                 else
-                    Response.Redirect("Start.aspx");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
                 try
                 { // public schedule
                     connection.Open();
@@ -193,6 +193,28 @@ namespace stemSchedule
 
 
             }
+            string update = "Select * from SCHEDULE WHERE PUBLIC = 1";
+            try
+            { // public schedule
+
+                connection.Open();
+                command = new MySqlCommand(update, connection);
+                table = new DataTable();
+                data = new MySqlDataAdapter(command);
+                data.Fill(table);
+                GridView1.DataSource = table;
+                GridView1.DataBind();
+                Label_showSearch.Visible = false;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex);
+
+            }
+            finally { connection.Close(); }
 
 
         }
@@ -762,7 +784,7 @@ namespace stemSchedule
         protected void Button_Logout_Click(object sender, EventArgs e)
         {
             Session["New"] = null;
-            Response.Redirect("start.aspx");
+            Response.Redirect("main.aspx");
         }
 
         protected void DropDownList_ShowDept_SelectedIndexChanged(object sender, EventArgs e)
@@ -1234,8 +1256,65 @@ namespace stemSchedule
         protected void Button_chgPw_Click(object sender, EventArgs e)
         {
 
+
+
         }
 
-        
+        protected void Button_Login_Click(object sender, EventArgs e)
+        {
+            int temp = 0;
+            string formUserName = UserName.Value.ToString();
+            string formPassword = Password.Value.ToString();
+            try
+            {
+                //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                connection.Open();
+                string checkuser = "select count(*) from UserData where UserName='" + formUserName + "'";
+                MySqlCommand com = new MySqlCommand(checkuser, connection);
+                temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+                connection.Close();
+            }
+            catch { }
+
+
+            if (temp == 1)
+            {
+                try
+                {
+                    connection.Open();
+                    string checkPasswordQuery = "select Password from UserData where UserName='" + formUserName + "'";
+                    MySqlCommand passComm = new MySqlCommand(checkPasswordQuery, connection);
+                    string pass = passComm.ExecuteScalar().ToString().Replace(" ", "");//remove whitespace
+                                                                                       //verify password
+                    if (pass == formPassword)
+                    {
+                        Session["New"] = formUserName;
+                        Response.Write("Password is correct");
+                        Response.Redirect("main.aspx");
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
+                        Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Password is not correct')" +
+                        "</script>");
+                    }
+                    connection.Close();
+                }
+                catch { }
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
+                Response.Write(
+                "<script type=\"text/javascript\">" +
+                "alert('User Name is not correct')" +
+                "</script>");
+            }
+        }
+
+
     }
 }
