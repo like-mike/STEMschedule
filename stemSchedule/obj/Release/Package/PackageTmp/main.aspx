@@ -32,19 +32,28 @@
 
 
 <!-- Dropdown Structure -->
-<ul id="dropdown1" class="dropdown-content">
+<ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
+</ul>
+
+    <!-- Dropdown Structure -->
+<ul id="dropdown_settings" class="dropdown-content">
+  <li><a href="#" runat="server" onserverclick="Button_AddMajorShow_Click">Add Major</a></li>
+  <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
   <li class="divider"></li>
   <li><a href="#!">three</a></li>
 </ul>
+
+
  <nav class="red darken-4" role="navigation">
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">    Admin    </a></li>
-		<li><a href="administration.aspx">    Settings    </a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown_admin">    Admin    </a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown_settings">    Settings    </a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
@@ -347,7 +356,7 @@
 	</div>
   </div>
 
-        		<!-- Modal Structure -->
+				<!-- Modal Structure -->
   <div id="modal_chgPass" class="modal">
 	<div class="modal-content">
 	  <h4>Change Password</h4>
@@ -358,7 +367,7 @@
 		<table align="center" class="auto-style1" style="width:75%">
 			<tr>
 				<td>
-                    <asp:DropDownList ID="DropDownList_chgPass" runat="server" class="browser-default" Width="200px">
+					<asp:DropDownList ID="DropDownList_chgPass" runat="server" class="browser-default" Width="200px">
 			  </asp:DropDownList>
 
 					</td>
@@ -385,10 +394,47 @@
 
 	</div>
 	<div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
 	  <a href="#" runat="server" onserverclick=" Button_chgPw_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Change Password</a>
 	</div>
   </div>
+
+<!-- Modal Structure -->
+  <div id="modal_addMajor" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Major</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addDepartment_Text" type="text" class="validate" runat="server">
+		  <label for="addDepartment_Text">Enter Major Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddDepartment_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddDepartment_Text">Confirm New Major Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddMajor_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Department</a>
+	</div>
+  </div>
+
 
 
 
@@ -533,7 +579,7 @@
 	</div>
 	
 			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" />
-          </div>
+		  </div>
 		</div>
 
 		

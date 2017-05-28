@@ -292,6 +292,87 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlInputPassword confirmChgPass_Text;
         
         /// <summary>
+        /// addDepartment_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText addDepartment_Text;
+        
+        /// <summary>
+        /// confirmAddDepartment_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmAddDepartment_Text;
+        
+        /// <summary>
+        /// addInstructor_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText addInstructor_Text;
+        
+        /// <summary>
+        /// confirmAddInstructor_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmAddInstructor_Text;
+        
+        /// <summary>
+        /// addRoom_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText addRoom_Text;
+        
+        /// <summary>
+        /// confirmAddRoom_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmAddRoom_Text;
+        
+        /// <summary>
+        /// addClass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText addClass_Text;
+        
+        /// <summary>
+        /// confirmAddClass_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmAddClass_Text;
+        
+        /// <summary>
+        /// CheckBoxList_majors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_majors;
+        
+        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>

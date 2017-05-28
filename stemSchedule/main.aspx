@@ -32,19 +32,29 @@
 
 
 <!-- Dropdown Structure -->
-<ul id="dropdown1" class="dropdown-content">
+<ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
-    <li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
+</ul>
+
+    <!-- Dropdown Structure -->
+<ul id="dropdown_settings" class="dropdown-content">
+  <li><a href="#" runat="server" onserverclick="Button_AddMajorShow_Click">Add Major</a></li>
+  <li><a href="#" runat="server" onserverclick="Button_AddInstructorShow_Click">Add Instructor</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_AddRoomShow_Click">Add Room</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
   <li class="divider"></li>
   <li><a href="#!">three</a></li>
 </ul>
+
+
  <nav class="red darken-4" role="navigation">
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">    Admin    </a></li>
-		<li><a href="administration.aspx">    Settings    </a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown_admin">    Admin    </a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown_settings">    Settings    </a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
@@ -347,7 +357,7 @@
 	</div>
   </div>
 
-        		<!-- Modal Structure -->
+				<!-- Modal Structure -->
   <div id="modal_chgPass" class="modal">
 	<div class="modal-content">
 	  <h4>Change Password</h4>
@@ -358,7 +368,7 @@
 		<table align="center" class="auto-style1" style="width:75%">
 			<tr>
 				<td>
-                    <asp:DropDownList ID="DropDownList_chgPass" runat="server" class="browser-default" Width="200px">
+					<asp:DropDownList ID="DropDownList_chgPass" runat="server" class="browser-default" Width="200px">
 			  </asp:DropDownList>
 
 					</td>
@@ -385,10 +395,164 @@
 
 	</div>
 	<div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
 	  <a href="#" runat="server" onserverclick=" Button_chgPw_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Change Password</a>
 	</div>
   </div>
+
+<!-- Modal Structure -->
+  <div id="modal_addMajor" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Major</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addDepartment_Text" type="text" class="validate" runat="server">
+		  <label for="addDepartment_Text">Enter Major Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddDepartment_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddDepartment_Text">Confirm New Major Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddMajor_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Department</a>
+	</div>
+  </div>
+
+
+        <!-- Modal Structure -->
+  <div id="modal_addInstructor" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Instructor</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addInstructor_Text" type="text" class="validate" runat="server">
+		  <label for="addInstructor_Text">Enter Instructor Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddInstructor_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddInstructor_Text">Confirm New Instructor Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddInstructor_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Instructor</a>
+	</div>
+  </div>
+
+         <!-- Modal Structure -->
+  <div id="modal_addRoom" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Classroom</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addRoom_Text" type="text" class="validate" runat="server">
+		  <label for="addRoom_Text">Enter Classroom Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddRoom_Text" type="text" class="validate" runat="server">
+		  <label for="cconfirmAddRoom_Text">Confirm New Classroom Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddRoom_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Classroom</a>
+	</div>
+  </div>
+
+        <!-- Modal Structure -->
+  <div id="modal_addClass" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Class</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addClass_Text" type="text" class="validate" runat="server">
+		  <label for="addClass_Text">Enter Class Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddClass_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddClass_Text">Confirm New Class Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    <p>Applicable Major(s):</p>
+                    
+				  <asp:CheckBoxList ID="CheckBoxList_majors" runat="server" RepeatColumns="2">
+					  </asp:CheckBoxList>
+					</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_addClass_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Classroom</a>
+	</div>
+  </div>
+
 
 
 
@@ -533,7 +697,7 @@
 	</div>
 	
 			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" />
-          </div>
+		  </div>
 		</div>
 
 		

@@ -149,15 +149,15 @@ namespace stemSchedule
                 try
                 {
                     connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM department", connection))
+                    using (var cmd = new MySqlCommand("SELECT * FROM major order by major", connection))
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
                             {
                                 DropDownList_ShowDept.DataSource = reader;
-                                DropDownList_ShowDept.DataValueField = "department";
-                                DropDownList_ShowDept.DataTextField = "department";
+                                DropDownList_ShowDept.DataValueField = "major";
+                                DropDownList_ShowDept.DataTextField = "major";
                                 DropDownList_ShowDept.DataBind();
                             }
                         }
@@ -1403,6 +1403,285 @@ namespace stemSchedule
         protected void Button3_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_Login').openModal({dismissible: false });", true);
+        }
+
+        protected void Button_AddMajorShow_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addMajor').openModal({ });", true);
+        }
+
+        protected void Button_AddInstructorShow_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addInstructor').openModal({ });", true);
+        }
+
+        protected void Button_AddClassShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM major ORDER BY major ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            CheckBoxList_majors.DataSource = reader;
+                            CheckBoxList_majors.DataValueField = "major";
+                            CheckBoxList_majors.DataTextField = "major";
+                            CheckBoxList_majors.DataBind();
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addClass').openModal({ });", true);
+        }
+
+        protected void Button_AddRoomShow_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addRoom').openModal({ });", true);
+        }
+
+        protected void Button_AddMajor_Click(object sender, EventArgs e)
+        {
+            string major = addDepartment_Text.Value.ToString();
+            string confirmMajor = confirmAddDepartment_Text.Value.ToString();
+            int existing = 0;
+
+            if (major != confirmMajor)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addMajor').openModal({  });", true);
+                Response.Write(
+                "<script type=\"text/javascript\">" +
+                "alert('Major names do not match')" +
+                "</script>");
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    string existingQuery = "Select count(*) from major where major = '" + major + "'";
+                    MySqlCommand comm = new MySqlCommand(existingQuery, connection);
+                    existing = Convert.ToInt32(comm.ExecuteScalar().ToString());
+                }
+                catch(Exception ex) { }
+                finally { connection.Close(); }
+                if (existing != 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addMajor').openModal({  });", true);
+                    Response.Write(
+                    "<script type=\"text/javascript\">" +
+                    "alert('Major already exists')" +
+                    "</script>");
+                }
+                else
+                {
+                    try
+                    {
+                        connection.Open();
+                        string addMajor = "insert into major (major) value ('" + major + "')";
+                        MySqlCommand comm = new MySqlCommand(addMajor, connection);
+                        comm.ExecuteNonQuery();
+                        Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Successfully added major')" +
+                        "</script>");
+                    }
+                    catch (Exception ex){ }
+                    finally { connection.Close(); }
+                }
+
+            }
+
+        }
+
+        protected void Button_AddInstructor_Click(object sender, EventArgs e)
+        {
+            string instructor = addInstructor_Text.Value.ToString();
+            string confirmInstructor = confirmAddInstructor_Text.Value.ToString();
+            int existing = 0;
+
+            if (instructor != confirmInstructor)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addInstructor').openModal({  });", true);
+                Response.Write(
+                "<script type=\"text/javascript\">" +
+                "alert('Names do not match')" +
+                "</script>");
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    string existingQuery = "Select count(*) from instructor where instructor = '" + instructor + "'";
+                    MySqlCommand comm = new MySqlCommand(existingQuery, connection);
+                    existing = Convert.ToInt32(comm.ExecuteScalar().ToString());
+                }
+                catch (Exception ex) { }
+                finally { connection.Close(); }
+                if (existing != 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addInstructor').openModal({  });", true);
+                    Response.Write(
+                    "<script type=\"text/javascript\">" +
+                    "alert('Instructor already exists')" +
+                    "</script>");
+                }
+                else
+                {
+                    try
+                    {
+                        connection.Open();
+                        string addMajor = "insert into instructor (instructor) value ('" + instructor + "')";
+                        MySqlCommand comm = new MySqlCommand(addMajor, connection);
+                        comm.ExecuteNonQuery();
+                        Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Successfully added instructor')" +
+                        "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally { connection.Close(); }
+                }
+
+            }
+
+        }
+
+        protected void Button_AddRoom_Click(object sender, EventArgs e)
+        {
+            string room = addRoom_Text.Value.ToString();
+            string confirmRoom = confirmAddRoom_Text.Value.ToString();
+            int existing = 0;
+
+            if (room != confirmRoom)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addRoom').openModal({  });", true);
+                Response.Write(
+                "<script type=\"text/javascript\">" +
+                "alert('Room names do not match')" +
+                "</script>");
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    string existingQuery = "Select count(*) from classrooms where room = '" + room + "'";
+                    MySqlCommand comm = new MySqlCommand(existingQuery, connection);
+                    existing = Convert.ToInt32(comm.ExecuteScalar().ToString());
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+                if (existing != 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addRoom').openModal({  });", true);
+                    Response.Write(
+                    "<script type=\"text/javascript\">" +
+                    "alert('Room already exists')" +
+                    "</script>");
+                }
+                else
+                {
+                    try
+                    {
+                        connection.Open();
+                        string addMajor = "insert into classrooms (room) value ('" + room + "')";
+                        MySqlCommand comm = new MySqlCommand(addMajor, connection);
+                        comm.ExecuteNonQuery();
+                        Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Successfully added room')" +
+                        "</script>");
+                    }
+                    catch (Exception ex) { Response.Write(ex); }
+                    finally { connection.Close(); }
+                }
+
+            }
+
+        }
+        protected void Button_addClass_Click(object sender, EventArgs e)
+        {
+            string className = addClass_Text.Value.ToString();
+            string confirmClass = confirmAddClass_Text.Value.ToString();
+            int existing = 0;
+
+            if(className != confirmClass)
+            {
+                Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Class names do not match')" +
+                             "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addClass').openModal({ });", true);
+            }
+            else
+            {
+                try
+                {
+                    connection.Open();
+                    string existingQuery = "Select count(*) from classes where name = '" + className + "'";
+                    MySqlCommand comm = new MySqlCommand(existingQuery, connection);
+                    existing = Convert.ToInt32(comm.ExecuteScalar().ToString());
+                }
+                catch(Exception ex) { }
+                finally { connection.Close(); }
+                if(existing != 0)
+                {
+                    Response.Write(
+                           "<script type=\"text/javascript\">" +
+                           "alert('Class already exists')" +
+                            "</script>");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addClass').openModal({ });", true);
+                }
+                else
+                {
+                    try
+                    {
+                        connection.Open();
+                        //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                        string insertQuery = "insert into classes (name,M1,M2,M3,M4) values (@name,@M1,@M2,@M3,@M4)";
+                        command = new MySqlCommand(insertQuery, connection);
+
+                        string[] arr = new string[4];
+                        int j = 0;
+                        for (int i = 0; i < CheckBoxList_majors.Items.Count; i++)
+                        {
+                            if (CheckBoxList_majors.Items[i].Selected)
+                            {
+                                arr[j] = CheckBoxList_majors.Items[i].Value;
+                                j++;
+                            }
+
+                        }
+                        
+                        command.Parameters.AddWithValue("@name", className);
+                        command.Parameters.AddWithValue("@M1", arr[0]);
+                        command.Parameters.AddWithValue("@M2", arr[1]);
+                        command.Parameters.AddWithValue("@M3", arr[2]);
+                        command.Parameters.AddWithValue("@M4", arr[3]);
+
+                        command.ExecuteNonQuery();
+                        Response.Write(
+                                "<script type=\"text/javascript\">" +
+                                "alert('Add Class Success')" +
+                                 "</script>");
+
+                    }
+                    catch (Exception ex) { }                        
+                    finally { connection.Close(); }
+                }
+            }
+
+
+                
         }
     }
 }
