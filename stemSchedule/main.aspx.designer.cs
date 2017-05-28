@@ -193,6 +193,24 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.Button Button_AddClass;
         
         /// <summary>
+        /// userNameDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText userNameDelete_Text;
+        
+        /// <summary>
+        /// confirmUserNameDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmUserNameDelete_Text;
+        
+        /// <summary>
         /// newUser_Text control.
         /// </summary>
         /// <remarks>

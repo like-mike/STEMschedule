@@ -34,7 +34,7 @@
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
-  <li><a href="#!">two</a></li>
+  <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
   <li class="divider"></li>
   <li><a href="#!">three</a></li>
 </ul>
@@ -42,8 +42,8 @@
 	<div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">STEMschedule</a>
 	  <ul class="right hide-on-med-and-down">
 		<li class="active"><a href="#">Schedule</a></li>
-		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Settings</a></li>
-		<li><a href="administration.aspx">Admin</a></li>
+		<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Admin</a></li>
+		<li><a href="administration.aspx">Settings</a></li>
 		<li><a href="#" runat="server" onserverclick="Button_Logout_Click">Logout</a></li>
 	  </ul>
 
@@ -236,13 +236,35 @@
   </div>
 
 <!-- Modal Structure -->
-  <div id="modaltest" class="modal">
+  <div id="modal_deleteUser" class="modal">
     <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
+      <h4>Delete User</h4>
+      <p>Warning: Deleting User will not delete their classes</p>
+
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        <table  align="center" class="auto-style1" style="width:75%">
+            <tr>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="userNameDelete_Text" type="text" class="validate" runat="server">
+		  <label for="userNameDelete_Text">Enter User Name to Delete</label>
+		</div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="confirmUserNameDelete_Text" type="text" class="validate" runat="server">
+		  <label for="confirmUserNameDelete_Text">Confirm User Name to Delete</label>
+		</div>
+
+                </td>
+            </tr>
+        </table>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+        <a href="#" runat="server" onserverclick="Button_deleteUser_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete User</a>
     </div>
   </div>
           
@@ -253,7 +275,7 @@
 	<div class="modal-content">
 	  <h4>Add New User</h4>
 		
-	  <table align="center" class="auto-style1" style="width:50%">
+	  <table align="center" class="auto-style1" style="width:75%">
 			<tr>
 				<td>
 					<div class="input-field col s6">

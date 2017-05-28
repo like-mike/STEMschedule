@@ -1082,7 +1082,12 @@ namespace stemSchedule
 
         protected void Button4_Click(object sender, EventArgs e)
         {
+            
+        }
 
+        protected void Button_DeleteUserShow_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
         }
 
         protected void Button_ChangePwShow_Click(object sender, EventArgs e)
@@ -1186,7 +1191,44 @@ namespace stemSchedule
 
         protected void Button_deleteUser_Click(object sender, EventArgs e)
         {
+            string userName = userNameDelete_Text.Value.ToString();
+            string confirmUserName = confirmUserNameDelete_Text.Value.ToString();
 
+            if(userName != confirmUserName)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('User Names Do Not Match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
+            }
+            else
+            {
+                try { 
+                    string command = "DELETE from UserData WHERE UserName = '" + userName + "'";
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(command, connection);
+                    cmd.ExecuteNonQuery();
+
+                    Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('User Successfully Deleted')" +
+                        "</script>");
+                }
+                catch(Exception ex)
+                {
+                    Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Not a Valid User Name')" +
+                        "</script>");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
+                    
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
         }
 
         protected void Button_chgPw_Click(object sender, EventArgs e)

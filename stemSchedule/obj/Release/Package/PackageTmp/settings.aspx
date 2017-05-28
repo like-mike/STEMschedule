@@ -44,7 +44,7 @@
 <div class="container">
 	 <div class="row">
 	  
-	  <div class="col s3"><asp:GridView ID="GridView_departments" runat="server">
+	  <div class="col s3"><asp:GridView ID="GridView_departments" runat="server" OnSelectedIndexChanged="GridView_departments_SelectedIndexChanged">
 		  </asp:GridView>
 	  
 	  

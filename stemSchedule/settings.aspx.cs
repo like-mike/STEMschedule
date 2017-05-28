@@ -196,5 +196,10 @@ namespace stemSchedule
             }
             finally { connection.Close(); }
         }
+
+        protected void GridView_departments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
