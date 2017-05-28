@@ -1266,6 +1266,15 @@ namespace stemSchedule
             string userName = DropDownList_deleteUser.SelectedValue.ToString();
             string confirmUserName = confirmUserNameDelete_Text.Value.ToString();
 
+            if(DropDownList_deleteUser.SelectedIndex == 0)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No user name selected')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
+            }
+
             if(userName != confirmUserName)
             {
                 Response.Write(
@@ -1276,22 +1285,27 @@ namespace stemSchedule
             }
             else
             {
-                try { 
-                    string command = "DELETE from UserData WHERE UserName = '" + userName + "'";
-                    connection.Open();
-                    MySqlCommand cmd = new MySqlCommand(command, connection);
-                    cmd.ExecuteNonQuery();
-
-                    Response.Write(
-                        "<script type=\"text/javascript\">" +
-                        "alert('User Successfully Deleted')" +
-                        "</script>");
-                }
-                catch(Exception ex){   }
-                finally
+                if (DropDownList_deleteUser.SelectedIndex != 0)
                 {
-                    connection.Close();
+                    try
+                    {
+                        string command = "DELETE from UserData WHERE UserName = '" + userName + "'";
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.ExecuteNonQuery();
+
+                        Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('User Successfully Deleted')" +
+                            "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
+                
             }
         }
 
@@ -1410,6 +1424,88 @@ namespace stemSchedule
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addMajor').openModal({ });", true);
         }
 
+        protected void Button_DeleteInstructorShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM Instructor ORDER BY Instructor ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteInstructor.DataSource = reader;
+                            DropDownList_deleteInstructor.DataValueField = "Instructor";
+                            DropDownList_deleteInstructor.DataTextField = "Instructor";
+                            DropDownList_deleteInstructor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteInstructor.Items.Insert(0, new ListItem("Select Instructor", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+            
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteInstructor').openModal({ });", true);
+        }
+
+        protected void Button_DeleteRoomShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM classrooms ORDER BY room ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteRoom.DataSource = reader;
+                            DropDownList_deleteRoom.DataValueField = "room";
+                            DropDownList_deleteRoom.DataTextField = "room";
+                            DropDownList_deleteRoom.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteRoom.Items.Insert(0, new ListItem("Select Room", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteRoom').openModal({ });", true);
+        }
+
+        protected void Button_DeleteClassShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM Classes ORDER BY name ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteClass.DataSource = reader;
+                            DropDownList_deleteClass.DataValueField = "name";
+                            DropDownList_deleteClass.DataTextField = "name";
+                            DropDownList_deleteClass.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteClass.Items.Insert(0, new ListItem("Select Class", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClass').openModal({ });", true);
+        }
+
         protected void Button_AddInstructorShow_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addInstructor').openModal({ });", true);
@@ -1445,6 +1541,33 @@ namespace stemSchedule
         protected void Button_AddRoomShow_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addRoom').openModal({ });", true);
+        }
+
+        protected void Button_DeleteMajorShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM Major ORDER BY Major ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteMajor.DataSource = reader;
+                            DropDownList_deleteMajor.DataValueField = "Major";
+                            DropDownList_deleteMajor.DataTextField = "Major";
+                            DropDownList_deleteMajor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteMajor.Items.Insert(0, new ListItem("Select Major", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteMajor').openModal({ });", true);
         }
 
         protected void Button_AddMajor_Click(object sender, EventArgs e)
@@ -1683,5 +1806,203 @@ namespace stemSchedule
 
                 
         }
+        protected void Button_deleteMajor_Click(object sender, EventArgs e)
+        {
+            string major = DropDownList_deleteMajor.SelectedValue.ToString();
+            string confirmMajor = confirmMajorDelete_Text.Value.ToString();
+
+            if(DropDownList_deleteMajor.SelectedIndex == 0)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No major selected')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteMajor').openModal({ });", true);
+            }
+
+            if (major != confirmMajor)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Major names to not match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteMajor').openModal({ });", true);
+            }
+            else
+            {
+
+                if (DropDownList_deleteMajor.SelectedIndex != 0)
+                {
+                    try
+                    {
+                        string command = "DELETE from major WHERE major = '" + major + "'";
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.ExecuteNonQuery();
+
+                        Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Major Successfully Deleted')" +
+                            "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+                
+            }
+
+
+
+        }
+
+        protected void Button_deleteInstructor_Click(object sender, EventArgs e)
+        {
+            string instructor = DropDownList_deleteInstructor.SelectedValue.ToString();
+            string confirmInstructor = confirmInstructorDelete_Text.Value.ToString();
+
+            if (DropDownList_deleteMajor.SelectedIndex == 0)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No instructor selected')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteInstructor').openModal({ });", true);
+            }
+
+            if (instructor != confirmInstructor)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Instructor names to not match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteInstructor').openModal({ });", true);
+            }
+            else
+            {
+
+                if (DropDownList_deleteInstructor.SelectedIndex != 0)
+                {
+                    try
+                    {
+                        string command = "DELETE from instructor WHERE instructor = '" + instructor + "'";
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.ExecuteNonQuery();
+
+                        Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Instructor Successfully Deleted')" +
+                            "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            }
+
+        protected void Button_deleteRoom_Click(object sender, EventArgs e)
+        {
+            string Room = DropDownList_deleteRoom.SelectedValue.ToString();
+            string confirmRoom = confirmRoomDelete_Text.Value.ToString();
+
+            if (DropDownList_deleteRoom.SelectedIndex == 0)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No room selected')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteRoom').openModal({ });", true);
+            }
+
+            if (Room != confirmRoom)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Room names to not match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteRoom').openModal({ });", true);
+            }
+            else
+            {
+
+                if (DropDownList_deleteRoom.SelectedIndex != 0)
+                {
+                    try
+                    {
+                        string command = "DELETE from classrooms WHERE room = '" + Room + "'";
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.ExecuteNonQuery();
+
+                        Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Room Successfully Deleted')" +
+                            "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+        }
+        protected void Button_deleteClass_Click(object sender, EventArgs e)
+        {
+            string delClass = DropDownList_deleteClass.SelectedValue.ToString();
+            string confirmClass = confirmClassDelete_Text.Value.ToString();
+
+            if (DropDownList_deleteClass.SelectedIndex == 0)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No class selected')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClass').openModal({ });", true);
+            }
+
+            if (delClass != confirmClass)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('Class names to not match')" +
+                        "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClass').openModal({ });", true);
+            }
+            else
+            {
+
+                if (DropDownList_deleteRoom.SelectedIndex != 0)
+                {
+                    try
+                    {
+                        string command = "DELETE from classes WHERE name = '" + delClass + "'";
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.ExecuteNonQuery();
+
+                        Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Class Successfully Deleted')" +
+                            "</script>");
+                    }
+                    catch (Exception ex) { }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+        }
     }
+    
 }

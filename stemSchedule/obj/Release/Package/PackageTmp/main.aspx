@@ -41,10 +41,17 @@
     <!-- Dropdown Structure -->
 <ul id="dropdown_settings" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddMajorShow_Click">Add Major</a></li>
-  <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
-	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
-  <li class="divider"></li>
-  <li><a href="#!">three</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_DeleteMajorShow_Click">Delete Major</a></li>
+    <li class="divider"></li>
+  <li><a href="#" runat="server" onserverclick="Button_AddInstructorShow_Click">Add Instructor</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_DeleteInstructorShow_Click">Delete Instructor</a></li>
+    <li class="divider"></li>
+	<li><a href="#" runat="server" onserverclick="Button_AddRoomShow_Click">Add Room</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_DeleteRoomShow_Click">Delete Room</a></li>
+    <li class="divider"></li>
+    <li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
+    <li><a href="#" runat="server" onserverclick="Button_DeleteClassShow_Click">Delete Class</a></li>
+
 </ul>
 
 
@@ -432,6 +439,154 @@
 	<div class="modal-footer">
 		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
 	  <a href="#" runat="server" onserverclick="Button_AddMajor_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Department</a>
+	</div>
+  </div>
+
+
+        <!-- Modal Structure -->
+  <div id="modal_addInstructor" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Instructor</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addInstructor_Text" type="text" class="validate" runat="server">
+		  <label for="addInstructor_Text">Enter Instructor Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddInstructor_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddInstructor_Text">Confirm New Instructor Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddInstructor_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Instructor</a>
+	</div>
+  </div>
+
+         <!-- Modal Structure -->
+  <div id="modal_addRoom" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Classroom</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addRoom_Text" type="text" class="validate" runat="server">
+		  <label for="addRoom_Text">Enter Classroom Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddRoom_Text" type="text" class="validate" runat="server">
+		  <label for="cconfirmAddRoom_Text">Confirm New Classroom Name</label>
+		</div>
+				</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddRoom_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Classroom</a>
+	</div>
+  </div>
+
+        <!-- Modal Structure -->
+  <div id="modal_addClass" class="modal">
+	<div class="modal-content">
+	  <h4>Add New Class</h4>
+	  
+
+
+
+		<table align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="addClass_Text" type="text" class="validate" runat="server">
+		  <label for="addClass_Text">Enter Class Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmAddClass_Text" type="text" class="validate" runat="server">
+		  <label for="confirmAddClass_Text">Confirm New Class Name</label>
+		</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+                    <p>Applicable Major(s):</p>
+                    
+				  <asp:CheckBoxList ID="CheckBoxList_majors" runat="server" RepeatColumns="2">
+					  </asp:CheckBoxList>
+					</td>
+			</tr>
+		</table>
+
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_addClass_Click" class="modal-action modal-close waves-effect waves-green btn-flat">Add Class</a>
+	</div>
+  </div>
+
+        <!-- Modal Structure -->
+  <div id="modal_deleteMajor" class="modal">
+	<div class="modal-content">
+	  <h4>Delete Major</h4>
+	 
+
+	</div>
+	<div class="modal-footer">
+		<table  align="center" class="auto-style1" style="width:75%">
+			<tr>
+				<td>
+					<asp:DropDownList ID="DropDownList_deleteMajor" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div class="input-field col s6">
+		  <input id="confirmMajorDelete_Text" type="text" class="validate" runat="server">
+		  <label for="confirmMajorDelete_Text">Confirm Major to Delete</label>
+		</div>
+
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_deleteMajor_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Major</a>
 	</div>
   </div>
 

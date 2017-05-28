@@ -373,6 +373,78 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_majors;
         
         /// <summary>
+        /// DropDownList_deleteMajor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_deleteMajor;
+        
+        /// <summary>
+        /// confirmMajorDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmMajorDelete_Text;
+        
+        /// <summary>
+        /// DropDownList_deleteInstructor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_deleteInstructor;
+        
+        /// <summary>
+        /// confirmInstructorDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmInstructorDelete_Text;
+        
+        /// <summary>
+        /// DropDownList_deleteRoom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_deleteRoom;
+        
+        /// <summary>
+        /// confirmRoomDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmRoomDelete_Text;
+        
+        /// <summary>
+        /// DropDownList_deleteClass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_deleteClass;
+        
+        /// <summary>
+        /// confirmClassDelete_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText confirmClassDelete_Text;
+        
+        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>
