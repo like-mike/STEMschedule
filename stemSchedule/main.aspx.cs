@@ -80,6 +80,7 @@ namespace stemSchedule
             this.Form.DefaultButton = this.Button3.UniqueID;
             if (!IsPostBack)
             {
+                resetCheck();
                 if (Session["New"] != null)
                 {
                     //label_welcome.Text += Session["New"].ToString();
@@ -157,27 +158,7 @@ namespace stemSchedule
 
 
 
-                try
-                {
-                    connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM classes", connection))
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DropDownList_class.DataSource = reader;
-                                DropDownList_class.DataValueField = "name";
-                                DropDownList_class.DataTextField = "name";
-                                DropDownList_class.DataBind();
-                            }
-                        }
-                    }
-                    //Add blank item at index 0.
-                    //DropDownList_M1.Items.Insert(0, new ListItem("", ""));
-                }
-                catch (Exception ex) { Response.Write(ex); }
-                finally { connection.Close(); }
+                
 
 
 
@@ -226,6 +207,7 @@ namespace stemSchedule
 
         public void checkConflict(bool changeConflict, String CRN, String Faculty, String ClassNum, String Days, String StartTime, String EndTime, String Term, String Room, String M1, String M2, String M3, String M4, String Credits, String M, String T, String W, String Th, String F, String Sa, String Su, String Fr, String So, String Ju, String Se, String Year)
         {
+            resetCheck();
             if (!changeConflict)
                 connection.Open();
             //select * from schedule WHERE '9:30:00' >= startTime AND endTime >= '21:20:00' 
@@ -255,6 +237,10 @@ namespace stemSchedule
             string updateQuery = "update schedule set conflict = 'YES', mCon = '1' WHERE '" + StartTime + "' >= (startTime) AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND TERM = '" + Term + "'";
             int[] majors = new int[4];
             string[] Mquery = new string[4];
+            string countQuery = "select count(*) FROM SCHEDULE WHERE '" + StartTime + "' >= (startTime)AND(endTime) >= '" + EndTime + "' AND(Public) = 1 AND((M) = '" + M + "' OR(T) = '" + T + "' OR(W) = '" + W + "' OR(Th) = '" + Th + "' OR(F) = '" + F + "') AND TERM = '" + Term + "'";
+
+
+
             string checkMajor = majorQuery;
             //M1
             majors[0] = 0;
@@ -285,35 +271,46 @@ namespace stemSchedule
             majors[3] = Convert.ToInt32(comm.ExecuteScalar().ToString());
 
             int majorConflictNum = 0;
+            
             for(int i = 0; i < 4; i++)
             {
                 if (majors[i] != 0)
                 {
                     checkMajor += Mquery[i];
                     updateQuery += Mquery[i];
+                    countQuery += Mquery[i];
 
                     majorConflictNum += majors[i];
+                    //count++;
                 }
                     
 
             }
-            if (majorConflictNum!=0){
+
+            comm = new MySqlCommand(countQuery, connection);
+            int count = Convert.ToInt32(comm.ExecuteScalar().ToString());
+
+            if (count>1){
                 command = new MySqlCommand(updateQuery, connection);
                 command.ExecuteNonQuery();
             }
-            
 
 
 
+            bool conflicts = true;
             string finalQuery = "";
-            if (roomConflicts > 1 && majorConflictNum > 1)
+            if (roomConflicts > 1 && count > 1)
                 finalQuery = roomQuery + " UNION " + checkMajor;
-            else if (roomConflicts > 1 && majorConflictNum < 1)
+            else if (roomConflicts > 1 && count <2)
                 finalQuery = roomQuery;
-            else if (roomConflicts < 1 && majorConflictNum > 1)
+            else if (roomConflicts < 1 && count > 1)
                 finalQuery = majorQuery;
             else
-                finalQuery = "Select * from schedule";//Ithink
+            {
+                conflicts = false;
+                finalQuery = "Select * from schedule WHERE PUBLIC = 1";//Ithink
+            }
+                
 
 
             command = new MySqlCommand(finalQuery, connection);
@@ -324,24 +321,28 @@ namespace stemSchedule
             GridView1.DataBind();
             //GridView2.SelectedRow.Cells[24].Text;
 
-            foreach (GridViewRow row in GridView1.Rows)
+            if (conflicts)
             {
-                if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
+                foreach (GridViewRow row in GridView1.Rows)
                 {
-                    row.BackColor = ColorTranslator.FromHtml("#42cbf4");
-                    row.ToolTip = "Room & Major Conflicts";
-                }
-                else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#f44165");
-                    row.ToolTip = "Room Conflict";
-                }
-                else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#f4d641");
-                    row.ToolTip = "Major Conflict";
+                    if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#42cbf4");
+                        row.ToolTip = "Room & Major Conflicts";
+                    }
+                    else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#f44165");
+                        row.ToolTip = "Room Conflict";
+                    }
+                    else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#f4d641");
+                        row.ToolTip = "Major Conflict";
+                    }
                 }
             }
+            
 
 
 
@@ -377,13 +378,18 @@ namespace stemSchedule
 
         protected void Button_AddClass_Click1(object sender, EventArgs e)
         {
+            string CRN = CRN_Text.Value.ToString();
+            string enrollment = Enrollment_Text.Value.ToString();
+            string credits = Credits_Text.Value.ToString();
+            string calYear = Year_Text.Value.ToString();
+
             try
             {
                 connection.Open();
                 //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
-                string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public,M,T,W,Th,F,Sa,Su,Fr,So,Ju,Se) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public,@M,@T,@W,@Th,@F,@Sa,@Su,@Fr,@So,@Jr,@Se)";
+                string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public,M,T,W,Th,F,Sa,Su,Fr,So,Ju,Se,CalYear,User) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public,@M,@T,@W,@Th,@F,@Sa,@Su,@Fr,@So,@Jr,@Se,@CalYear,@User)";
                 command = new MySqlCommand(insertQuery, connection);
-
+                //21
                 //string instructor = Session["New"].ToString();
                 string sclass = DropDownList_class.SelectedValue.ToString();
 
@@ -451,20 +457,38 @@ namespace stemSchedule
                 command.Parameters.AddWithValue("@Su", Su);
 
                 //command.Parameters.AddWithValue("@PK", TextBox_CRN.Text);
-                command.Parameters.AddWithValue("@CRN", TextBox_CRN.Text);
-                command.Parameters.AddWithValue("@Faculty", TextBox_Faculty.Text);
-                command.Parameters.AddWithValue("@ClassNum", sclass);
+                command.Parameters.AddWithValue("@CRN", CRN);
+                command.Parameters.AddWithValue("@Faculty", DropDownList_instructor.SelectedValue);
+                command.Parameters.AddWithValue("@ClassNum", DropDownList_class.SelectedValue);
                 command.Parameters.AddWithValue("@Days", days);
+                command.Parameters.AddWithValue("@CalYear", calYear);
+                command.Parameters.AddWithValue("@User", Session["New"].ToString());
+                
                 command.Parameters.AddWithValue("@StartTime", TextBox_StartTime.Text);
                 command.Parameters.AddWithValue("@EndTime", TextBox_EndTime.Text);
                 command.Parameters.AddWithValue("@Term", DropDownList_term.SelectedValue);
-                command.Parameters.AddWithValue("@Room", TextBox_Classroom.Text);
-                command.Parameters.AddWithValue("@EnrollNum", TextBox_Enrollment.Text);
+                command.Parameters.AddWithValue("@Room", DropDownList_Classroom.SelectedValue);
+                command.Parameters.AddWithValue("@EnrollNum", enrollment);
 
-                string fr = "1";
-                string so = "";
-                string ju = "1";
-                string se = "";
+
+
+
+                string Fr_com = "select Fr from classes where name='" + DropDownList_class.SelectedValue + "'";
+                MySqlCommand com = new MySqlCommand(Fr_com, connection);
+                string fr = com.ExecuteScalar().ToString();
+
+                string So_com = "select So from classes where name='" + DropDownList_class.SelectedValue + "'";
+                com = new MySqlCommand(So_com, connection);
+                string so = com.ExecuteScalar().ToString();
+
+                string jr_com = "select Jr from classes where name='" + DropDownList_class.SelectedValue + "'";
+                com = new MySqlCommand(jr_com, connection);
+                string ju = com.ExecuteScalar().ToString();
+
+                string sr_com = "select Sr from classes where name='" + DropDownList_class.SelectedValue + "'";
+                com = new MySqlCommand(sr_com, connection);
+                string se = com.ExecuteScalar().ToString();
+
 
                 command.Parameters.AddWithValue("@Fr", fr);
                 command.Parameters.AddWithValue("@So", so);
@@ -484,7 +508,7 @@ namespace stemSchedule
 
 
                 string M1_com = "select M1 from classes where name='" + sclass + "'";
-                MySqlCommand com = new MySqlCommand(M1_com, connection);
+                com = new MySqlCommand(M1_com, connection);
                 string M1 = com.ExecuteScalar().ToString();
 
                 string M2_com = "select M2 from classes where name='" + sclass + "'";
@@ -505,7 +529,7 @@ namespace stemSchedule
                 command.Parameters.AddWithValue("@M3", M3);
                 command.Parameters.AddWithValue("@M4", M4);
 
-                command.Parameters.AddWithValue("@Credits", TextBox_Credits.Text);
+                command.Parameters.AddWithValue("@Credits", credits);
                 command.Parameters.AddWithValue("@Conflict", null);//conflicts
                 command.Parameters.AddWithValue("@Public", 0);//conflicts
                                                               //command.ExecuteNonQuery();
@@ -533,7 +557,7 @@ namespace stemSchedule
     "</script>"
   );
                 connection.Close();
-                checkConflict(false, TextBox_CRN.Text, TextBox_Faculty.Text, sclass, days, TextBox_StartTime.Text, TextBox_EndTime.Text, DropDownList_term.SelectedValue, TextBox_Classroom.Text, M1, M2, M3, M4, TextBox_Credits.Text, M, T, W, Th, F, Sa, Su, fr, so, ju, se,"2017");
+                checkConflict(false, CRN, DropDownList_instructor.SelectedValue, DropDownList_class.SelectedValue, days, TextBox_StartTime.Text, TextBox_EndTime.Text, DropDownList_term.SelectedValue, DropDownList_Classroom.SelectedValue, M1, M2, M3, M4, credits, M, T, W, Th, F, Sa, Su, fr, so, ju, se,"2017");
 
 
             }
@@ -1030,6 +1054,30 @@ namespace stemSchedule
 
         }
 
+        public void resetCheck()
+        {
+            try
+            {
+                connection.Open();
+                string updateQuery = "update schedule set Conflict = '',RCon='',MCon='' WHERE NOT CRN =''";
+
+                command = new MySqlCommand(updateQuery, connection);
+
+                command.ExecuteNonQuery();
+            }
+            catch (Exception ex) { }
+            finally
+            {
+                connection.Close();
+            }
+            String CRN, Faculty, ClassNum, startTime, endTime, term, room, M1, M2, M3, M4, M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se;
+            //int i = 1;
+            
+            
+            //checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se, "2017");
+            //Response.Write("test" + i);
+        }
+
         protected void checkSpecific(object sender, EventArgs e)
         {
             if (GridView1.SelectedIndex == -1)
@@ -1198,6 +1246,87 @@ namespace stemSchedule
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_chgPass').openModal({ });", true);
         }
 
+        protected void Button_editSessionShow_Click(object sender, EventArgs e)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_edit').openModal({ });", true);
+        }
+
+
+
+        protected void Button_addSessionShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM classes ORDER BY name ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_class.DataSource = reader;
+                            DropDownList_class.DataValueField = "name";
+                            DropDownList_class.DataTextField = "name";
+                            DropDownList_class.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM classrooms ORDER BY room ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_Classroom.DataSource = reader;
+                            DropDownList_Classroom.DataValueField = "room";
+                            DropDownList_Classroom.DataTextField = "room";
+                            DropDownList_Classroom.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_Classroom.Items.Insert(0, new ListItem("Select Room", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM instructor ORDER BY instructor ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_instructor.DataSource = reader;
+                            DropDownList_instructor.DataValueField = "instructor";
+                            DropDownList_instructor.DataTextField = "instructor";
+                            DropDownList_instructor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_instructor.Items.Insert(0, new ListItem("Select Instructor", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal1').openModal({ });", true);
+        }
+
         protected void Button_UserAdd_Click(object sender, EventArgs e)
         {
             string newUser = newUser_Text.Value.ToString();
@@ -1272,7 +1401,7 @@ namespace stemSchedule
                     {
                         Response.Write(
                                     "<script type=\"text/javascript\">" +
-                                    "alert('Error Adding New User. Please make sure valid username/password')" +
+                                    "alert('Error Adding New User. Please make sure valid username/password')" + 
                                     "</script>");
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
                         Response.Write(ex.ToString());

@@ -85,31 +85,31 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.GridView GridView1_Hidden;
         
         /// <summary>
-        /// TextBox_CRN control.
+        /// CRN_Text control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_CRN;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText CRN_Text;
         
         /// <summary>
-        /// DropDownList_year control.
+        /// Year_Text control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList_year;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Year_Text;
         
         /// <summary>
-        /// TextBox_Faculty control.
+        /// DropDownList_instructor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Faculty;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_instructor;
         
         /// <summary>
         /// TextBox_StartTime control.
@@ -157,40 +157,130 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_days;
         
         /// <summary>
-        /// TextBox_Classroom control.
+        /// DropDownList_Classroom control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Classroom;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_Classroom;
         
         /// <summary>
-        /// TextBox_Enrollment control.
+        /// Enrollment_Text control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Enrollment;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Enrollment_Text;
         
         /// <summary>
-        /// TextBox_Credits control.
+        /// Credits_Text control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox_Credits;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText Credits_Text;
         
         /// <summary>
-        /// Button_AddClass control.
+        /// eCRN_Text control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_AddClass;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText eCRN_Text;
+        
+        /// <summary>
+        /// eYear_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText eYear_Text;
+        
+        /// <summary>
+        /// DropDownList_eInstructor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_eInstructor;
+        
+        /// <summary>
+        /// TextBox_eStartTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox_eStartTime;
+        
+        /// <summary>
+        /// DropDownList_eClass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_eClass;
+        
+        /// <summary>
+        /// TextBox_eEndTime control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBox_eEndTime;
+        
+        /// <summary>
+        /// DropDownList_eTerm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_eTerm;
+        
+        /// <summary>
+        /// CheckBoxList_eDays control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_eDays;
+        
+        /// <summary>
+        /// DropDownList_eRoom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_eRoom;
+        
+        /// <summary>
+        /// eEnrollment_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText eEnrollment_Text;
+        
+        /// <summary>
+        /// eCredits_Text control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText eCredits_Text;
         
         /// <summary>
         /// DropDownList_deleteUser control.
@@ -452,6 +542,24 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridView2;
+        
+        /// <summary>
+        /// Button_addSession control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton Button_addSession;
+        
+        /// <summary>
+        /// Button_editSession control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton Button_editSession;
         
         /// <summary>
         /// Button1 control.

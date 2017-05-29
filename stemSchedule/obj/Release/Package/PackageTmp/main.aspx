@@ -35,7 +35,7 @@
 <ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
-    <li class="divider"></li>
+	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
 </ul>
 
@@ -50,7 +50,7 @@
 	<li><a href="#" runat="server" onserverclick="Button_AddRoomShow_Click">Add Room</a></li>
 	<li><a href="#" runat="server" onserverclick="Button_DeleteRoomShow_Click">Delete Room</a></li>
 	<li class="divider"></li>
-    <li class="divider"></li>
+	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
 	<li><a href="#" runat="server" onserverclick="Button_DeleteClassShow_Click">Delete Class</a></li>
 
@@ -117,7 +117,7 @@
   </div>
 <!-- Modal Structure modal modal-fixed-footer-->
   <!-- Add Class Modal Structuremodal modal-fixed-footer -->
-  <div id="modal1" class="modal modal-fixed-footer">
+  <div id="modal1" class="modal">
 	<div class="modal-content">
 	  <h4>Modal Header</h4>
 	  <p>A bunch of text</p>
@@ -125,24 +125,24 @@
 			  <tr>
 				  <td class="auto-style2">CRN</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_CRN" runat="server"></asp:TextBox>
+					  <div class="input-field col s6">
+		  <input id="CRN_Text" type="text" class="validate" runat="server">
+		  <label for="CRN_Text">Leave BLANK to submit random CRN</label>
+		</div>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Year</td>
 				  <td>
-					  <asp:DropDownList ID="DropDownList_year" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True" Value="1">Freshman</asp:ListItem>
-						  <asp:ListItem Value="2">Sophomore</asp:ListItem>
-						  <asp:ListItem Value="3">Junior</asp:ListItem>
-						  <asp:ListItem Value="4">Senior</asp:ListItem>
-					  </asp:DropDownList>
-				  </td>
+					  <div class="input-field col s6">
+		  <input id="Year_Text" type="text" class="validate" runat="server">
+		  <label for="Year_Text">eg. 2017, etc.</label>
+		</div></td>
 				  <td>&nbsp;</td>
 			  </tr>
 			  <tr>
-				  <td class="auto-style2">Faculty</td>
+				  <td class="auto-style2">Instructor</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_Faculty" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_instructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">Start Time</td>
@@ -155,7 +155,6 @@
 				  <td class="auto-style2">Class</td>
 				  <td class="auto-style5">
 					  <asp:DropDownList ID="DropDownList_class" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True">None</asp:ListItem>
 					  </asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
@@ -193,7 +192,7 @@
 			  <tr>
 				  <td class="auto-style2">Classroom</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_Classroom" runat="server"></asp:TextBox>
+					  <asp:DropDownList ID="DropDownList_Classroom" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
@@ -202,7 +201,10 @@
 			  <tr>
 				  <td class="auto-style2">Enrollment</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_Enrollment" runat="server"></asp:TextBox>
+					  <div class="input-field col s6">
+		  <input id="Enrollment_Text" type="text" class="validate" runat="server">
+		  <label for="Enrollment_Text"></label>
+		</div>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
@@ -211,7 +213,10 @@
 			  <tr>
 				  <td class="auto-style2">Credits</td>
 				  <td class="auto-style5">
-					  <asp:TextBox ID="TextBox_Credits" runat="server"></asp:TextBox>
+					  <div class="input-field col s6">
+		  <input id="Credits_Text" type="text" class="validate" runat="server">
+		  <label for="Credits_Text"></label>
+		</div>
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
@@ -228,7 +233,7 @@
 			  <tr>
 				  <td class="auto-style2">&nbsp;</td>
 				  <td class="auto-style5">
-					  <asp:Button ID="Button_AddClass" runat="server" Text="Add Class" OnClick="Button_AddClass_Click1" />
+					  
 				  </td>
 				  <td>&nbsp;</td>
 				  <td class="auto-style3">&nbsp;</td>
@@ -237,7 +242,9 @@
 		  </table>
 	</div>
 	<div class="modal-footer">
-	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddClass_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Add Class</a>
+        
 	</div>
   </div>
 
@@ -307,7 +314,7 @@
 				<td>
 					<div class="input-field col s6">
 		  <input id="newUPass_Text" type="password" class="validate" runat="server">
-		  <label for=newUPass_Text">Enter New Password</label>
+		  <label for="newUPass_Text">Enter New Password</label>
 		</div>
 
 				</td>
@@ -623,7 +630,7 @@
 	</div>
   </div>
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_deleteRoom" class="modal">
 	<div class="modal-content">
 	  <h4>Delete Room</h4>
@@ -654,7 +661,7 @@
 	</div>
   </div>
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_deleteClass" class="modal">
 	<div class="modal-content">
 	  <h4>Delete Class</h4>
@@ -704,9 +711,10 @@
 		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
 			</asp:GridView>
  &nbsp;<div align="left">
-	   <button data-target="modal1" class="btn modal-trigger red darken-4">Add</button>
+	   <button id="Button_addSession" runat="server" onserverclick="Button_addSessionShow_Click"  class="btn modal-trigger red darken-4">Add</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
+	 <button id="button4" runat="server" onserverclick="checkSpecificPrivate" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
 		<!--<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>-->
   
 	  
