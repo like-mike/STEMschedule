@@ -1301,34 +1301,30 @@ namespace stemSchedule
 
                 CRN_Text.Value = CRN;
 
-
-                DropDownList_class.SelectedValue = ClassNum;
-                if (DropDownList_class.SelectedValue != ClassNum)
-                    Response.Write(
-                           "<script type=\"text/javascript\">" +
-                           "alert('" + ClassNum + " no longer exists. Please add class in Settings if you wish to use')" +
-                           "</script>");
+                try { DropDownList_class.SelectedValue = ClassNum; }
+                catch(Exception ex) { }
 
 
-                DropDownList_term.SelectedValue = term;
 
-                DropDownList_Classroom.SelectedValue = room;
-                if (DropDownList_Classroom.SelectedValue != room)
+
+                try { DropDownList_term.SelectedValue = term; }
+                catch(Exception ex) { }
+
+                try { DropDownList_Classroom.SelectedValue = room; }
+                catch(Exception ex) { }
+                /*if (DropDownList_Classroom.SelectedValue != room)
                     Response.Write(
                            "<script type=\"text/javascript\">" +
                            "alert('" + room + " no longer exists. Please add Room in Settings if you wish to use')" +
-                           "</script>");
+                           "</script>");*/
                 Enrollment_Text.Value = enrollment;
                 Credits_Text.Value = credits;
                 TextBox_StartTime.Text = startTime;
                 TextBox_EndTime.Text = endTime;
 
-                DropDownList_instructor.SelectedValue = Faculty;
-                if (DropDownList_instructor.SelectedValue != Faculty)
-                    Response.Write(
-                           "<script type=\"text/javascript\">" +
-                           "alert('" + Faculty + " no longer exists. Please add instructor in Settings if you wish to use')" +
-                           "</script>");
+                try { DropDownList_instructor.SelectedValue = Faculty; }
+                catch(Exception ex) { }
+                
                 Year_Text.Value = calYear;
 
                 if (M == "1")
@@ -1390,7 +1386,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
 

@@ -119,8 +119,10 @@
   <!-- Add Class Modal Structuremodal modal-fixed-footer -->
   <div id="modal1" class="modal">
 	<div class="modal-content">
-	  <h4>Modal Header</h4>
-	  <p>A bunch of text</p>
+
+        <asp:Label ID="Label_AddClassDesc" runat="server" Text="Warning: Editing a class will changed stored user for the class" Font-Size="large" Visible="false"></asp:Label>
+        <br />
+	<br />
 		 <table class="auto-style1">
 			  <tr>
 				  <td class="auto-style2">CRN</td>
@@ -242,9 +244,145 @@
 		  </table>
 	</div>
 	<div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
 	  <a href="#" runat="server" onserverclick="Button_AddClass_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Add Class</a>
-        
+		
+	</div>
+  </div>
+
+	  <br><br>
+
+	</div>
+  </div>
+
+		<div id="modal_edit" class="modal">
+	<div class="modal-content">
+	  <h4>Edit Class</h4>
+	  <p>A bunch of text</p>
+		 <table class="auto-style1">
+			  <tr>
+				  <td class="auto-style2">CRN</td>
+				  <td class="auto-style5">
+					  <div class="input-field col s6">
+		  <input id="eCRN_Text" type="text" class="validate" runat="server">
+		  <label for="eCRN_Text">Leave BLANK to submit random CRN</label>
+		</div>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">Year</td>
+				  <td>
+					  <div class="input-field col s6">
+		  <input id="eYear_Text" type="text" class="validate" runat="server">
+		  <label for="eYear_Text">eg. 2017, etc.</label>
+		</div></td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Instructor</td>
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_eInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">Start Time</td>
+				  <td>
+					  <asp:TextBox ID="TextBox_eStartTime" TextMode="Time" runat="server"></asp:TextBox>
+				  </td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Class</td>
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_eClass" runat="server" class="browser-default" Width="200px">
+					  </asp:DropDownList>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">End Time</td>
+				  <td>
+					  <asp:TextBox ID="TextBox_eEndTime" TextMode="Time" runat="server"></asp:TextBox>
+				  </td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Term</td>
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_eTerm" runat="server" class="browser-default" Width="200px">
+						  <asp:ListItem Selected="True" Value="Autumn">Autumn</asp:ListItem>
+						  <asp:ListItem Value="Winter">Winter</asp:ListItem>
+						  <asp:ListItem Value="Spring">Spring</asp:ListItem>
+						  <asp:ListItem Value="Summer">Summer</asp:ListItem>
+					  </asp:DropDownList>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">Days</td>
+				  <td rowspan="6">
+					  <asp:CheckBoxList ID="CheckBoxList_eDays" runat="server">
+						  <asp:ListItem Value="1">Monday</asp:ListItem>
+						  <asp:ListItem Value="2">Tuesday</asp:ListItem>
+						  <asp:ListItem Value="3">Wednesday</asp:ListItem>
+						  <asp:ListItem Value="4">Thursday</asp:ListItem>
+						  <asp:ListItem Value="5">Friday</asp:ListItem>
+						  <asp:ListItem Value="6">Saturday</asp:ListItem>
+						  <asp:ListItem Value="7">Sunday</asp:ListItem>
+					  </asp:CheckBoxList>
+				  </td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Classroom</td>
+				  <td class="auto-style5">
+					  <asp:DropDownList ID="DropDownList_eRoom" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Enrollment</td>
+				  <td class="auto-style5">
+					  <div class="input-field col s6">
+		  <input id="eEnrollment_Text" type="text" class="validate" runat="server">
+		  <label for="eEnrollment_Text"></label>
+		</div>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">Credits</td>
+				  <td class="auto-style5">
+					  <div class="input-field col s6">
+		  <input id="eCredits_Text" type="text" class="validate" runat="server">
+		  <label for="eCredits_Text"></label>
+		</div>
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">&nbsp;</td>
+				  <td class="auto-style5">
+					  &nbsp;</td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+			  <tr>
+				  <td class="auto-style2">&nbsp;</td>
+				  <td class="auto-style5">
+					  
+				  </td>
+				  <td>&nbsp;</td>
+				  <td class="auto-style3">&nbsp;</td>
+				  <td>&nbsp;</td>
+			  </tr>
+		  </table>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+	  <a href="#" runat="server" onserverclick="Button_AddClass_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Add Class</a>
+		
 	</div>
   </div>
 
@@ -712,6 +850,7 @@
 			</asp:GridView>
  &nbsp;<div align="left">
 	   <button id="Button_addSession" runat="server" onserverclick="Button_addSessionShow_Click"  class="btn modal-trigger red darken-4">Add</button>
+	 <button id="Button_editSession" runat="server" onserverclick="Button_editSessionShow_Click"  class="btn modal-trigger red darken-4">Edit</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
 	 <button id="button4" runat="server" onserverclick="checkSpecificPrivate" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
