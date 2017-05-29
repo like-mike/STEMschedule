@@ -369,7 +369,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2017 13:39:33</publishTime>
     </File>
     <File Include="bin/stemSchedule.dll">
-      <publishTime>05/29/2017 13:17:43</publishTime>
+      <publishTime>05/29/2017 14:35:25</publishTime>
     </File>
     <File Include="bin/System.Spatial.dll">
       <publishTime>03/15/2017 14:57:16</publishTime>

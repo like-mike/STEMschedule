@@ -9,9 +9,13 @@ using System.Data;
 using System.Drawing;
 
 using System.IO;
+
 using System.Data.OleDb;
 using System.Configuration;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace stemSchedule
 {
@@ -40,6 +44,8 @@ namespace stemSchedule
 
         enum yearTypicallyTaken { Freshman, Sophomore, Junior, Senior, Multiple };
         GridView GridView_hidden = new GridView();
+        GridView test = new GridView();
+        
 
         void sendSqlCommand(string sqlCommand)
         {
@@ -119,7 +125,7 @@ namespace stemSchedule
                     GridView1_Hidden.DataBind();
 
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
                 try
@@ -839,25 +845,84 @@ namespace stemSchedule
             finally { connection.Close(); }
         }
 
+       
+
         protected void ExportToExcel(object sender, EventArgs e)
         {
+            /*String CRN = GridView1.SelectedRow.Cells[1].Text;
+            String Faculty = GridView1.SelectedRow.Cells[2].Text;
+            String ClassNum = GridView1.SelectedRow.Cells[3].Text;
+            String startTime = GridView1.SelectedRow.Cells[5].Text;
+            String endTime = GridView1.SelectedRow.Cells[6].Text;
+            String term = GridView1.SelectedRow.Cells[7].Text;
+            String room = GridView1.SelectedRow.Cells[8].Text;
+            String M1 = GridView1.SelectedRow.Cells[9].Text;
+            String M2 = GridView1.SelectedRow.Cells[10].Text;
+            String M3 = GridView1.SelectedRow.Cells[11].Text;
+            String M4 = GridView1.SelectedRow.Cells[12].Text;
+            String M = GridView1.SelectedRow.Cells[14].Text;
+            String T = GridView1.SelectedRow.Cells[15].Text;
+            String W = GridView1.SelectedRow.Cells[16].Text;
+            String Th = GridView1.SelectedRow.Cells[17].Text;
+            String F = GridView1.SelectedRow.Cells[18].Text;
+            String Sa = GridView1.SelectedRow.Cells[19].Text;
+            String Su = GridView1.SelectedRow.Cells[20].Text;
+            String Fr = GridView1.SelectedRow.Cells[21].Text;
+            String So = GridView1.SelectedRow.Cells[22].Text;
+            String Jr = GridView1.SelectedRow.Cells[23].Text;
+            String Se = GridView1.SelectedRow.Cells[24].Text;*/
+
+
+            StringBuilder builder = new StringBuilder();
+            string strFileName = "STEMschedule_" + DateTime.Now.ToShortDateString() + ".csv";
+            builder.Append("CRN,Faculty,Class,Start Time,End Time,Term,Room,M1,M2,M3,M4,Year,Credits,Enrollment,Calendar Year," + Environment.NewLine);
+            string[] M = new string[4];
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                string CRN = row.Cells[1].Text;
+                string Faculty = row.Cells[2].Text;
+                string numClass = row.Cells[3].Text;
+                string startTime = row.Cells[4].Text;
+                string endTime = row.Cells[5].Text;
+                string term = row.Cells[6].Text;
+                string room = row.Cells[7].Text;
+                M[0] = row.Cells[8].Text;
+                M[1] = row.Cells[9].Text;
+                M[2] = row.Cells[10].Text;
+                M[3] = row.Cells[11].Text;
+
+                for(int i = 0; i < 4; i++)
+                {
+                    
+                    if (M[i] == "")
+                        M[i] = "EMPTY";
+                }
+
+               
+                string year = row.Cells[26].Text;
+                string credits = row.Cells[27].Text;
+                string enrollNum = row.Cells[28].Text;
+                string calYear = row.Cells[32].Text;
+                builder.Append(CRN + "," + Faculty + "," + numClass+ "," + startTime + "," + endTime + "," + term + "," + room + "," + M[0] + "," + M[1] + "," + M[2] + "," + M[3] + "," + year + "," + credits + "," + enrollNum + "," + calYear +  Environment.NewLine);
+            }
             Response.Clear();
-            Response.Buffer = true;
-            Response.ClearContent();
-            Response.ClearHeaders();
-            Response.Charset = "";
-            string FileName = "STEMschedule" + DateTime.Now + ".xls";
-            StringWriter strwritter = new StringWriter();
-            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.ContentType = "application/vnd.ms-excel";
-            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
-            GridView_hidden.GridLines = GridLines.Both;
-            GridView_hidden.HeaderStyle.Font.Bold = true;
-            GridView_hidden.RenderControl(htmltextwrtter);
-            Response.Write(strwritter.ToString());
+            Response.ContentType = "text/csv";
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + strFileName);
+            string built = builder.ToString();
+            built = ScrubHtml(built);
+            Response.Write(built);
             Response.End();
+            
         }
+
+        public static string ScrubHtml(string value)
+        {
+            var step1 = Regex.Replace(value, @"<[^>]+>|&nbsp;", "").Trim();
+            var step2 = Regex.Replace(step1, @"\s{2,}", " ");
+            return step2;
+        }
+
+
         public override void VerifyRenderingInServerForm(Control control)
         {
             //required to avoid the runtime error "  
@@ -1386,7 +1451,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
                 }
-                catch (Exception ex) {  }
+                catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
 
 
