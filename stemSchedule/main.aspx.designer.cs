@@ -85,6 +85,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.GridView GridView1_Hidden;
         
         /// <summary>
+        /// Label_AddClassDesc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label_AddClassDesc;
+        
+        /// <summary>
         /// CRN_Text control.
         /// </summary>
         /// <remarks>

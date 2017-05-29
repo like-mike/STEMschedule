@@ -119,8 +119,10 @@
   <!-- Add Class Modal Structuremodal modal-fixed-footer -->
   <div id="modal1" class="modal">
 	<div class="modal-content">
-	  <h4>Modal Header</h4>
-	  <p>A bunch of text</p>
+
+        <asp:Label ID="Label_AddClassDesc" runat="server" Text="Warning: Editing a class will changed stored user for the class" Font-Size="large" Visible="false"></asp:Label>
+        <br />
+	<br />
 		 <table class="auto-style1">
 			  <tr>
 				  <td class="auto-style2">CRN</td>

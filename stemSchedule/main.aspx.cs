@@ -18,7 +18,7 @@ namespace stemSchedule
     public partial class main : System.Web.UI.Page
     {
         // "#defines"
-
+        
         //select *,TIME_FORMAT(StartTime, '%h:%i %p')startTime,TIME_FORMAT(EndTime, '%h:%i %p')EndTime from schedule
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
         public string PUBLIC_SCHEDULE = "Select * FROM SCHEDULE WHERE PUBLIC = 1";
@@ -32,6 +32,7 @@ namespace stemSchedule
         public static MySqlCommand command;
         public static DataTable table;
         public static MySqlDataAdapter data;
+        public bool editing = false;
 
         enum timeConflict { None, Major_4, Major_3, Major_2, Major_1, Year, Faculty, Room };
 
@@ -378,10 +379,25 @@ namespace stemSchedule
 
         protected void Button_AddClass_Click1(object sender, EventArgs e)
         {
+            
+
+
+
             string CRN = CRN_Text.Value.ToString();
             string enrollment = Enrollment_Text.Value.ToString();
             string credits = Credits_Text.Value.ToString();
             string calYear = Year_Text.Value.ToString();
+
+
+            try
+            {
+                string command = "DELETE from SCHEDULE WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
+                connection.Open();
+                MySqlCommand cmd = new MySqlCommand(command, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); editing = false; }
 
             try
             {
@@ -576,6 +592,7 @@ namespace stemSchedule
                 connection.Close();
 
             }
+            Label_AddClassDesc.Visible = false;
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1248,7 +1265,192 @@ namespace stemSchedule
 
         protected void Button_editSessionShow_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_edit').openModal({ });", true);
+            if (GridView2.SelectedIndex == -1)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PRIVATE Class Selected')" +
+                        "</script>");
+            }
+            else
+            {
+                String CRN = GridView2.SelectedRow.Cells[1].Text;
+                String Faculty = GridView2.SelectedRow.Cells[2].Text;
+                String ClassNum = GridView2.SelectedRow.Cells[3].Text;
+
+
+                String startTime = GridView2.SelectedRow.Cells[5].Text;
+                String endTime = GridView2.SelectedRow.Cells[6].Text;
+                String term = GridView2.SelectedRow.Cells[7].Text;
+                String room = GridView2.SelectedRow.Cells[8].Text;
+                String enrollment = GridView2.SelectedRow.Cells[28].Text;
+                String credits = GridView2.SelectedRow.Cells[27].Text;
+                String calYear = GridView2.SelectedRow.Cells[32].Text;
+
+
+
+
+
+                String M = GridView2.SelectedRow.Cells[14].Text;
+                String T = GridView2.SelectedRow.Cells[15].Text;
+                String W = GridView2.SelectedRow.Cells[16].Text;
+                String Th = GridView2.SelectedRow.Cells[17].Text;
+                String F = GridView2.SelectedRow.Cells[18].Text;
+                String Sa = GridView2.SelectedRow.Cells[19].Text;
+                String Su = GridView2.SelectedRow.Cells[20].Text;
+
+                CRN_Text.Value = CRN;
+
+
+                DropDownList_class.SelectedValue = ClassNum;
+                if (DropDownList_class.SelectedValue != ClassNum)
+                    Response.Write(
+                           "<script type=\"text/javascript\">" +
+                           "alert('" + ClassNum + " no longer exists. Please add class in Settings if you wish to use')" +
+                           "</script>");
+
+
+                DropDownList_term.SelectedValue = term;
+
+                DropDownList_Classroom.SelectedValue = room;
+                if (DropDownList_Classroom.SelectedValue != room)
+                    Response.Write(
+                           "<script type=\"text/javascript\">" +
+                           "alert('" + room + " no longer exists. Please add Room in Settings if you wish to use')" +
+                           "</script>");
+                Enrollment_Text.Value = enrollment;
+                Credits_Text.Value = credits;
+                TextBox_StartTime.Text = startTime;
+                TextBox_EndTime.Text = endTime;
+
+                DropDownList_instructor.SelectedValue = Faculty;
+                if (DropDownList_instructor.SelectedValue != Faculty)
+                    Response.Write(
+                           "<script type=\"text/javascript\">" +
+                           "alert('" + Faculty + " no longer exists. Please add instructor in Settings if you wish to use')" +
+                           "</script>");
+                Year_Text.Value = calYear;
+
+                if (M == "1")
+                    SelectCheckBoxList("Monday");
+                if (T == "1")
+                    SelectCheckBoxList("Tuesday");
+                if (W == "1")
+                    SelectCheckBoxList("Wednesday");
+                if (Th == "1")
+                    SelectCheckBoxList("Thursday");
+                if (F == "1")
+                    SelectCheckBoxList("Friday");
+                if (Sa == "1")
+                    SelectCheckBoxList("Saturday");
+                if (Su == "1")
+                    SelectCheckBoxList("Sunday");
+
+
+
+
+
+
+                editing = true;
+                Label_AddClassDesc.Visible = true;
+
+
+
+                /*foreach (GridViewRow row in GridView2.Rows)
+                {
+                    if (row.RowIndex == GridView2.SelectedIndex)
+                    {
+                        sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[1].Text + ";");
+
+
+
+
+                    }
+                }*/
+
+
+
+
+                try
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand("SELECT * FROM classes ORDER BY name ASC", connection))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                DropDownList_class.DataSource = reader;
+                                DropDownList_class.DataValueField = "name";
+                                DropDownList_class.DataTextField = "name";
+                                DropDownList_class.DataBind();
+                            }
+                        }
+                    }
+                    //Add blank item at index 0.
+                    DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+
+
+
+                try
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand("SELECT * FROM classrooms ORDER BY room ASC", connection))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                DropDownList_Classroom.DataSource = reader;
+                                DropDownList_Classroom.DataValueField = "room";
+                                DropDownList_Classroom.DataTextField = "room";
+                                DropDownList_Classroom.DataBind();
+                            }
+                        }
+                    }
+                    //Add blank item at index 0.
+                    DropDownList_Classroom.Items.Insert(0, new ListItem("Select Room", ""));
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+
+                try
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand("SELECT * FROM instructor ORDER BY instructor ASC", connection))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                DropDownList_instructor.DataSource = reader;
+                                DropDownList_instructor.DataValueField = "instructor";
+                                DropDownList_instructor.DataTextField = "instructor";
+                                DropDownList_instructor.DataBind();
+                            }
+                        }
+                    }
+                    //Add blank item at index 0.
+                    DropDownList_instructor.Items.Insert(0, new ListItem("Select Instructor", ""));
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+
+
+
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal1').openModal({ });", true);
+            }
+        }
+
+        private void SelectCheckBoxList(string valueToSelect)
+        {
+            ListItem listItem = this.CheckBoxList_days.Items.FindByText(valueToSelect);
+
+            if (listItem != null) listItem.Selected = true;
         }
 
 
@@ -1277,6 +1479,7 @@ namespace stemSchedule
             catch (Exception ex) { Response.Write(ex); }
             finally { connection.Close(); }
 
+            
 
             try
             {
