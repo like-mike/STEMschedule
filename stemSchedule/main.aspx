@@ -569,6 +569,17 @@
 					  </asp:CheckBoxList>
 					</td>
 			</tr>
+			<tr>
+				<td>
+					Select Year(s):<br />
+                    <asp:CheckBoxList ID="CheckBoxList_addClassYear" runat="server">
+                        <asp:ListItem Value="1">Freshman</asp:ListItem>
+                        <asp:ListItem Value="1">Sophomore</asp:ListItem>
+                        <asp:ListItem Value="3">Junior</asp:ListItem>
+                        <asp:ListItem Value="4">Senior</asp:ListItem>
+                    </asp:CheckBoxList>
+					</td>
+			</tr>
 		</table>
 
 
@@ -741,7 +752,7 @@
           </tr>
           <tr>
               <td class="auto-style6">
-                  Select Classe(s):</td>
+                  Select Class(es):</td>
               <td class="auto-style7">
                   
                   <asp:CheckBoxList ID="CheckBoxList_copyAll" runat="server" OnSelectedIndexChanged="CheckBoxList_copyAll_SelectedIndexChanged">

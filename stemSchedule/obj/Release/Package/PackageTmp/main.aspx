@@ -741,7 +741,7 @@
           </tr>
           <tr>
               <td class="auto-style6">
-                  Select Classe(s):</td>
+                  Select Class(es):</td>
               <td class="auto-style7">
                   
                   <asp:CheckBoxList ID="CheckBoxList_copyAll" runat="server" OnSelectedIndexChanged="CheckBoxList_copyAll_SelectedIndexChanged">

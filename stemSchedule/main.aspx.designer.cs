@@ -373,6 +373,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_majors;
         
         /// <summary>
+        /// CheckBoxList_addClassYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList CheckBoxList_addClassYear;
+        
+        /// <summary>
         /// DropDownList_deleteMajor control.
         /// </summary>
         /// <remarks>

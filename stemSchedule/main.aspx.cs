@@ -58,7 +58,7 @@ namespace stemSchedule
             }
             catch (MySqlException ex)
             {
-                Response.Write(ex);
+                
                 int errorcode = ex.Number;
             }
             finally
@@ -125,7 +125,7 @@ namespace stemSchedule
                     GridView1_Hidden.DataBind();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
                 try
@@ -139,7 +139,7 @@ namespace stemSchedule
                     GridView2.DataBind();
                     connection.Close();
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
                 try
                 {
@@ -160,7 +160,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_ShowDept.Items.Insert(0, new ListItem("", ""));
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
 
@@ -402,7 +402,7 @@ namespace stemSchedule
                 MySqlCommand cmd = new MySqlCommand(command, connection);
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); editing = false; }
 
             try
@@ -590,7 +590,7 @@ namespace stemSchedule
     "alert('Input Error!')" +
     "</script>"
   );
-                Response.Write(ex);
+                
 
             }
             finally
@@ -810,7 +810,7 @@ namespace stemSchedule
                     cmd.ExecuteNonQuery();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally
                 {
                     connection.Close();
@@ -841,7 +841,7 @@ namespace stemSchedule
                 GridView1.DataBind();
 
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
         }
 
@@ -917,7 +917,7 @@ namespace stemSchedule
                     cmd.ExecuteNonQuery();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally
                 {
                     connection.Close();
@@ -949,7 +949,7 @@ namespace stemSchedule
             }
             catch (Exception ex)
             {
-                Response.Write(ex);
+                
 
             }
             finally { connection.Close(); }
@@ -1086,7 +1086,7 @@ namespace stemSchedule
 
             }
             catch (Exception ex) {
-                Response.Write(ex);
+                
                 
             }
             finally { connection.Close(); }
@@ -1264,7 +1264,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_deleteUser.Items.Insert(0, new ListItem("Select User Name", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
 
@@ -1295,7 +1295,7 @@ namespace stemSchedule
                 DropDownList_copy.Items.Insert(1, new ListItem("All", ""));
 
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
 
@@ -1318,7 +1318,7 @@ namespace stemSchedule
                 
                 
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
             
 
@@ -1347,7 +1347,7 @@ namespace stemSchedule
                         "<script type=\"text/javascript\">" +
                         "alert('No Classes Exist')" +
                         "</script>");
-                Response.Write(ex);
+                
             }
             finally { connection.Close(); }
 
@@ -1379,7 +1379,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_chgPass.Items.Insert(0, new ListItem("Select User Name", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_chgPass').openModal({ });", true);
@@ -1508,7 +1508,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
 
@@ -1532,7 +1532,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_Classroom.Items.Insert(0, new ListItem("Select Room", ""));
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
                 try
@@ -1554,7 +1554,7 @@ namespace stemSchedule
                     //Add blank item at index 0.
                     DropDownList_instructor.Items.Insert(0, new ListItem("Select Instructor", ""));
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
 
@@ -1594,7 +1594,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_class.Items.Insert(0, new ListItem("Select Class", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             
@@ -1618,7 +1618,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_Classroom.Items.Insert(0, new ListItem("Select Room", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             try
@@ -1640,7 +1640,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_instructor.Items.Insert(0, new ListItem("Select Instructor", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
 
@@ -1926,7 +1926,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_deleteInstructor.Items.Insert(0, new ListItem("Select Instructor", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
             
 
@@ -1954,7 +1954,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_deleteRoom.Items.Insert(0, new ListItem("Select Room", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteRoom').openModal({ });", true);
@@ -1981,7 +1981,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_deleteClass.Items.Insert(0, new ListItem("Select Class", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClass').openModal({ });", true);
@@ -2013,8 +2013,11 @@ namespace stemSchedule
 
 
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
+
+
+
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addClass').openModal({ });", true);
         }
@@ -2045,7 +2048,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_deleteMajor.Items.Insert(0, new ListItem("Select Major", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteMajor').openModal({ });", true);
@@ -2182,7 +2185,7 @@ namespace stemSchedule
                     MySqlCommand comm = new MySqlCommand(existingQuery, connection);
                     existing = Convert.ToInt32(comm.ExecuteScalar().ToString());
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
                 if (existing != 0)
                 {
@@ -2205,7 +2208,7 @@ namespace stemSchedule
                         "alert('Successfully added room')" +
                         "</script>");
                     }
-                    catch (Exception ex) { Response.Write(ex); }
+                    catch (Exception ex) {  }
                     finally { connection.Close(); }
                 }
 
@@ -2251,7 +2254,7 @@ namespace stemSchedule
                     {
                         connection.Open();
                         //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
-                        string insertQuery = "insert into classes (name,M1,M2,M3,M4) values (@name,@M1,@M2,@M3,@M4)";
+                        string insertQuery = "insert into classes (name,M1,M2,M3,M4,Fr,So,Jr,Sr) values (@name,@M1,@M2,@M3,@M4,@Fr,@So,@Jr,@Sr)";
                         command = new MySqlCommand(insertQuery, connection);
 
                         string[] arr = new string[4];
@@ -2265,17 +2268,33 @@ namespace stemSchedule
                             }
 
                         }
-                        
+                        j = 0;
+                        string[] years = new string[4];
+                        for (int i = 0; i < CheckBoxList_addClassYear.Items.Count; i++)
+                        {
+                            if (CheckBoxList_addClassYear.Items[i].Selected)
+                            {
+                                years[j] = "1";
+                            }
+                            j++;
+
+                        }
+
                         command.Parameters.AddWithValue("@name", className);
                         command.Parameters.AddWithValue("@M1", arr[0]);
                         command.Parameters.AddWithValue("@M2", arr[1]);
                         command.Parameters.AddWithValue("@M3", arr[2]);
                         command.Parameters.AddWithValue("@M4", arr[3]);
 
+                        command.Parameters.AddWithValue("@Fr", years[0]);
+                        command.Parameters.AddWithValue("@So", years[1]);
+                        command.Parameters.AddWithValue("@Jr", years[2]);
+                        command.Parameters.AddWithValue("@Sr", years[3]);
+
                         command.ExecuteNonQuery();
                         Response.Write(
                                 "<script type=\"text/javascript\">" +
-                                "alert('Add Class Success')" +
+                                "alert('Succesfully added class')" +
                                  "</script>");
 
                     }
@@ -2548,7 +2567,7 @@ namespace stemSchedule
                         "<script type=\"text/javascript\">" +
                         "alert('No Classes Exist')" +
                         "</script>");
-                //Response.Write(ex);
+                //
             }
             finally { connection.Close(); }
 
@@ -2593,7 +2612,7 @@ namespace stemSchedule
                                 if (temp == 0)
                                     match = 0;
                             }
-                            catch (Exception ex) { Response.Write(ex); }
+                            catch (Exception ex) {  }
                             finally { connection.Close(); }
                         }
 
@@ -2610,7 +2629,7 @@ namespace stemSchedule
                             command.ExecuteNonQuery();
 
                         }
-                        catch (Exception ex) { Response.Write(ex); }
+                        catch (Exception ex) {  }
                         finally
                         {
                             connection.Close();
