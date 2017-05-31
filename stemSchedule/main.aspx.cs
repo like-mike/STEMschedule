@@ -385,14 +385,40 @@ namespace stemSchedule
 
         protected void Button_AddClass_Click1(object sender, EventArgs e)
         {
-            
 
 
 
-            string CRN = CRN_Text.Value.ToString();
+
+            string CRN = "";
             string enrollment = Enrollment_Text.Value.ToString();
             string credits = Credits_Text.Value.ToString();
             string calYear = Year_Text.Value.ToString();
+
+
+            if (CRN_Text.Value.ToString() == "")
+            {
+                int match = 1;
+                Random random = new Random();
+                int CRN_random = 0;
+                while (match != 0)
+                {
+                    CRN_random = random.Next(0, 1000);
+                    try
+                    {
+                        connection.Open();
+                        string check = "select count(*) from schedule where CRN='" + CRN_random + "'";
+                        MySqlCommand com = new MySqlCommand(check, connection);
+                        int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+                        if (temp == 0)
+                            match = 0;
+                    }
+                    catch (Exception ex) { Response.Write(ex); }
+                    finally { connection.Close(); }
+                }
+                CRN = CRN_random.ToString();
+            }
+            else
+                CRN = CRN_Text.Value.ToString();
 
 
             try
@@ -590,7 +616,7 @@ namespace stemSchedule
     "alert('Input Error!')" +
     "</script>"
   );
-                
+                Response.Write(ex);
 
             }
             finally
