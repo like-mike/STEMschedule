@@ -849,30 +849,6 @@ namespace stemSchedule
 
         protected void ExportToExcel(object sender, EventArgs e)
         {
-            /*String CRN = GridView1.SelectedRow.Cells[1].Text;
-            String Faculty = GridView1.SelectedRow.Cells[2].Text;
-            String ClassNum = GridView1.SelectedRow.Cells[3].Text;
-            String startTime = GridView1.SelectedRow.Cells[5].Text;
-            String endTime = GridView1.SelectedRow.Cells[6].Text;
-            String term = GridView1.SelectedRow.Cells[7].Text;
-            String room = GridView1.SelectedRow.Cells[8].Text;
-            String M1 = GridView1.SelectedRow.Cells[9].Text;
-            String M2 = GridView1.SelectedRow.Cells[10].Text;
-            String M3 = GridView1.SelectedRow.Cells[11].Text;
-            String M4 = GridView1.SelectedRow.Cells[12].Text;
-            String M = GridView1.SelectedRow.Cells[14].Text;
-            String T = GridView1.SelectedRow.Cells[15].Text;
-            String W = GridView1.SelectedRow.Cells[16].Text;
-            String Th = GridView1.SelectedRow.Cells[17].Text;
-            String F = GridView1.SelectedRow.Cells[18].Text;
-            String Sa = GridView1.SelectedRow.Cells[19].Text;
-            String Su = GridView1.SelectedRow.Cells[20].Text;
-            String Fr = GridView1.SelectedRow.Cells[21].Text;
-            String So = GridView1.SelectedRow.Cells[22].Text;
-            String Jr = GridView1.SelectedRow.Cells[23].Text;
-            String Se = GridView1.SelectedRow.Cells[24].Text;*/
-
-
             StringBuilder builder = new StringBuilder();
             string strFileName = "STEMschedule_" + DateTime.Now.ToShortDateString() + ".csv";
             builder.Append("CRN,Faculty,Class,Start Time,End Time,Term,Room,M1,M2,M3,M4,Year,Credits,Enrollment,Calendar Year," + Environment.NewLine);
@@ -891,13 +867,7 @@ namespace stemSchedule
                 M[2] = row.Cells[10].Text;
                 M[3] = row.Cells[11].Text;
 
-                for(int i = 0; i < 4; i++)
-                {
-                    
-                    if (M[i] == "")
-                        M[i] = "EMPTY";
-                }
-
+                
                
                 string year = row.Cells[26].Text;
                 string credits = row.Cells[27].Text;
@@ -1299,6 +1269,93 @@ namespace stemSchedule
 
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteUser').openModal({ });", true);
+        }
+
+
+        protected void Button_CopyShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("select * from major ORDER BY major ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_copy.DataSource = reader;
+                            DropDownList_copy.DataValueField = "major";
+                            DropDownList_copy.DataTextField = "major";
+                            DropDownList_copy.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_copy.Items.Insert(0, new ListItem("Select Major", ""));
+                DropDownList_copy.Items.Insert(1, new ListItem("All", ""));
+
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("select DISTINCT calYear from schedule order by calYear Desc", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_copiedYear.DataSource = reader;
+                            DropDownList_copiedYear.DataValueField = "calYear";
+                            DropDownList_copiedYear.DataTextField = "calYear";
+                            DropDownList_copiedYear.DataBind();
+                        }
+                    }
+                }
+                
+                
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+            
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM schedule WHERE CalYear = '" + DropDownList_copiedYear.SelectedValue + "' AND Term = '" + DropDownList_CopyTerm.SelectedValue + "' ORDER BY ClassNum ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            CheckBoxList_copyAll.DataSource = reader;
+                            CheckBoxList_copyAll.DataValueField = "CRN";
+                            CheckBoxList_copyAll.DataTextField = "ClassNum";
+                            CheckBoxList_copyAll.DataBind();
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No Classes Exist')" +
+                        "</script>");
+                Response.Write(ex);
+            }
+            finally { connection.Close(); }
+
+
+
+
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_copy').openModal({ });", true);
         }
 
         protected void Button_ChangePwShow_Click(object sender, EventArgs e)
@@ -2425,6 +2482,166 @@ namespace stemSchedule
                     }
                 }
             }
+
+        }
+
+        protected void DropDownList_copy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void CheckBoxList_copyAll_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        protected void Button_selectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem item in CheckBoxList_copyAll.Items)
+                item.Selected = true;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_copy').openModal({ });", true);
+        }
+
+        protected void Button_unselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem item in CheckBoxList_copyAll.Items)
+                item.Selected = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_copy').openModal({ });", true);
+        }
+
+        
+
+        protected void Button_copyUpdate_Click(object sender, EventArgs e)
+        {
+            //unselect all
+            foreach (ListItem item in CheckBoxList_copyAll.Items)
+                item.Selected = false;
+
+            string query = "";
+            if(DropDownList_copy.SelectedIndex == 0 || DropDownList_copy.SelectedIndex == 1)
+                query = "SELECT* FROM schedule WHERE CalYear = '" + DropDownList_copiedYear.SelectedValue + "' AND Term = '" + DropDownList_CopyTerm.SelectedValue + "' ORDER BY ClassNum ASC";
+            else
+                query = "SELECT* FROM schedule WHERE CalYear = '" + DropDownList_copiedYear.SelectedValue + "' AND TERM = '" + DropDownList_CopyTerm.SelectedValue + "' AND(M1 = '" + DropDownList_copy.SelectedValue + "' OR M2 = '" + DropDownList_copy.SelectedValue + "' OR M3 = '" + DropDownList_copy.SelectedValue + "' OR M4 = '" + DropDownList_copy.SelectedValue + "') ORDER BY ClassNum ASC";
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            CheckBoxList_copyAll.DataSource = reader;
+                            CheckBoxList_copyAll.DataValueField = "CRN";
+                            CheckBoxList_copyAll.DataTextField = "ClassNum";
+                            CheckBoxList_copyAll.DataBind();
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No Classes Exist')" +
+                        "</script>");
+                //Response.Write(ex);
+            }
+            finally { connection.Close(); }
+
+
+
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_copy').openModal({ });", true);
+        }
+
+        protected void Button_copy_Click(object sender, EventArgs e)
+        {
+            if (CopyYear_Text.Value.ToString() == "")
+            {
+                Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('Must enter a new year to copy to')" +
+                            "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_copy').openModal({ });", true);
+            }
+            else
+            {
+                Random random = new Random();
+                int CRN = 0;
+                int count = CheckBoxList_copyAll.Items.Count;
+                for (int i = 0; i < CheckBoxList_copyAll.Items.Count; i++)
+                {
+                    if (CheckBoxList_copyAll.Items[i].Selected)
+                    {
+
+
+                        int match = 1;
+
+                        while (match != 0)
+                        {
+                            CRN = random.Next(0, 1000);
+                            try
+                            {
+                                connection.Open();
+                                string check = "select count(*) from schedule where CRN='" + CRN + "'";
+                                MySqlCommand com = new MySqlCommand(check, connection);
+                                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+                                if (temp == 0)
+                                    match = 0;
+                            }
+                            catch (Exception ex) { Response.Write(ex); }
+                            finally { connection.Close(); }
+                        }
+
+
+
+                        try
+                        {
+                            connection.Open();
+                            string insertQuery = "CREATE table temporary_table AS SELECT * FROM schedule WHERE CRN='" + CheckBoxList_copyAll.Items[i].Value + "';UPDATE temporary_table SET CRN='" + CRN + "', calYear = '" + CopyYear_Text.Value.ToString() + "';INSERT INTO schedule SELECT * FROM temporary_table;";
+
+                            command = new MySqlCommand(insertQuery, connection);
+                            //command.Parameters.AddWithValue("@user", newUser);
+                            //command.Parameters.AddWithValue("@pass", pass);
+                            command.ExecuteNonQuery();
+
+                        }
+                        catch (Exception ex) { Response.Write(ex); }
+                        finally
+                        {
+                            connection.Close();
+                            try
+                            {
+                                connection.Open();
+                                string insertQuery = "DROP TABLE temporary_table";
+                                command = new MySqlCommand(insertQuery, connection);
+                                command.ExecuteNonQuery();
+                            }
+                            catch (Exception ex) { }
+                            finally { connection.Close(); }
+                        }
+
+
+
+
+                    }
+
+
+                }
+                Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('(" + count + ") classes successfully copied')" +
+                            "</script>");
+            }
+
+
+            
+            
+            
 
         }
     }

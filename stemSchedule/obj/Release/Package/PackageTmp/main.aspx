@@ -26,6 +26,12 @@
 			.auto-style5 {
 				width: 639px;
 			}
+			.auto-style6 {
+                width: 614px;
+            }
+			.auto-style7 {
+                width: 606px;
+            }
 			</style>
 		</head>
 
@@ -35,8 +41,11 @@
 <ul id="dropdown_admin" class="dropdown-content">
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
-	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
+    <li class="divider"></li>
+	<li><a href="#" runat="server" onserverclick="Button_CopyShow_Click">Copy Classes</a></li>
+    
+    
 </ul>
 
 	<!-- Dropdown Structure -->
@@ -50,7 +59,7 @@
 	<li><a href="#" runat="server" onserverclick="Button_AddRoomShow_Click">Add Room</a></li>
 	<li><a href="#" runat="server" onserverclick="Button_DeleteRoomShow_Click">Delete Room</a></li>
 	<li class="divider"></li>
-	<li class="divider"></li>
+	
 	<li><a href="#" runat="server" onserverclick="Button_AddClassShow_Click">Add Class</a></li>
 	<li><a href="#" runat="server" onserverclick="Button_DeleteClassShow_Click">Delete Class</a></li>
 
@@ -119,10 +128,9 @@
   <!-- Add Class Modal Structuremodal modal-fixed-footer -->
   <div id="modal1" class="modal">
 	<div class="modal-content">
-
         <asp:Label ID="Label_AddClassDesc" runat="server" Text="Warning: Editing a class will changed stored user for the class" Font-Size="large" Visible="false"></asp:Label>
         <br />
-	<br />
+	
 		 <table class="auto-style1">
 			  <tr>
 				  <td class="auto-style2">CRN</td>
@@ -255,141 +263,7 @@
 	</div>
   </div>
 
-		<div id="modal_edit" class="modal">
-	<div class="modal-content">
-	  <h4>Edit Class</h4>
-	  <p>A bunch of text</p>
-		 <table class="auto-style1">
-			  <tr>
-				  <td class="auto-style2">CRN</td>
-				  <td class="auto-style5">
-					  <div class="input-field col s6">
-		  <input id="eCRN_Text" type="text" class="validate" runat="server">
-		  <label for="eCRN_Text">Leave BLANK to submit random CRN</label>
-		</div>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Year</td>
-				  <td>
-					  <div class="input-field col s6">
-		  <input id="eYear_Text" type="text" class="validate" runat="server">
-		  <label for="eYear_Text">eg. 2017, etc.</label>
-		</div></td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Instructor</td>
-				  <td class="auto-style5">
-					  <asp:DropDownList ID="DropDownList_eInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Start Time</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_eStartTime" TextMode="Time" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Class</td>
-				  <td class="auto-style5">
-					  <asp:DropDownList ID="DropDownList_eClass" runat="server" class="browser-default" Width="200px">
-					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">End Time</td>
-				  <td>
-					  <asp:TextBox ID="TextBox_eEndTime" TextMode="Time" runat="server"></asp:TextBox>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Term</td>
-				  <td class="auto-style5">
-					  <asp:DropDownList ID="DropDownList_eTerm" runat="server" class="browser-default" Width="200px">
-						  <asp:ListItem Selected="True" Value="Autumn">Autumn</asp:ListItem>
-						  <asp:ListItem Value="Winter">Winter</asp:ListItem>
-						  <asp:ListItem Value="Spring">Spring</asp:ListItem>
-						  <asp:ListItem Value="Summer">Summer</asp:ListItem>
-					  </asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">Days</td>
-				  <td rowspan="6">
-					  <asp:CheckBoxList ID="CheckBoxList_eDays" runat="server">
-						  <asp:ListItem Value="1">Monday</asp:ListItem>
-						  <asp:ListItem Value="2">Tuesday</asp:ListItem>
-						  <asp:ListItem Value="3">Wednesday</asp:ListItem>
-						  <asp:ListItem Value="4">Thursday</asp:ListItem>
-						  <asp:ListItem Value="5">Friday</asp:ListItem>
-						  <asp:ListItem Value="6">Saturday</asp:ListItem>
-						  <asp:ListItem Value="7">Sunday</asp:ListItem>
-					  </asp:CheckBoxList>
-				  </td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Classroom</td>
-				  <td class="auto-style5">
-					  <asp:DropDownList ID="DropDownList_eRoom" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Enrollment</td>
-				  <td class="auto-style5">
-					  <div class="input-field col s6">
-		  <input id="eEnrollment_Text" type="text" class="validate" runat="server">
-		  <label for="eEnrollment_Text"></label>
-		</div>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">Credits</td>
-				  <td class="auto-style5">
-					  <div class="input-field col s6">
-		  <input id="eCredits_Text" type="text" class="validate" runat="server">
-		  <label for="eCredits_Text"></label>
-		</div>
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">&nbsp;</td>
-				  <td class="auto-style5">
-					  &nbsp;</td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
-			  </tr>
-			  <tr>
-				  <td class="auto-style2">&nbsp;</td>
-				  <td class="auto-style5">
-					  
-				  </td>
-				  <td>&nbsp;</td>
-				  <td class="auto-style3">&nbsp;</td>
-				  <td>&nbsp;</td>
-			  </tr>
-		  </table>
-	</div>
-	<div class="modal-footer">
-		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
-	  <a href="#" runat="server" onserverclick="Button_AddClass_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Add Class</a>
 		
-	</div>
-  </div>
-
-	  <br><br>
-
-	</div>
-  </div>
 
 <!-- Modal Structure -->
   <div id="modal_deleteUser" class="modal">
@@ -831,7 +705,80 @@
   </div>
 
 
+        <!-- Modal Structure -->
+  <div id="modal_copy" class="modal">
+    <div class="modal-content">
+      <h4>Copy Classes</h4>
+      <table align="center">
+          <tr>
+              <td class="auto-style6">
+                  <asp:DropDownList ID="DropDownList_copy" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+			  </asp:DropDownList>
 
+                  
+                  <button id="Button_copyUpdate" runat="server" onserverclick="Button_copyUpdate_Click"  class="btn modal-trigger red darken-4">Update</button>
+
+              </td>
+              <td class="auto-style7">
+                  
+              <asp:DropDownList ID="DropDownList_CopyTerm" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+                  <asp:ListItem Selected="True">Autumn</asp:ListItem>
+                  <asp:ListItem>Winter</asp:ListItem>
+                  <asp:ListItem>Spring</asp:ListItem>
+                  <asp:ListItem>Summer</asp:ListItem>
+			  </asp:DropDownList>
+                  <asp:DropDownList ID="DropDownList_copiedYear" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+			  </asp:DropDownList>
+                  <div class="input-field col s6">
+		  <input id="CopyYear_Text" type="text" class="validate" runat="server">
+		  <label for="CopyYear_Text">Enter New Year</label>
+		</div>
+              </td>
+              <td>
+                  
+
+              </td>
+          </tr>
+          <tr>
+              <td class="auto-style6">
+                  Select Classe(s):</td>
+              <td class="auto-style7">
+                  
+                  <asp:CheckBoxList ID="CheckBoxList_copyAll" runat="server" OnSelectedIndexChanged="CheckBoxList_copyAll_SelectedIndexChanged">
+                  </asp:CheckBoxList>
+              </td>
+              <td>
+                  &nbsp;</td>
+          </tr>
+          <tr>
+              <td class="auto-style6">
+                  
+
+              </td>
+              <td class="auto-style7">
+                  
+                  
+                  <button id="Button5" runat="server" onserverclick="Button_selectAll_Click"  class="btn modal-trigger red darken-4">Select All</button>
+                  <button id="Button6" runat="server" onserverclick="Button_unselectAll_Click"  class="btn modal-trigger red darken-4">Unselect All</button>
+
+
+              </td>
+              <td>
+                  &nbsp;</td>
+          </tr>
+          </table>
+        
+        <asp:panel runat="server" ID="Panel_copyAll">
+        </asp:panel>
+
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+        <a href="#" runat="server" onserverclick="Button_copy_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Copy</a>
+      
+    </div>
+  </div>
 
 
 
@@ -975,7 +922,7 @@
 				<br />
 	</div>
 	
-			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" />
+			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" Visible="False" />
 		  </div>
 		</div>
 
