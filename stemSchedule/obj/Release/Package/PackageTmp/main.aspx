@@ -569,6 +569,17 @@
 					  </asp:CheckBoxList>
 					</td>
 			</tr>
+			<tr>
+				<td>
+					Select Year(s):<br />
+                    <asp:CheckBoxList ID="CheckBoxList_addClassYear" runat="server">
+                        <asp:ListItem Value="1">Freshman</asp:ListItem>
+                        <asp:ListItem Value="1">Sophomore</asp:ListItem>
+                        <asp:ListItem Value="3">Junior</asp:ListItem>
+                        <asp:ListItem Value="4">Senior</asp:ListItem>
+                    </asp:CheckBoxList>
+					</td>
+			</tr>
 		</table>
 
 

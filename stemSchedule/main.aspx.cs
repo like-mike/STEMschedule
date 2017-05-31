@@ -22,7 +22,7 @@ namespace stemSchedule
     public partial class main : System.Web.UI.Page
     {
         // "#defines"
-        
+        int rows = 0;
         //select *,TIME_FORMAT(StartTime, '%h:%i %p')startTime,TIME_FORMAT(EndTime, '%h:%i %p')EndTime from schedule
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
         public string PUBLIC_SCHEDULE = "Select * FROM SCHEDULE WHERE PUBLIC = 1";
@@ -84,6 +84,7 @@ namespace stemSchedule
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            rows = 0;
             this.Form.DefaultButton = this.Button3.UniqueID;
             if (!IsPostBack)
             {
@@ -141,28 +142,7 @@ namespace stemSchedule
                 }
                 catch (Exception ex) {  }
                 finally { connection.Close(); }
-                try
-                {
-                    connection.Open();
-                    using (var cmd = new MySqlCommand("SELECT * FROM major order by major", connection))
-                    {
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                DropDownList_ShowDept.DataSource = reader;
-                                DropDownList_ShowDept.DataValueField = "major";
-                                DropDownList_ShowDept.DataTextField = "major";
-                                DropDownList_ShowDept.DataBind();
-                            }
-                        }
-                    }
-                    //Add blank item at index 0.
-                    DropDownList_ShowDept.Items.Insert(0, new ListItem("", ""));
-                }
-                catch (Exception ex) {  }
-                finally { connection.Close(); }
-
+                
 
 
                 
@@ -853,24 +833,7 @@ namespace stemSchedule
             Response.Redirect("main.aspx");
         }
 
-        protected void DropDownList_ShowDept_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            String department = DropDownList_ShowDept.SelectedValue.ToString();
-            try
-            {
-                connection.Open();
-                command = new MySqlCommand("SELECT CRN, Faculty, ClassNum, Days, TIME_FORMAT(StartTime, '%h:%i %p') StartTime, TIME_FORMAT(EndTime, '%h:%i %p') EndTime, Term, Room, EnrollNum, Year, M1, M2, M3, M4, Credits FROM schedule", connection);
-                table = new DataTable();
-                data = new MySqlDataAdapter(command);
-                data.Fill(table);
-                GridView1.DataSource = table;
-                GridView1.DataBind();
-
-            }
-            catch (Exception ex) {  }
-            finally { connection.Close(); }
-        }
-
+     
        
 
         protected void ExportToExcel(object sender, EventArgs e)
@@ -985,140 +948,7 @@ namespace stemSchedule
 
 
 
-        protected void Button_ApplySort_Click(object sender, EventArgs e)
-        {
-            string update = "Select * from SCHEDULE";
-            string dept = "";
-            bool where = false;
-            string showing = "Showing: ";
-
-           
-
-
-            if(TextBox_searchCRN.Text != "")
-            {
-                string CRN = TextBox_searchCRN.Text;
-                update += " WHERE CRN = " + CRN;
-                where = true;
-                showing += "CRN = " + CRN + " ";
-            }
-
-            if (RadioButtonList_ShowClasses.SelectedIndex == 1 && TextBox_searchCRN.Text == "")
-            {
-
-                if (!where)
-                {
-                    update += " WHERE User = '" + Session["New"].ToString() + "'";
-                    where = true;
-                }
-                else
-                {
-                    update += "AND User = '" + Session["New"].ToString() + "'";
-                }
-                showing += "Only My Classes ";
-            }
-            
-            else if (RadioButtonList_ShowClasses.SelectedIndex == 2 && TextBox_searchCRN.Text == "")
-            {
-                update += " WHERE Conflict != '0'";
-                where = true;
-                showing += "All Classes with Conflicts ";
-            }
-
-            else if(RadioButtonList_ShowClasses.SelectedIndex == 0)
-            {
-                Label_showSearch.Visible = false;
-            }
-
-            if (DropDownList_ShowDept.SelectedIndex != 0 && TextBox_searchCRN.Text == "")
-            {
-                dept = DropDownList_ShowDept.SelectedValue.ToString();
-                if (!where)
-                {
-                    update += " WHERE (M1 = '" + dept + "' OR M2 = '" + dept + "' OR M3 = '" + dept + "' OR M4 = '" + dept + "')";
-                    where = true;
-                }
-                else
-                {
-                    update += " AND (M1 = '" + dept + "' OR M2 = '" + dept + "' OR M3 = '" + dept + "' OR M4 = '" + dept + "')";
-                }
-                
-                showing += "Major = " + dept + " ";
-            }
-
-            if (DropDownList_ShowYear.SelectedIndex != 0 && TextBox_searchCRN.Text == "")
-            {
-                if (!where)
-                {
-                    if (DropDownList_ShowYear.SelectedValue.ToString() == "1")
-                    {
-                        update += " WHERE FR = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "2")
-                    {
-                        update += " WHERE SO = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "3")
-                    {
-                        update += " WHERE JU = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "4")
-                    {
-                        update += " WHERE SE = '1'";
-                    }
-                    where = true;
-                }
-                else {
-                    if (DropDownList_ShowYear.SelectedValue.ToString() == "1")
-                    {
-                        update += " AND FR = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "2")
-                    {
-                        update += " AND SO = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "3")
-                    {
-                        update += " AND JU = '1'";
-                    }
-                    else if (DropDownList_ShowYear.SelectedValue.ToString() == "4")
-                    {
-                        update += " AND SE = '1'";
-                    }
-                    
-                }
-                    
-
-                showing += "Year = " + DropDownList_ShowYear.SelectedItem.ToString() + " ";
-            }
-
-            try
-            { // public schedule
-                
-                connection.Open();
-                command = new MySqlCommand(update, connection);
-                table = new DataTable();
-                data = new MySqlDataAdapter(command);
-                data.Fill(table);
-                GridView1.DataSource = table;
-                GridView1.DataBind();
-                Label_showSearch.Text = showing;
-                if(where)
-                    Label_showSearch.Visible = true;
-                else
-                    Label_showSearch.Visible = false;
-
-                PUBLIC_SCHEDULE = update;
-
-            }
-            catch (Exception ex) {
-                
-                
-            }
-            finally { connection.Close(); }
-            //Response.Write(update);
-
-        }
+        
 
         
 
@@ -1129,6 +959,12 @@ namespace stemSchedule
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
+            
+            
+
+
+
+
 
         }
 
@@ -1262,6 +1098,59 @@ namespace stemSchedule
         {
             //divControl.Attributes("sty") = "height:200px; color:Red"
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
+        }
+
+        protected void Button_SearchShow_Click(object sender, EventArgs e)
+        {
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM Instructor ORDER BY instructor ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_searchInstructor.DataSource = reader;
+                            DropDownList_searchInstructor.DataValueField = "instructor";
+                            DropDownList_searchInstructor.DataTextField = "instructor";
+                            DropDownList_searchInstructor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteUser.Items.Insert(0, new ListItem("Select Instructor", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM major ORDER BY major ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_searchMajor.DataSource = reader;
+                            DropDownList_searchMajor.DataValueField = "major";
+                            DropDownList_searchMajor.DataTextField = "major";
+                            DropDownList_searchMajor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_searchMajor.Items.Insert(0, new ListItem("Select Major", ""));
+            }
+            catch (Exception ex) { }
+            finally { connection.Close(); }
+
+
+
+            
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_search').openModal({ });", true);
         }
 
         protected void Button4_Click(object sender, EventArgs e)
@@ -2688,6 +2577,27 @@ namespace stemSchedule
             
             
 
+        }
+
+        protected void Button_resetDefault_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button_search_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void GridView1_DataBound(object sender, EventArgs e)
+        {
+            for(int i = 0; i < GridView1.Rows.Count; i++)
+            {
+
+
+                GridView1.Rows[i].Cells[1].Text = getTime(GridView1.Rows[i].Cells[5].Text).ToString();
+            }
+            
         }
     }
     
