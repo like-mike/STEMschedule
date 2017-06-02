@@ -93,6 +93,27 @@ namespace stemSchedule
                 {
                     //label_welcome.Text += Session["New"].ToString();
                     this.Form.DefaultButton = this.Button3.UniqueID;
+
+                    string query;
+
+                    try
+                    { // user schedule
+                        connection.Open();
+                        MySqlCommand findQuery = new MySqlCommand("Select query from userdata where username = '" + Session["New"] + "'");
+                        query = findQuery.ExecuteScalar().ToString();
+                        
+
+                        Response.Write(query);
+                        command = new MySqlCommand(query, connection);
+                        table = new DataTable();
+                        data = new MySqlDataAdapter(command);
+                        data.Fill(table);
+                        GridView1.DataSource = table;
+                        GridView1.DataBind();
+
+                    }
+                    catch (Exception ex) { }
+                    finally { connection.Close(); }
                 }
                 else
                 {
@@ -115,19 +136,7 @@ namespace stemSchedule
                 finally { connection.Close(); }
 
 
-                try
-                { // hidden schedule
-                    connection.Open();
-                    command = new MySqlCommand("SELECT * FROM SCHEDULE", connection);
-                    table = new DataTable();
-                    data = new MySqlDataAdapter(command);
-                    data.Fill(table);
-                    GridView1_Hidden.DataSource = table;
-                    GridView1_Hidden.DataBind();
-
-                }
-                catch (Exception ex) {  }
-                finally { connection.Close(); }
+                
 
                 try
                 { //private schedule
@@ -920,27 +929,25 @@ namespace stemSchedule
 
         protected void Button_ShowAll_Click(object sender, EventArgs e)
         {
-            string update = "Select * from SCHEDULE WHERE PUBLIC = 1";
             try
-            { // public schedule
-
+            { // user schedule
                 connection.Open();
-                command = new MySqlCommand(update, connection);
+                command = new MySqlCommand("SELECT query from userdata where username = '" + Session["New"] + "'", connection);
+                string query = command.ExecuteScalar().ToString();
+
+
+
+                //Response.Write(query);
+
+                command = new MySqlCommand(query, connection);
                 table = new DataTable();
                 data = new MySqlDataAdapter(command);
                 data.Fill(table);
                 GridView1.DataSource = table;
                 GridView1.DataBind();
-                Label_showSearch.Visible = false;
-              
-
 
             }
-            catch (Exception ex)
-            {
-                
-
-            }
+            catch (Exception ex) { Response.Write(ex); }
             finally { connection.Close(); }
         }
 
@@ -1120,7 +1127,7 @@ namespace stemSchedule
                     }
                 }
                 //Add blank item at index 0.
-                DropDownList_deleteUser.Items.Insert(0, new ListItem("Select Instructor", ""));
+                DropDownList_searchInstructor.Items.Insert(0, new ListItem("", ""));
             }
             catch (Exception ex) { Response.Write(ex); }
             finally { connection.Close(); }
@@ -1142,7 +1149,7 @@ namespace stemSchedule
                     }
                 }
                 //Add blank item at index 0.
-                DropDownList_searchMajor.Items.Insert(0, new ListItem("Select Major", ""));
+                DropDownList_searchMajor.Items.Insert(0, new ListItem("", ""));
             }
             catch (Exception ex) { }
             finally { connection.Close(); }
@@ -1250,6 +1257,7 @@ namespace stemSchedule
                             CheckBoxList_copyAll.DataValueField = "CRN";
                             CheckBoxList_copyAll.DataTextField = "ClassNum";
                             CheckBoxList_copyAll.DataBind();
+                            
                         }
                     }
                 }
@@ -1771,7 +1779,7 @@ namespace stemSchedule
             }
             catch { }
 
-
+            bool loggedin = false;
             if (temp == 1)
             {
                 try
@@ -1786,6 +1794,10 @@ namespace stemSchedule
                         Session["New"] = formUserName;
                         //Response.Write("Password is correct");
                         //Response.Redirect("main.aspx");
+
+                        loggedin = true;
+
+
                     }
                     else
                     {
@@ -1807,6 +1819,31 @@ namespace stemSchedule
                 "<script type=\"text/javascript\">" +
                 "alert('User Name is not correct')" +
                 "</script>");
+            }
+
+
+            if (loggedin)
+            {
+                try
+                { // user schedule
+                    connection.Open();
+                    command = new MySqlCommand("SELECT query from userdata where username = '" + Session["New"] + "'", connection);
+                    string query = command.ExecuteScalar().ToString();
+
+
+
+                    //Response.Write(query);
+
+                    command = new MySqlCommand(query, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
             }
         }
 
@@ -2593,11 +2630,145 @@ namespace stemSchedule
         {
             for(int i = 0; i < GridView1.Rows.Count; i++)
             {
+                string startTime = GridView1.Rows[i].Cells[5].Text;
 
+                //do substring processing with tempTime
 
-                GridView1.Rows[i].Cells[1].Text = getTime(GridView1.Rows[i].Cells[5].Text).ToString();
+                GridView1.Rows[i].Cells[5].Text = startTime;
             }
             
+        }
+
+        protected void Button_search_Click1(object sender, EventArgs e)
+        {
+           
+           
+            string query = "Select * from schedule where public = 3";
+
+            //search by class
+            if (ClassSearch_Text.Value.ToString() != "")
+                query += " UNION select * from schedule where public = 1 AND ClassNum LIKE '%" + ClassSearch_Text.Value.ToString() + "%'";
+            if (CRNSearch_Text.Value.ToString() != "")
+                query += " union select * from schedule where public = 1 AND CRN = '" + CRNSearch_Text.Value.ToString() + "'";
+            if (DropDownList_searchInstructor.SelectedIndex != 0)
+                query += " union select * from schedule where public = 1 AND Faculty = '" + DropDownList_searchInstructor.SelectedValue + "'";
+
+            string major = DropDownList_searchMajor.SelectedValue;
+            if (DropDownList_searchMajor.SelectedIndex != 0)
+                query += " union select * from schedule where public = 1 AND (M1 = '" + major + "' OR M2 = '" + major + "' OR M3 = '" + major + "' OR M4 = '" + major + "')";
+
+            if (CalYearSearch_Text.Value.ToString() != "")
+                query += " UNION select * from schedule where public = 1 AND CalYear = '" + CalYearSearch_Text.Value.ToString() + "'";
+
+
+            if (DropDownList_searchTerm.SelectedIndex != 0)
+                query += " union select * from schedule where public = 1 AND Term = '" + DropDownList_searchTerm.SelectedValue + "'";
+
+
+            if (DropDownList_searchClassYear.SelectedIndex == 1)
+                query += " union select * from schedule where public = 1 AND Fr = 1";
+            else if (DropDownList_searchClassYear.SelectedIndex == 2)
+                query += " union select * from schedule where public = 1 AND So = 1";
+            else if (DropDownList_searchClassYear.SelectedIndex == 3)
+                query += " union select * from schedule where public AND Ju = 1";
+            else if (DropDownList_searchClassYear.SelectedIndex == 4)
+                query += " union select * from schedule where public =1 AND Se = 1";
+
+            if (query == "Select * from schedule where public = 3")
+                query = "select * from schedule where public = 1";
+
+            int checkCount = 0;
+
+            if (CheckBox_className.Checked)
+            {
+                query += " ORDER BY ClassNum ASC";
+                checkCount++;
+
+            }
+            if (CheckBox_CRN.Checked)
+            {
+                query += " ORDER BY CRN ASC";
+                checkCount++;
+            }
+            if (CheckBox_instructor.Checked)
+            {
+                query += " ORDER BY faculty ASC";
+                checkCount++;
+            }
+            if (CheckBox_calYear.Checked)
+            {
+                query += " ORDER BY calYear ASC";
+                checkCount++;
+            }
+            
+            if (checkCount > 1)
+            {
+                Response.Write(
+                         "<script type=\"text/javascript\">" +
+                         "alert('Cannot ORDER BY more than one column. Please limit selected to 1')" +
+                         "</script>");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_search').openModal({ });", true);
+
+            }
+            //Response.Write(query);
+            if (checkCount == 0)
+                query += " ORDER BY classNum";
+            if(checkCount < 2)
+            {
+                
+                try
+                { // public schedule
+                    connection.Open();
+                    command = new MySqlCommand(query, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+                //query = "Select * from schedule where public = 3 UNION select * from schedule where public = 1 AND ClassNum LIKE '%123%' ORDER BY CRN ASC";
+                if (CheckBox_default.Checked)
+                {
+                    string command = "update userdata SET query = @query";
+                    try
+                    {
+                        connection.Open();
+                        MySqlCommand cmd = new MySqlCommand(command, connection);
+                        cmd.Parameters.AddWithValue("@query", query);
+
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    catch (Exception ex) { Response.Write( ex); }
+                    finally
+                    {
+                        connection.Close();
+                    }
+
+
+
+                    Response.Write(
+                         "<script type=\"text/javascript\">" +
+                         "alert('Updated Your Default View')" +
+                         "</script>");
+                }
+                
+                else
+                {
+                    Response.Write(
+                         "<script type=\"text/javascript\">" +
+                         "alert('Showing Search Results')" +
+                         "</script>");
+                }
+
+
+            }
+
+
+
         }
     }
     

@@ -20,9 +20,6 @@
 			.auto-style3 {
 				width: 361px;
 			}
-			.auto-style4 {
-				width: 453px;
-			}
 			.auto-style5 {
 				width: 639px;
 			}
@@ -31,6 +28,9 @@
             }
 			.auto-style7 {
                 width: 606px;
+            }
+			.auto-style8 {
+                width: 612px;
             }
 			</style>
 		</head>
@@ -95,7 +95,7 @@
 	  </div>
 	  <div class="row center">
 		<!-- table here -->
-		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" UpdateMode="Conditional" PersistedSelection="true" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowCreated="GridView1_RowCreated">
+		  <asp:GridView ID="GridView1" runat="server" class ="striped" OnRowDataBound="GridView1_RowDataBound" UpdateMode="Conditional" PersistedSelection="true" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" OnRowCreated="GridView1_RowCreated" OnDataBound="GridView1_DataBound">
 		  </asp:GridView>
 	  </div>
 	  
@@ -111,7 +111,7 @@
 		  </div>
 		  <div style="float:right">
 			  <button id="Button2" runat="server" onserverclick="Button_ShowAll_Click" class="waves-effect waves-light btn red darken-4" >Show All</button>
-  <button data-target="modal_search" class="btn modal-trigger red darken-4">Search</button></div>
+  <button id="Button7" runat="server" onserverclick="Button_SearchShow_Click"  class="btn modal-trigger red darken-4">Search</button></div>
   
 	  </div>
 	  
@@ -264,6 +264,93 @@
   </div>
 
 		
+
+<!-- Modal Structure -->
+  <div id="modal_search" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+
+
+    </div>
+    <div class="modal-footer">
+        <table align="center">
+            <tr>
+                <td class="auto-style8">Search by Class name/number</td>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="ClassSearch_Text" type="text" class="validate" runat="server">
+		  <label for="ClassSearch_Text">eg. CSC1230, etc.</label>
+		</div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by CRN</td>
+                <td>
+                     <div class="input-field col s6">
+		  <input id="CRNSearch_Text" type="text" class="validate" runat="server">
+		  <label for="CRNSearch_Text">eg. CSC1230, etc.</label>
+		</div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by Instructor</td>
+                <td>
+                    <asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by Major</td>
+                <td>
+                    <asp:DropDownList ID="DropDownList_searchMajor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by Calendar Year</td>
+                <td>
+                    <div class="input-field col s6">
+		  <input id="CalYearSearch_Text" type="text" class="validate" runat="server">
+		  <label for="CalYearSearch_Text">eg. CSC1230, etc.</label>
+		</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by Term</td>
+                <td>
+                    <asp:DropDownList ID="DropDownList_searchTerm" runat="server" class="browser-default" Width="200px">
+                        <asp:ListItem>Fall</asp:ListItem>
+                        <asp:ListItem>Winter</asp:ListItem>
+                        <asp:ListItem>Spring</asp:ListItem>
+                        <asp:ListItem>Summer</asp:ListItem>
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">Search by Class Year</td>
+                <td>
+                    <asp:DropDownList ID="DropDownList_searchClassYear" runat="server" class="browser-default" Width="200px">
+                        <asp:ListItem>Freshman</asp:ListItem>
+                        <asp:ListItem>Sophomore</asp:ListItem>
+                        <asp:ListItem>Junior</asp:ListItem>
+                        <asp:ListItem>Senior</asp:ListItem>
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style8">&nbsp;</td>
+                <td>
+                    <asp:CheckBox ID="CheckBox1" runat="server" Text="Save as My Default" />
+                    <asp:Button ID="Button_resetDefault" runat="server" OnClick="Button_resetDefault_Click" Text="Reset" />
+                </td>
+            </tr>
+        </table>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+          
+
 
 <!-- Modal Structure -->
   <div id="modal_deleteUser" class="modal">
@@ -841,95 +928,7 @@
 	</div>
   </div>
 
-	<!-- Search Modal -->
-  <div id="modal_search" class="modal modal-fixed-footer" data-backdrop="static">
-	<div class="modal-content">
-		<table class="auto-style1">
-				<tr>
-					<td class="auto-style4">
-						Search by CRN</td>
-					<td class="auto-style2">
-						<asp:TextBox ID="TextBox_searchCRN" runat="server" Width="201px"></asp:TextBox>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">
-						Search by Instructor</td>
-					<td class="auto-style2">
-			  
-  <asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px">
-				  <asp:ListItem Selected="True" Value="0">All</asp:ListItem>
-				  <asp:ListItem Value="1">Freshman</asp:ListItem>
-				  <asp:ListItem Value="2">Sophomore</asp:ListItem>
-				  <asp:ListItem Value="3">Junior</asp:ListItem>
-				  <asp:ListItem Value="4">Senior</asp:ListItem>
-			  </asp:DropDownList>
-			  
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">
-						<asp:RadioButtonList ID="RadioButtonList_ShowClasses" runat="server">
-							<asp:ListItem Selected="True">Show &quot;Everyone&#39;s&quot; Classes</asp:ListItem>
-							<asp:ListItem>Show Only My Classes</asp:ListItem>
-							<asp:ListItem>Show Only Conflicts</asp:ListItem>
-						</asp:RadioButtonList>
-					</td>
-					<td class="auto-style2">&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">Show Major</td>
-					<td class="auto-style2">
-  <asp:DropDownList ID="DropDownList_ShowDept" runat="server" class="browser-default" Width="200px">
-	  <asp:ListItem Selected="True">Show Only</asp:ListItem>
-				  
-			  </asp:DropDownList>
-			  
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">Show Classroom</td>
-					<td class="auto-style2">&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">Show Year</td>
-					<td class="auto-style2">
-			  
-  <asp:DropDownList ID="DropDownList_ShowYear" runat="server" class="browser-default" Width="200px">
-				  <asp:ListItem Selected="True" Value="0">All</asp:ListItem>
-				  <asp:ListItem Value="1">Freshman</asp:ListItem>
-				  <asp:ListItem Value="2">Sophomore</asp:ListItem>
-				  <asp:ListItem Value="3">Junior</asp:ListItem>
-				  <asp:ListItem Value="4">Senior</asp:ListItem>
-			  </asp:DropDownList>
-			  
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">Show Day of Week</td>
-					<td class="auto-style2">
-			  
-						&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td class="auto-style4">&nbsp;</td>
-					<td class="auto-style2">
-						<button id="Button_ApplySort" runat="server" OnServerClick="Button_ApplySort_Click" class="btn modal-trigger red darken-4">Search</button>
-					</td>
-					<td>&nbsp;</td>
-				</tr>
-			</table>
-		</div>
-	  
 	
-	</div>
 				<br />
 	</div>
 	

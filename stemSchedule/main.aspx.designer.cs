@@ -202,6 +202,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlInputText Credits_Text;
         
         /// <summary>
+        /// CheckBox_className control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_className;
+        
+        /// <summary>
         /// ClassSearch_Text control.
         /// </summary>
         /// <remarks>
@@ -211,6 +220,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlInputText ClassSearch_Text;
         
         /// <summary>
+        /// CheckBox_CRN control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_CRN;
+        
+        /// <summary>
         /// CRNSearch_Text control.
         /// </summary>
         /// <remarks>
@@ -218,6 +236,15 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText CRNSearch_Text;
+        
+        /// <summary>
+        /// CheckBox_instructor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_instructor;
         
         /// <summary>
         /// DropDownList_searchInstructor control.
@@ -236,6 +263,15 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownList_searchMajor;
+        
+        /// <summary>
+        /// CheckBox_calYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_calYear;
         
         /// <summary>
         /// CalYearSearch_Text control.
@@ -265,22 +301,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.DropDownList DropDownList_searchClassYear;
         
         /// <summary>
-        /// CheckBox1 control.
+        /// CheckBox_default control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
-        
-        /// <summary>
-        /// Button_resetDefault control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_resetDefault;
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_default;
         
         /// <summary>
         /// DropDownList_deleteUser control.

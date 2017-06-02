@@ -30,7 +30,10 @@
                 width: 606px;
             }
 			.auto-style8 {
-                width: 612px;
+                width: 314px;
+            }
+			.auto-style9 {
+                width: 98px;
             }
 			</style>
 		</head>
@@ -268,8 +271,9 @@
 <!-- Modal Structure -->
   <div id="modal_search" class="modal">
     <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
+      <h4>Search</h4>
+      <p>Select 'Save as My Default' to save search query as default view when logging in/selecting 'Show All' button</p>
+      <p>Leave all fields BLANK to show all classes in database</p>
 
 
     </div>
@@ -277,6 +281,9 @@
         <table align="center">
             <tr>
                 <td class="auto-style8">Search by Class name/number</td>
+                <td class="auto-style9">
+                    <asp:CheckBox ID="CheckBox_className" runat="server" Text="Order By" />
+                </td>
                 <td>
                     <div class="input-field col s6">
 		  <input id="ClassSearch_Text" type="text" class="validate" runat="server">
@@ -287,6 +294,9 @@
             </tr>
             <tr>
                 <td class="auto-style8">Search by CRN</td>
+                <td class="auto-style9">
+                    <asp:CheckBox ID="CheckBox_CRN" runat="server" Text="Order By" />
+                </td>
                 <td>
                      <div class="input-field col s6">
 		  <input id="CRNSearch_Text" type="text" class="validate" runat="server">
@@ -297,18 +307,25 @@
             </tr>
             <tr>
                 <td class="auto-style8">Search by Instructor</td>
+                <td class="auto-style9">
+                    <asp:CheckBox ID="CheckBox_instructor" runat="server" Text="Order By" />
+                </td>
                 <td>
                     <asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style8">Search by Major</td>
+                <td class="auto-style9">&nbsp;</td>
                 <td>
                     <asp:DropDownList ID="DropDownList_searchMajor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style8">Search by Calendar Year</td>
+                <td class="auto-style9">
+                    <asp:CheckBox ID="CheckBox_calYear" runat="server" Text="Order By" />
+                </td>
                 <td>
                     <div class="input-field col s6">
 		  <input id="CalYearSearch_Text" type="text" class="validate" runat="server">
@@ -318,9 +335,11 @@
             </tr>
             <tr>
                 <td class="auto-style8">Search by Term</td>
+                <td class="auto-style9">&nbsp;</td>
                 <td>
                     <asp:DropDownList ID="DropDownList_searchTerm" runat="server" class="browser-default" Width="200px">
-                        <asp:ListItem>Fall</asp:ListItem>
+                        <asp:ListItem></asp:ListItem>
+                        <asp:ListItem>Autumn</asp:ListItem>
                         <asp:ListItem>Winter</asp:ListItem>
                         <asp:ListItem>Spring</asp:ListItem>
                         <asp:ListItem>Summer</asp:ListItem>
@@ -329,8 +348,10 @@
             </tr>
             <tr>
                 <td class="auto-style8">Search by Class Year</td>
+                <td class="auto-style9">&nbsp;</td>
                 <td>
                     <asp:DropDownList ID="DropDownList_searchClassYear" runat="server" class="browser-default" Width="200px">
+                        <asp:ListItem> </asp:ListItem>
                         <asp:ListItem>Freshman</asp:ListItem>
                         <asp:ListItem>Sophomore</asp:ListItem>
                         <asp:ListItem>Junior</asp:ListItem>
@@ -340,13 +361,16 @@
             </tr>
             <tr>
                 <td class="auto-style8">&nbsp;</td>
+                <td class="auto-style9">&nbsp;</td>
                 <td>
-                    <asp:CheckBox ID="CheckBox1" runat="server" Text="Save as My Default" />
-                    <asp:Button ID="Button_resetDefault" runat="server" OnClick="Button_resetDefault_Click" Text="Reset" />
+                    <asp:CheckBox ID="CheckBox_default" runat="server" Text="Save as My Default" />
+                    
+                    
                 </td>
             </tr>
         </table>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+        <a href="#" runat="server" onserverclick="Button_search_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Search</a>
     </div>
   </div>
           
