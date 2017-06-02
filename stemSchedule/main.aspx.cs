@@ -1132,6 +1132,30 @@ namespace stemSchedule
             catch (Exception ex) { Response.Write(ex); }
             finally { connection.Close(); }
 
+
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("select distinct calyear from schedule order by calYear ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_searchCalYear.DataSource = reader;
+                            DropDownList_searchCalYear.DataValueField = "calYear";
+                            DropDownList_searchCalYear.DataTextField = "calYear";
+                            DropDownList_searchCalYear.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_searchCalYear.Items.Insert(0, new ListItem("", ""));
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
             try
             {
                 connection.Open();
@@ -2657,8 +2681,8 @@ namespace stemSchedule
             if (DropDownList_searchMajor.SelectedIndex != 0)
                 query += " union select * from schedule where public = 1 AND (M1 = '" + major + "' OR M2 = '" + major + "' OR M3 = '" + major + "' OR M4 = '" + major + "')";
 
-            if (CalYearSearch_Text.Value.ToString() != "")
-                query += " UNION select * from schedule where public = 1 AND CalYear = '" + CalYearSearch_Text.Value.ToString() + "'";
+            if (DropDownList_searchCalYear.SelectedIndex != 0)
+                query += " UNION select * from schedule where public = 1 AND CalYear = '" + DropDownList_searchCalYear.SelectedValue + "'";
 
 
             if (DropDownList_searchTerm.SelectedIndex != 0)

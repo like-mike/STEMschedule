@@ -274,13 +274,13 @@ namespace stemSchedule {
         protected global::System.Web.UI.WebControls.CheckBox CheckBox_calYear;
         
         /// <summary>
-        /// CalYearSearch_Text control.
+        /// DropDownList_searchCalYear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText CalYearSearch_Text;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList_searchCalYear;
         
         /// <summary>
         /// DropDownList_searchTerm control.

@@ -327,10 +327,9 @@
                     <asp:CheckBox ID="CheckBox_calYear" runat="server" Text="Order By" />
                 </td>
                 <td>
-                    <div class="input-field col s6">
-		  <input id="CalYearSearch_Text" type="text" class="validate" runat="server">
-		  <label for="CalYearSearch_Text">eg. CSC1230, etc.</label>
-		</div>
+                    <asp:DropDownList ID="DropDownList_searchCalYear" runat="server" class="browser-default" Width="200px">
+                        
+                    </asp:DropDownList>
                 </td>
             </tr>
             <tr>
