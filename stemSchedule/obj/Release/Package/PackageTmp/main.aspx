@@ -24,17 +24,17 @@
 				width: 639px;
 			}
 			.auto-style6 {
-                width: 614px;
-            }
+				width: 614px;
+			}
 			.auto-style7 {
-                width: 606px;
-            }
+				width: 606px;
+			}
 			.auto-style8 {
-                width: 314px;
-            }
+				width: 314px;
+			}
 			.auto-style9 {
-                width: 98px;
-            }
+				width: 98px;
+			}
 			</style>
 		</head>
 
@@ -45,10 +45,10 @@
   <li><a href="#" runat="server" onserverclick="Button_AddUserShow_Click">Add User</a></li>
   <li><a href="#" runat="server" onserverclick="Button_DeleteUserShow_Click">Delete User</a></li>
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
-    <li class="divider"></li>
+	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_CopyShow_Click">Copy Classes</a></li>
-    
-    
+	
+	
 </ul>
 
 	<!-- Dropdown Structure -->
@@ -131,8 +131,8 @@
   <!-- Add Class Modal Structuremodal modal-fixed-footer -->
   <div id="modal1" class="modal">
 	<div class="modal-content">
-        <asp:Label ID="Label_AddClassDesc" runat="server" Text="Warning: Editing a class will changed stored user for the class" Font-Size="large" Visible="false"></asp:Label>
-        <br />
+		<asp:Label ID="Label_AddClassDesc" runat="server" Text="Warning: Editing a class will changed stored user for the class" Font-Size="large" Visible="false"></asp:Label>
+		<br />
 	
 		 <table class="auto-style1">
 			  <tr>
@@ -270,109 +270,109 @@
 
 <!-- Modal Structure -->
   <div id="modal_search" class="modal">
-    <div class="modal-content">
-      <h4>Search</h4>
-      <p>Select 'Save as My Default' to save search query as default view when logging in/selecting 'Show All' button</p>
-      <p>Leave all fields BLANK to show all classes in database</p>
+	<div class="modal-content">
+	  <h4>Search</h4>
+	  <p>Select 'Save as My Default' to save search query as default view when logging in/selecting 'Show All' button</p>
+	  <p>Leave all fields BLANK to show all classes in database</p>
 
 
-    </div>
-    <div class="modal-footer">
-        <table align="center">
-            <tr>
-                <td class="auto-style8">Search by Class name/number</td>
-                <td class="auto-style9">
-                    <asp:CheckBox ID="CheckBox_className" runat="server" Text="Order By" />
-                </td>
-                <td>
-                    <div class="input-field col s6">
+	</div>
+	<div class="modal-footer">
+		<table align="center">
+			<tr>
+				<td class="auto-style8">Search by Class name/number</td>
+				<td class="auto-style9">
+					<asp:CheckBox ID="CheckBox_className" runat="server" Text="Order By" />
+				</td>
+				<td>
+					<div class="input-field col s6">
 		  <input id="ClassSearch_Text" type="text" class="validate" runat="server">
 		  <label for="ClassSearch_Text">eg. CSC1230, etc.</label>
 		</div>
 
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by CRN</td>
-                <td class="auto-style9">
-                    <asp:CheckBox ID="CheckBox_CRN" runat="server" Text="Order By" />
-                </td>
-                <td>
-                     <div class="input-field col s6">
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by CRN</td>
+				<td class="auto-style9">
+					<asp:CheckBox ID="CheckBox_CRN" runat="server" Text="Order By" />
+				</td>
+				<td>
+					 <div class="input-field col s6">
 		  <input id="CRNSearch_Text" type="text" class="validate" runat="server">
 		  <label for="CRNSearch_Text">eg. CSC1230, etc.</label>
 		</div>
 
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by Instructor</td>
-                <td class="auto-style9">
-                    <asp:CheckBox ID="CheckBox_instructor" runat="server" Text="Order By" />
-                </td>
-                <td>
-                    <asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by Major</td>
-                <td class="auto-style9">&nbsp;</td>
-                <td>
-                    <asp:DropDownList ID="DropDownList_searchMajor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by Calendar Year</td>
-                <td class="auto-style9">
-                    <asp:CheckBox ID="CheckBox_calYear" runat="server" Text="Order By" />
-                </td>
-                <td>
-                    <asp:DropDownList ID="DropDownList_searchCalYear" runat="server" class="browser-default" Width="200px">
-                        
-                    </asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by Term</td>
-                <td class="auto-style9">&nbsp;</td>
-                <td>
-                    <asp:DropDownList ID="DropDownList_searchTerm" runat="server" class="browser-default" Width="200px">
-                        <asp:ListItem></asp:ListItem>
-                        <asp:ListItem>Autumn</asp:ListItem>
-                        <asp:ListItem>Winter</asp:ListItem>
-                        <asp:ListItem>Spring</asp:ListItem>
-                        <asp:ListItem>Summer</asp:ListItem>
-                    </asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">Search by Class Year</td>
-                <td class="auto-style9">&nbsp;</td>
-                <td>
-                    <asp:DropDownList ID="DropDownList_searchClassYear" runat="server" class="browser-default" Width="200px">
-                        <asp:ListItem> </asp:ListItem>
-                        <asp:ListItem>Freshman</asp:ListItem>
-                        <asp:ListItem>Sophomore</asp:ListItem>
-                        <asp:ListItem>Junior</asp:ListItem>
-                        <asp:ListItem>Senior</asp:ListItem>
-                    </asp:DropDownList>
-                </td>
-            </tr>
-            <tr>
-                <td class="auto-style8">&nbsp;</td>
-                <td class="auto-style9">&nbsp;</td>
-                <td>
-                    <asp:CheckBox ID="CheckBox_default" runat="server" Text="Save as My Default" />
-                    
-                    
-                </td>
-            </tr>
-        </table>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
-        <a href="#" runat="server" onserverclick="Button_search_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Search</a>
-    </div>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by Instructor</td>
+				<td class="auto-style9">
+					<asp:CheckBox ID="CheckBox_instructor" runat="server" Text="Order By" />
+				</td>
+				<td>
+					<asp:DropDownList ID="DropDownList_searchInstructor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by Major</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:DropDownList ID="DropDownList_searchMajor" runat="server" class="browser-default" Width="200px"></asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by Calendar Year</td>
+				<td class="auto-style9">
+					<asp:CheckBox ID="CheckBox_calYear" runat="server" Text="Order By" />
+				</td>
+				<td>
+					<asp:DropDownList ID="DropDownList_searchCalYear" runat="server" class="browser-default" Width="200px">
+						
+					</asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by Term</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:DropDownList ID="DropDownList_searchTerm" runat="server" class="browser-default" Width="200px">
+						<asp:ListItem></asp:ListItem>
+						<asp:ListItem>Autumn</asp:ListItem>
+						<asp:ListItem>Winter</asp:ListItem>
+						<asp:ListItem>Spring</asp:ListItem>
+						<asp:ListItem>Summer</asp:ListItem>
+					</asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">Search by Class Year</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:DropDownList ID="DropDownList_searchClassYear" runat="server" class="browser-default" Width="200px">
+						<asp:ListItem> </asp:ListItem>
+						<asp:ListItem>Freshman</asp:ListItem>
+						<asp:ListItem>Sophomore</asp:ListItem>
+						<asp:ListItem>Junior</asp:ListItem>
+						<asp:ListItem>Senior</asp:ListItem>
+					</asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">&nbsp;</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:CheckBox ID="CheckBox_default" runat="server" Text="Save as My Default" />
+					
+					
+				</td>
+			</tr>
+		</table>
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_search_Click1" class="modal-action modal-close waves-effect waves-green btn-flat ">Search</a>
+	</div>
   </div>
-          
+		  
 
 
 <!-- Modal Structure -->
@@ -682,12 +682,12 @@
 			<tr>
 				<td>
 					Select Year(s):<br />
-                    <asp:CheckBoxList ID="CheckBoxList_addClassYear" runat="server">
-                        <asp:ListItem Value="1">Freshman</asp:ListItem>
-                        <asp:ListItem Value="1">Sophomore</asp:ListItem>
-                        <asp:ListItem Value="3">Junior</asp:ListItem>
-                        <asp:ListItem Value="4">Senior</asp:ListItem>
-                    </asp:CheckBoxList>
+					<asp:CheckBoxList ID="CheckBoxList_addClassYear" runat="server">
+						<asp:ListItem Value="1">Freshman</asp:ListItem>
+						<asp:ListItem Value="1">Sophomore</asp:ListItem>
+						<asp:ListItem Value="3">Junior</asp:ListItem>
+						<asp:ListItem Value="4">Senior</asp:ListItem>
+					</asp:CheckBoxList>
 					</td>
 			</tr>
 		</table>
@@ -826,79 +826,79 @@
   </div>
 
 
-        <!-- Modal Structure -->
+		<!-- Modal Structure -->
   <div id="modal_copy" class="modal">
-    <div class="modal-content">
-      <h4>Copy Classes</h4>
-      <table align="center">
-          <tr>
-              <td class="auto-style6">
-                  <asp:DropDownList ID="DropDownList_copy" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+	<div class="modal-content">
+	  <h4>Copy Classes</h4>
+	  <table align="center">
+		  <tr>
+			  <td class="auto-style6">
+				  <asp:DropDownList ID="DropDownList_copy" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
 			  </asp:DropDownList>
 
-                  
-                  <button id="Button_copyUpdate" runat="server" onserverclick="Button_copyUpdate_Click"  class="btn modal-trigger red darken-4">Update</button>
+				  
+				  <button id="Button_copyUpdate" runat="server" onserverclick="Button_copyUpdate_Click"  class="btn modal-trigger red darken-4">Update</button>
 
-              </td>
-              <td class="auto-style7">
-                  
-              <asp:DropDownList ID="DropDownList_CopyTerm" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
-                  <asp:ListItem Selected="True">Autumn</asp:ListItem>
-                  <asp:ListItem>Winter</asp:ListItem>
-                  <asp:ListItem>Spring</asp:ListItem>
-                  <asp:ListItem>Summer</asp:ListItem>
+			  </td>
+			  <td class="auto-style7">
+				  
+			  <asp:DropDownList ID="DropDownList_CopyTerm" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+				  <asp:ListItem Selected="True">Autumn</asp:ListItem>
+				  <asp:ListItem>Winter</asp:ListItem>
+				  <asp:ListItem>Spring</asp:ListItem>
+				  <asp:ListItem>Summer</asp:ListItem>
 			  </asp:DropDownList>
-                  <asp:DropDownList ID="DropDownList_copiedYear" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
+				  <asp:DropDownList ID="DropDownList_copiedYear" runat="server" class="browser-default" Width="200px" OnSelectedIndexChanged="DropDownList_copy_SelectedIndexChanged">
 			  </asp:DropDownList>
-                  <div class="input-field col s6">
+				  <div class="input-field col s6">
 		  <input id="CopyYear_Text" type="text" class="validate" runat="server">
 		  <label for="CopyYear_Text">Enter New Year</label>
 		</div>
-              </td>
-              <td>
-                  
+			  </td>
+			  <td>
+				  
 
-              </td>
-          </tr>
-          <tr>
-              <td class="auto-style6">
-                  Select Class(es):</td>
-              <td class="auto-style7">
-                  
-                  <asp:CheckBoxList ID="CheckBoxList_copyAll" runat="server" OnSelectedIndexChanged="CheckBoxList_copyAll_SelectedIndexChanged">
-                  </asp:CheckBoxList>
-              </td>
-              <td>
-                  &nbsp;</td>
-          </tr>
-          <tr>
-              <td class="auto-style6">
-                  
+			  </td>
+		  </tr>
+		  <tr>
+			  <td class="auto-style6">
+				  Select Class(es):</td>
+			  <td class="auto-style7">
+				  
+				  <asp:CheckBoxList ID="CheckBoxList_copyAll" runat="server" OnSelectedIndexChanged="CheckBoxList_copyAll_SelectedIndexChanged">
+				  </asp:CheckBoxList>
+			  </td>
+			  <td>
+				  &nbsp;</td>
+		  </tr>
+		  <tr>
+			  <td class="auto-style6">
+				  
 
-              </td>
-              <td class="auto-style7">
-                  
-                  
-                  <button id="Button5" runat="server" onserverclick="Button_selectAll_Click"  class="btn modal-trigger red darken-4">Select All</button>
-                  <button id="Button6" runat="server" onserverclick="Button_unselectAll_Click"  class="btn modal-trigger red darken-4">Unselect All</button>
-
-
-              </td>
-              <td>
-                  &nbsp;</td>
-          </tr>
-          </table>
-        
-        <asp:panel runat="server" ID="Panel_copyAll">
-        </asp:panel>
+			  </td>
+			  <td class="auto-style7">
+				  
+				  
+				  <button id="Button5" runat="server" onserverclick="Button_selectAll_Click"  class="btn modal-trigger red darken-4">Select All</button>
+				  <button id="Button6" runat="server" onserverclick="Button_unselectAll_Click"  class="btn modal-trigger red darken-4">Unselect All</button>
 
 
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
-        <a href="#" runat="server" onserverclick="Button_copy_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Copy</a>
-      
-    </div>
+			  </td>
+			  <td>
+				  &nbsp;</td>
+		  </tr>
+		  </table>
+		
+		<asp:panel runat="server" ID="Panel_copyAll">
+		</asp:panel>
+
+
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Exit</a>
+		<a href="#" runat="server" onserverclick="Button_copy_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Copy</a>
+	  
+	</div>
   </div>
 
 
@@ -957,6 +957,8 @@
 	
 			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" Visible="False" />
 		  </div>
+		  <asp:Image ID="checkMark_image" runat="server" Height="28px" ImageUrl="~/Content/check-mark.png" Width="31px" />
+		  <asp:Button ID="Button_Finalize" runat="server" OnClick="Button_Finalize_Click" Text="Button_Finalize" />
 		</div>
 
 		

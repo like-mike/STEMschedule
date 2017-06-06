@@ -29,8 +29,8 @@ namespace stemSchedule
         public string PRIVATE_SCHEDULE = "SELECT * FROM SCHEDULE WHERE PUBLIC = 0";
        
         public bool G1Selected = false;
-        
 
+        public static string recentQuery = "";
         // global variables
         public static MySqlConnection connection = new MySqlConnection(DB_CREDENTIALS);
         public static MySqlCommand command;
@@ -184,190 +184,268 @@ namespace stemSchedule
             }
             else
             {
-                foreach (GridViewRow row in GridView2.Rows)
+                string CRN = GridView2.SelectedRow.Cells[1].Text;
+                string c = "UPDATE schedule SET PUBLIC = 1 WHERE CRN = " + CRN;
+                try
                 {
-                    if (row.RowIndex == GridView2.SelectedIndex)
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(c, connection);
+                    cmd.ExecuteNonQuery();
+
+
+                    
+                    cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
+                    string recentQuery = cmd.ExecuteScalar().ToString();
+
+
+
+
+                    command = new MySqlCommand(recentQuery, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+
+
+                    foreach (GridViewRow row in GridView1.Rows)
                     {
-                        sendSqlCommand("UPDATE schedule SET public = 1 WHERE CRN =" + row.Cells[1].Text + ";");
+                        if (row.Cells[1].Text == CRN)
+                        {
+                            row.BackColor = ColorTranslator.FromHtml("#CCFFCC");
+                            //row.ToolTip = "Room & Major Conflicts";
+                        }
 
-
-
-                        Response.Redirect("main.aspx");
                     }
-                }
-            }
 
-            
+
+
+                    string query = "Select * from schedule where public = 0 AND user = '" + Session["New"] + "'";
+
+                    //Response.Write(query);
+
+                    command = new MySqlCommand(query, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView2.DataSource = table;
+                    GridView2.DataBind();
+
+                }
+                catch (Exception ex) { }
+                finally
+                {
+                    connection.Close();
+                    GridView2.SelectedIndex = -1;
+
+                }
+
+
+            }
         }
 
 
         public void checkConflict(bool changeConflict, String CRN, String Faculty, String ClassNum, String Days, String StartTime, String EndTime, String Term, String Room, String M1, String M2, String M3, String M4, String Credits, String M, String T, String W, String Th, String F, String Sa, String Su, String Fr, String So, String Ju, String Se, String Year)
         {
             resetCheck();
-            if (!changeConflict)
-                connection.Open();
-            //select * from schedule WHERE '9:30:00' >= startTime AND endTime >= '21:20:00' 
-            string checkNum = "select count(*) from schedule WHERE '" + StartTime + "' >= (startTime)  AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "')";
-            string roomQuery = "";
-            string roomUpdate = "";
+            string check = "";
+            string time = " where((startTime >= '" + StartTime + "' and endTime <= '" + EndTime + "') OR (endTime >= '" + StartTime + "' AND endTime <= '" + EndTime + "') OR (startTime <= '" + EndTime + "' AND startTime >= '" + StartTime + "')) AND Public = 1 AND CalYear = '" + Year + "' AND M = '" + M + "' AND W = '" + W + "'";
+            string roomQuery = time + " AND Room = '" + Room + "'";
+            Response.Write(M + " " + T + " " + F);
+            bool roomConflicts = false, majorConflicts = false;
+            string finalQuery = "select * from schedule where public = 3";
+            //command.ExecuteScalar().ToString();
+            int countRoom = 0, countMajor = 0;
 
-            //room conflict
-            checkNum += " AND (room) = '" + Room + "'";
-            MySqlCommand comm = new MySqlCommand(checkNum, connection);
-            int roomConflicts = Convert.ToInt32(comm.ExecuteScalar().ToString());
 
-            if (roomConflicts > 1)
+
+           
+
+            try
             {
-                roomQuery = "select * from schedule WHERE '" + StartTime + "' >= (startTime)  AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND (Room) ='" + Room +"'";
-                roomUpdate = "update schedule set conflict = 'YES', Rcon = '1' WHERE '" + StartTime + "' >= (startTime)  AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND (Room) ='" + Room + "'";
-                comm = new MySqlCommand(roomUpdate, connection);
-                comm.ExecuteNonQuery();
+                connection.Open();
+                check = "select count(*) from schedule" + roomQuery;
+                MySqlCommand com = new MySqlCommand(check, connection);
+                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+
+                if(temp > 1)
+                {
+                    roomConflicts = true;
+                    finalQuery += " union select * from schedule" + roomQuery;
+                    countRoom = temp -1;
+
+                    string update = "update schedule set Rcon = 1, conflicts = 1" + roomQuery;
+                    com = new MySqlCommand(update, connection);
+                    com.ExecuteNonQuery();
+                }
+
+                //Response.Write(temp.ToString());
             }
-            
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
 
-
-            //major conflict
-            string majorQuery = "select * FROM SCHEDULE WHERE '" + StartTime + "' >= (startTime) AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND TERM = '" + Term + "'";
-            checkNum = "select count(*) from schedule WHERE '" + StartTime + "' >= (startTime)  AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "')";
-            string updateQuery = "update schedule set conflict = 'YES', mCon = '1' WHERE '" + StartTime + "' >= (startTime) AND (endTime) >= '" + EndTime + "' AND (Public) = 1 AND ((M) = '" + M + "' OR (T) = '" + T + "' OR (W) = '" + W + "' OR (Th) = '" + Th + "' OR (F) = '" + F + "') AND TERM = '" + Term + "'";
-            int[] majors = new int[4];
-            string[] Mquery = new string[4];
-            string countQuery = "select count(*) FROM SCHEDULE WHERE '" + StartTime + "' >= (startTime)AND(endTime) >= '" + EndTime + "' AND(Public) = 1 AND((M) = '" + M + "' OR(T) = '" + T + "' OR(W) = '" + W + "' OR(Th) = '" + Th + "' OR(F) = '" + F + "') AND TERM = '" + Term + "'";
-
-
-
-            string checkMajor = majorQuery;
             //M1
-            majors[0] = 0;
-            Mquery[0] = " AND ((M1) = '" + M1 + "' OR (M2) = '" + M1 + "' OR (M3) = '" + M1 + "' OR (M4) = '" + M1 + "')";
-            string checkM1 = checkNum + Mquery[0];
-            comm = new MySqlCommand(checkM1, connection);
-            majors[0] = Convert.ToInt32(comm.ExecuteScalar().ToString());
+            string M1query = time + " AND (M1 = '" + M1 + "' OR M2 = '" + M1 + "' OR M3 = '" + M1 + "' OR M4 = '" + M1 + "')";
+            try
+            {
+                connection.Open();
+                check = "select count(*) from schedule" + M1query;
+                MySqlCommand com = new MySqlCommand(check, connection);
+                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+
+                if (temp > 1)
+                {
+
+                    majorConflicts = true;
+                    finalQuery += " union select * from schedule" + M1query;
+                    
+                    countMajor += temp -1;
+
+                    string update = "update schedule set Mcon = 1, conflicts = 1" + M1query;
+                    com = new MySqlCommand(update, connection);
+                    com.ExecuteNonQuery();
+                }
+
+                //Response.Write(temp.ToString());
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
             //M2
-            majors[1] = 0;
-            Mquery[1] = " AND ((M1) = '" + M2 + "' OR (M2) = '" + M2 + "' OR (M3) = '" + M2 + "' OR (M4) = '" + M2 + "')";
-            string checkM2 = checkNum + Mquery[1];
-            comm = new MySqlCommand(checkM2, connection);
-            majors[1] = Convert.ToInt32(comm.ExecuteScalar().ToString());
+            string M2query = time + " AND (M1 = '" + M2 + "' OR M2 = '" + M2 + "' OR M3 = '" + M2 + "' OR M4 = '" + M2 + "')";
+            try
+            {
+                connection.Open();
+                check = "select count(*) from schedule" + M2query;
+                MySqlCommand com = new MySqlCommand(check, connection);
+                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+
+                if (temp > 1)
+                {
+                    majorConflicts = true;
+                    finalQuery += " union select * from schedule" + M2query;
+                    
+                    countMajor += temp - 1;
+
+                    string update = "update schedule set Mcon = 1, conflicts = 1" + M2query;
+                    com = new MySqlCommand(update, connection);
+                    com.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
             //M3
-            majors[2] = 0;
-            Mquery[2] = " AND ((M1) = '" + M3 + "' OR (M2) = '" + M3 + "' OR (M3) = '" + M3 + "' OR (M4) = '" + M3 + "')";
-            string checkM3 = checkNum + Mquery[2];
-            comm = new MySqlCommand(checkM3, connection);
-            majors[2] = Convert.ToInt32(comm.ExecuteScalar().ToString());
+            string M3query = time + " AND (M1 = '" + M3 + "' OR M2 = '" + M3 + "' OR M3 = '" + M3 + "' OR M4 = '" + M3 + "')";
+            try
+            {
+                connection.Open();
+                check = "select count(*) from schedule" + M3query;
+                MySqlCommand com = new MySqlCommand(check, connection);
+                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+
+                if (temp > 1)
+                {
+                    majorConflicts = true;
+                    finalQuery += " union select * from schedule" + M3query;
+                    
+                    countMajor += temp - 1;
+
+                    string update = "update schedule set Mcon = 1, Conflicts = 1" + M3query;
+                    com = new MySqlCommand(update, connection);
+                    com.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
             //M4
-            majors[3] = 0;
-            Mquery[3] = " AND ((M1) = '" + M4 + "' OR (M2) = '" + M4 + "' OR (M3) = '" + M4 + "' OR (M4) = '" + M4 + "')";
-            string checkM4 = checkNum + Mquery[3];
-            comm = new MySqlCommand(checkM4, connection);
-            majors[3] = Convert.ToInt32(comm.ExecuteScalar().ToString());
-
-            int majorConflictNum = 0;
-            
-            for(int i = 0; i < 4; i++)
+            string M4query = time + " AND (M1 = '" + M4 + "' OR M2 = '" + M4 + "' OR M3 = '" + M4 + "' OR M4 = '" + M4 + "')";
+            try
             {
-                if (majors[i] != 0)
+                connection.Open();
+                check = "select count(*) from schedule" + M4query;
+                MySqlCommand com = new MySqlCommand(check, connection);
+                int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+
+                if (temp > 1)
                 {
-                    checkMajor += Mquery[i];
-                    updateQuery += Mquery[i];
-                    countQuery += Mquery[i];
+                    majorConflicts = true;
+                    finalQuery += " union select * from schedule" + M4query;
 
-                    majorConflictNum += majors[i];
-                    //count++;
-                }
-                    
+                    countMajor += temp - 1;
 
-            }
-
-            comm = new MySqlCommand(countQuery, connection);
-            int count = Convert.ToInt32(comm.ExecuteScalar().ToString());
-
-            if (count>1){
-                command = new MySqlCommand(updateQuery, connection);
-                command.ExecuteNonQuery();
-            }
-
-
-
-            bool conflicts = true;
-            string finalQuery = "";
-            if (roomConflicts > 1 && count > 1)
-                finalQuery = roomQuery + " UNION " + checkMajor;
-            else if (roomConflicts > 1 && count <2)
-                finalQuery = roomQuery;
-            else if (roomConflicts < 1 && count > 1)
-                finalQuery = majorQuery;
-            else
-            {
-                conflicts = false;
-                finalQuery = "Select * from schedule WHERE PUBLIC = 1";//Ithink
-            }
-                
-
-
-            command = new MySqlCommand(finalQuery, connection);
-            table = new DataTable();
-            data = new MySqlDataAdapter(command);
-            data.Fill(table);
-            GridView1.DataSource = table;
-            GridView1.DataBind();
-            //GridView2.SelectedRow.Cells[24].Text;
-
-            if (conflicts)
-            {
-                foreach (GridViewRow row in GridView1.Rows)
-                {
-                    if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
-                    {
-                        row.BackColor = ColorTranslator.FromHtml("#42cbf4");
-                        row.ToolTip = "Room & Major Conflicts";
-                    }
-                    else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
-                    {
-                        row.BackColor = ColorTranslator.FromHtml("#f44165");
-                        row.ToolTip = "Room Conflict";
-                    }
-                    else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
-                    {
-                        row.BackColor = ColorTranslator.FromHtml("#f4d641");
-                        row.ToolTip = "Major Conflict";
-                    }
+                    string update = "update schedule set Mcon = 1, Conflicts = 1" + M4query;
+                    com = new MySqlCommand(update, connection);
+                    com.ExecuteNonQuery();
                 }
             }
-            
-
-
-
-                string conflictFound = "";
-            
-
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
 
 
             
 
+            if(countRoom>0 && countMajor == 0)
+                Response.Write(
+               "<script type=\"text/javascript\">" +
+               "alert('(" + countRoom + ") Room Conflict(s) Found')" +
+                "</script>");
+            else if (countMajor>0 && countRoom==0)
+                Response.Write(
+              "<script type=\"text/javascript\">" +
+              "alert('(" + countMajor + ") Major Conflict(s) Found')" +
+               "</script>");
+            else if(countRoom>0 && countMajor >0)
+                Response.Write(
+              "<script type=\"text/javascript\">" +
+              "alert('(" + countMajor + ") Major Conflict(s) Found AND ("+ countMajor + ") Room Conflicts Found')" +
+               "</script>");
 
 
 
-            
-            Response.Write(finalQuery);
-
-
-            Label_showSearch.Text = conflictFound;
-            Label_showSearch.Visible = true;
 
 
 
+            check = "select * from schedule" + roomQuery;
+            try
+            { // public schedule
+                connection.Open();
+                command = new MySqlCommand(finalQuery,connection);
+                table = new DataTable();
+                data = new MySqlDataAdapter(command);
+                data.Fill(table);
+                GridView1.DataSource = table;
+                GridView1.DataBind();
+
+            }
+            catch (Exception ex) { Response.Write(ex); }
+            finally { connection.Close(); }
+
+           
 
 
 
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
+                {
+                    row.BackColor = ColorTranslator.FromHtml("#42cbf4");
+                    row.ToolTip = "Room & Major Conflicts";
+                }
+                else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
+                {
+                    row.BackColor = ColorTranslator.FromHtml("#f44165");
+                    row.ToolTip = "Room Conflict";
+                }
+                else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
+                {
+                    row.BackColor = ColorTranslator.FromHtml("#f4d641");
+                    row.ToolTip = "Major Conflict";
+                }
+            }
 
-
-
-            connection.Close();
         }
 
 
@@ -424,7 +502,7 @@ namespace stemSchedule
             {
                 connection.Open();
                 //conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
-                string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Conflict,Public,M,T,W,Th,F,Sa,Su,Fr,So,Ju,Se,CalYear,User) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Conflict,@Public,@M,@T,@W,@Th,@F,@Sa,@Su,@Fr,@So,@Jr,@Se,@CalYear,@User)";
+                string insertQuery = "insert into schedule (CRN,Faculty,ClassNum,Days,StartTime,EndTime,Term,Room,EnrollNum,Year,M1,M2,M3,M4,Credits,Public,M,T,W,Th,F,Sa,Su,Fr,So,Ju,Se,CalYear,User) values (@CRN,@Faculty,@ClassNum,@Days,@StartTime,@EndTime,@Term,@Room,@EnrollNum,@Year,@M1,@M2,@M3,@M4,@Credits,@Public,@M,@T,@W,@Th,@F,@Sa,@Su,@Fr,@So,@Jr,@Se,@CalYear,@User)";
                 command = new MySqlCommand(insertQuery, connection);
                 //21
                 //string instructor = Session["New"].ToString();
@@ -567,12 +645,22 @@ namespace stemSchedule
                 command.Parameters.AddWithValue("@M4", M4);
 
                 command.Parameters.AddWithValue("@Credits", credits);
-                command.Parameters.AddWithValue("@Conflict", null);//conflicts
+                //command.Parameters.AddWithValue("@Conflict", null);//conflicts
                 command.Parameters.AddWithValue("@Public", 0);//conflicts
                                                               //command.ExecuteNonQuery();
                                                               //Response.Redirect("main.aspx");
                                                               //Response.Write("Add Class Success");
 
+                table = new DataTable();
+                data = new MySqlDataAdapter(command);
+                data.Fill(table);
+                GridView1.DataSource = table;
+                GridView1.DataBind();
+
+                command = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
+                string recentQuery = command.ExecuteScalar().ToString();
+
+                command = new MySqlCommand(recentQuery, connection);
                 table = new DataTable();
                 data = new MySqlDataAdapter(command);
                 data.Fill(table);
@@ -587,6 +675,18 @@ namespace stemSchedule
                 GridView2.DataSource = table;
                 GridView2.DataBind();
 
+                
+
+                foreach (GridViewRow row in GridView2.Rows)
+                {
+                    if (row.Cells[1].Text == CRN)
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#CCFFCC");
+                        //row.ToolTip = "Room & Major Conflicts";
+                    }
+                    
+                }
+
 
                 Response.Write(
     "<script type=\"text/javascript\">" +
@@ -594,7 +694,7 @@ namespace stemSchedule
     "</script>"
   );
                 connection.Close();
-                checkConflict(false, CRN, DropDownList_instructor.SelectedValue, DropDownList_class.SelectedValue, days, TextBox_StartTime.Text, TextBox_EndTime.Text, DropDownList_term.SelectedValue, DropDownList_Classroom.SelectedValue, M1, M2, M3, M4, credits, M, T, W, Th, F, Sa, Su, fr, so, ju, se,"2017");
+                //checkConflict(false, CRN, DropDownList_instructor.SelectedValue, DropDownList_class.SelectedValue, days, TextBox_StartTime.Text, TextBox_EndTime.Text, DropDownList_term.SelectedValue, DropDownList_Classroom.SelectedValue, M1, M2, M3, M4, credits, M, T, W, Th, F, Sa, Su, fr, so, ju, se,"2017");
 
 
             }
@@ -817,20 +917,61 @@ namespace stemSchedule
             }
             else
             {
-                string command = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
+                string CRN = GridView1.SelectedRow.Cells[1].Text;
+                string c = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + CRN;
                 try
                 {
                     connection.Open();
-                    MySqlCommand cmd = new MySqlCommand(command, connection);
+                    MySqlCommand cmd = new MySqlCommand(c, connection);
                     cmd.ExecuteNonQuery();
+
+
+                    cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
+                    string recentQuery = cmd.ExecuteScalar().ToString();
+
+
+                    //Response.Write(query);
+
+                    command = new MySqlCommand(recentQuery, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+
+
+                    string query = "Select * from schedule where public = 0 AND User = '"+ Session["New"] + "'";//if user does not have a saved default query, show all classes
+
+                    //Response.Write(query);
+
+                    command = new MySqlCommand(query, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView2.DataSource = table;
+                    GridView2.DataBind();
+
+                    foreach (GridViewRow row in GridView2.Rows)
+                    {
+                        if (row.Cells[1].Text == CRN)
+                        {
+                            row.BackColor = ColorTranslator.FromHtml("#CCFFCC");
+                            //row.ToolTip = "Room & Major Conflicts";
+                        }
+
+                    }
 
                 }
                 catch (Exception ex) {  }
                 finally
                 {
                     connection.Close();
-                    Response.Redirect("main.aspx");
+                    GridView1.SelectedIndex = -1;
+
                 }
+
+
+               
             }
 
             
@@ -980,7 +1121,7 @@ namespace stemSchedule
             try
             {
                 connection.Open();
-                string updateQuery = "update schedule set Conflict = '',RCon='',MCon='' WHERE NOT CRN =''";
+                string updateQuery = "update schedule set RCon='',MCon='' WHERE NOT CRN =''";
 
                 command = new MySqlCommand(updateQuery, connection);
 
@@ -1035,6 +1176,8 @@ namespace stemSchedule
 
 
                 checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se,"2017");
+                GridView1.SelectedIndex = -1;
+                GridView2.SelectedIndex = -1;
             }
             
 
@@ -1854,9 +1997,17 @@ namespace stemSchedule
                     command = new MySqlCommand("SELECT query from userdata where username = '" + Session["New"] + "'", connection);
                     string query = command.ExecuteScalar().ToString();
 
+                    if (query == "")
+                        query = "Select * from schedule where public = 1";//if user does not have a saved default query, show all classes
 
 
-                    //Response.Write(query);
+
+                    string str = "update userdata SET lastquery = @lastquery WHERE username = '" + Session["New"] + "'";
+                    command = new MySqlCommand(str, connection);
+                    command.Parameters.AddWithValue("@lastquery", query);
+
+                    command.ExecuteNonQuery();
+
 
                     command = new MySqlCommand(query, connection);
                     table = new DataTable();
@@ -2654,52 +2805,58 @@ namespace stemSchedule
         {
             for(int i = 0; i < GridView1.Rows.Count; i++)
             {
-                string startTime = GridView1.Rows[i].Cells[5].Text;
+                if(GridView1.Rows[i].Cells[34].Text == "1")
+                {
+                    GridView1.Rows[i].Cells[34].Text = "<img src='http://reesem2.cs.spu.edu/files/check-mark.png' height='28px' width='28px'/>";
+                    GridView1.Rows[i].Cells[33].Text = "";
+                }
+                if (GridView1.Rows[i].Cells[33].Text == "1")
+                {
+                    GridView1.Rows[i].Cells[33].Text = "<img src='http://reesem2.cs.spu.edu/files/conflict.png' height='28px' width='28px'/>";
+                    
+                }
 
-                //do substring processing with tempTime
-
-                GridView1.Rows[i].Cells[5].Text = startTime;
             }
             
+
         }
 
         protected void Button_search_Click1(object sender, EventArgs e)
         {
            
            
-            string query = "Select * from schedule where public = 3";
+            string query = "Select * from schedule where public = 1";
 
             //search by class
             if (ClassSearch_Text.Value.ToString() != "")
-                query += " UNION select * from schedule where public = 1 AND ClassNum LIKE '%" + ClassSearch_Text.Value.ToString() + "%'";
+                query += "  AND ClassNum LIKE '%" + ClassSearch_Text.Value.ToString() + "%'";
             if (CRNSearch_Text.Value.ToString() != "")
-                query += " union select * from schedule where public = 1 AND CRN = '" + CRNSearch_Text.Value.ToString() + "'";
+                query += "  AND CRN = '" + CRNSearch_Text.Value.ToString() + "'";
             if (DropDownList_searchInstructor.SelectedIndex != 0)
-                query += " union select * from schedule where public = 1 AND Faculty = '" + DropDownList_searchInstructor.SelectedValue + "'";
+                query += "  AND Faculty = '" + DropDownList_searchInstructor.SelectedValue + "'";
 
             string major = DropDownList_searchMajor.SelectedValue;
             if (DropDownList_searchMajor.SelectedIndex != 0)
-                query += " union select * from schedule where public = 1 AND (M1 = '" + major + "' OR M2 = '" + major + "' OR M3 = '" + major + "' OR M4 = '" + major + "')";
+                query += "  AND (M1 = '" + major + "' OR M2 = '" + major + "' OR M3 = '" + major + "' OR M4 = '" + major + "')";
 
             if (DropDownList_searchCalYear.SelectedIndex != 0)
-                query += " UNION select * from schedule where public = 1 AND CalYear = '" + DropDownList_searchCalYear.SelectedValue + "'";
+                query += " AND CalYear = '" + DropDownList_searchCalYear.SelectedValue + "'";
 
 
             if (DropDownList_searchTerm.SelectedIndex != 0)
-                query += " union select * from schedule where public = 1 AND Term = '" + DropDownList_searchTerm.SelectedValue + "'";
+                query += " AND Term = '" + DropDownList_searchTerm.SelectedValue + "'";
 
 
             if (DropDownList_searchClassYear.SelectedIndex == 1)
-                query += " union select * from schedule where public = 1 AND Fr = 1";
+                query += " AND Fr = 1";
             else if (DropDownList_searchClassYear.SelectedIndex == 2)
-                query += " union select * from schedule where public = 1 AND So = 1";
+                query += " AND So = 1";
             else if (DropDownList_searchClassYear.SelectedIndex == 3)
-                query += " union select * from schedule where public AND Ju = 1";
+                query += " AND Ju = 1";
             else if (DropDownList_searchClassYear.SelectedIndex == 4)
-                query += " union select * from schedule where public =1 AND Se = 1";
+                query += " AND Se = 1";
 
-            if (query == "Select * from schedule where public = 3")
-                query = "select * from schedule where public = 1";
+            
 
             int checkCount = 0;
 
@@ -2721,7 +2878,7 @@ namespace stemSchedule
             }
             if (CheckBox_calYear.Checked)
             {
-                query += " ORDER BY calYear ASC";
+                query += " ORDER BY calYear DESC";
                 checkCount++;
             }
             
@@ -2753,10 +2910,11 @@ namespace stemSchedule
                 }
                 catch (Exception ex) { Response.Write(ex); }
                 finally { connection.Close(); }
-                //query = "Select * from schedule where public = 3 UNION select * from schedule where public = 1 AND ClassNum LIKE '%123%' ORDER BY CRN ASC";
+                //query = "Select * from schedule where public = 3 intersect select * from schedule where public = 1 AND ClassNum LIKE '%123%' ORDER BY CRN ASC";
+
                 if (CheckBox_default.Checked)
                 {
-                    string command = "update userdata SET query = @query";
+                    string command = "update userdata SET query = @query WHERE username = '" +Session["New"]+ "'";
                     try
                     {
                         connection.Open();
@@ -2779,6 +2937,8 @@ namespace stemSchedule
                          "alert('Updated Your Default View')" +
                          "</script>");
                 }
+
+                
                 
                 else
                 {
@@ -2788,11 +2948,90 @@ namespace stemSchedule
                          "</script>");
                 }
 
+                
+                string str = "update userdata SET lastquery = @lastquery WHERE username = '" + Session["New"] + "'";
+                try
+                {
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(str, connection);
+                    cmd.Parameters.AddWithValue("@lastquery", query);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (Exception ex) { Response.Write(ex); }
+                finally
+                {
+                    connection.Close();
+                }
+
 
             }
 
 
 
+        }
+
+        protected void Button_Finalize_Click(object sender, EventArgs e)
+        {
+            //34
+            string command = "";
+
+
+
+            if (GridView1.SelectedIndex == -1)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No PUBLIC Class Selected')" +
+                        "</script>");
+            }
+            else
+            {
+                try
+                {
+                    //SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["RegistrationConnectionString"].ConnectionString);
+                    connection.Open();
+                    string checkuser = "select count(*) from schedule where Final = 1 AND CRN = '" + GridView1.SelectedRow.Cells[1].Text + "'";
+                    MySqlCommand com = new MySqlCommand(checkuser, connection);
+                    int temp = Convert.ToInt32(com.ExecuteScalar().ToString());
+                    
+                    if(temp==0)
+                        command = "UPDATE schedule SET Final = '1' WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
+                    else
+                        command = "UPDATE schedule SET Final = '' WHERE CRN = " + GridView1.SelectedRow.Cells[1].Text;
+                    MySqlCommand cmd = new MySqlCommand(command, connection);
+                    cmd.ExecuteNonQuery();
+                }
+                catch { }
+                finally { connection.Close();
+                    
+                }
+                try
+                {
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
+                    string recentQuery = cmd.ExecuteScalar().ToString();
+
+
+
+
+                    cmd = new MySqlCommand(recentQuery, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(cmd);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+                }
+                catch(Exception ex) { }
+                finally { connection.Close(); }
+
+
+
+
+                
+                
+            }
         }
     }
     
