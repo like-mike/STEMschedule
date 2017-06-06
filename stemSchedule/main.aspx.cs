@@ -84,11 +84,13 @@ namespace stemSchedule
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            checkAll();
+
             rows = 0;
             this.Form.DefaultButton = this.Button3.UniqueID;
             if (!IsPostBack)
             {
-                resetCheck();
+                
                 if (Session["New"] != null)
                 {
                     //label_welcome.Text += Session["New"].ToString();
@@ -191,7 +193,7 @@ namespace stemSchedule
                     connection.Open();
                     MySqlCommand cmd = new MySqlCommand(c, connection);
                     cmd.ExecuteNonQuery();
-
+                    
 
                     
                     cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
@@ -199,7 +201,7 @@ namespace stemSchedule
 
 
 
-
+                    checkAll();
                     command = new MySqlCommand(recentQuery, connection);
                     table = new DataTable();
                     data = new MySqlDataAdapter(command);
@@ -218,7 +220,7 @@ namespace stemSchedule
 
                     }
 
-
+                    
 
                     string query = "Select * from schedule where public = 0 AND user = '" + Session["New"] + "'";
 
@@ -245,9 +247,9 @@ namespace stemSchedule
         }
 
 
-        public void checkConflict(bool changeConflict, String CRN, String Faculty, String ClassNum, String Days, String StartTime, String EndTime, String Term, String Room, String M1, String M2, String M3, String M4, String Credits, String M, String T, String W, String Th, String F, String Sa, String Su, String Fr, String So, String Ju, String Se, String Year)
+        public void checkConflict(bool output, String CRN, String Faculty, String ClassNum, String Days, String StartTime, String EndTime, String Term, String Room, String M1, String M2, String M3, String M4, String Credits, String M, String T, String W, String Th, String F, String Sa, String Su, String Fr, String So, String Ju, String Se, String Year)
         {
-            resetCheck();
+            //resetCheck();
             string check = "";
             string time = " where((startTime >= '" + StartTime + "' and endTime <= '" + EndTime + "') OR (endTime >= '" + StartTime + "' AND endTime <= '" + EndTime + "') OR (startTime <= '" + EndTime + "' AND startTime >= '" + StartTime + "')) AND Public = 1 AND CalYear = '" + Year + "' AND M = '" + M + "' AND W = '" + W + "'";
             string roomQuery = time + " AND Room = '" + Room + "'";
@@ -385,66 +387,69 @@ namespace stemSchedule
             finally { connection.Close(); }
 
 
-            
-
-            if(countRoom>0 && countMajor == 0)
-                Response.Write(
-               "<script type=\"text/javascript\">" +
-               "alert('(" + countRoom + ") Room Conflict(s) Found')" +
-                "</script>");
-            else if (countMajor>0 && countRoom==0)
-                Response.Write(
-              "<script type=\"text/javascript\">" +
-              "alert('(" + countMajor + ") Major Conflict(s) Found')" +
-               "</script>");
-            else if(countRoom>0 && countMajor >0)
-                Response.Write(
-              "<script type=\"text/javascript\">" +
-              "alert('(" + countMajor + ") Major Conflict(s) Found AND ("+ countMajor + ") Room Conflicts Found')" +
-               "</script>");
-
-
-
-
-
-
-            check = "select * from schedule" + roomQuery;
-            try
-            { // public schedule
-                connection.Open();
-                command = new MySqlCommand(finalQuery,connection);
-                table = new DataTable();
-                data = new MySqlDataAdapter(command);
-                data.Fill(table);
-                GridView1.DataSource = table;
-                GridView1.DataBind();
-
-            }
-            catch (Exception ex) { Response.Write(ex); }
-            finally { connection.Close(); }
-
-           
-
-
-
-            foreach (GridViewRow row in GridView1.Rows)
+            if (output)
             {
-                if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#42cbf4");
-                    row.ToolTip = "Room & Major Conflicts";
+                if (countRoom > 0 && countMajor == 0)
+                    Response.Write(
+                   "<script type=\"text/javascript\">" +
+                   "alert('(" + countRoom + ") Room Conflict(s) Found')" +
+                    "</script>");
+                else if (countMajor > 0 && countRoom == 0)
+                    Response.Write(
+                  "<script type=\"text/javascript\">" +
+                  "alert('(" + countMajor + ") Major Conflict(s) Found')" +
+                   "</script>");
+                else if (countRoom > 0 && countMajor > 0)
+                    Response.Write(
+                  "<script type=\"text/javascript\">" +
+                  "alert('(" + countMajor + ") Major Conflict(s) Found AND (" + countMajor + ") Room Conflicts Found')" +
+                   "</script>");
+
+
+
+
+
+
+                check = "select * from schedule" + roomQuery;
+                try
+                { // public schedule
+                    connection.Open();
+                    command = new MySqlCommand(finalQuery, connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView1.DataSource = table;
+                    GridView1.DataBind();
+
                 }
-                else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
+                catch (Exception ex) { Response.Write(ex); }
+                finally { connection.Close(); }
+
+
+
+
+
+                foreach (GridViewRow row in GridView1.Rows)
                 {
-                    row.BackColor = ColorTranslator.FromHtml("#f44165");
-                    row.ToolTip = "Room Conflict";
-                }
-                else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
-                {
-                    row.BackColor = ColorTranslator.FromHtml("#f4d641");
-                    row.ToolTip = "Major Conflict";
+                    if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#42cbf4");
+                        row.ToolTip = "Room & Major Conflicts";
+                    }
+                    else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#f44165");
+                        row.ToolTip = "Room Conflict";
+                    }
+                    else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#f4d641");
+                        row.ToolTip = "Major Conflict";
+                    }
                 }
             }
+
+            
 
         }
 
@@ -924,13 +929,15 @@ namespace stemSchedule
                     connection.Open();
                     MySqlCommand cmd = new MySqlCommand(c, connection);
                     cmd.ExecuteNonQuery();
-
+                    
 
                     cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
                     string recentQuery = cmd.ExecuteScalar().ToString();
+                    connection.Close();
+                    checkAll();
+                    connection.Open();
 
 
-                    //Response.Write(query);
 
                     command = new MySqlCommand(recentQuery, connection);
                     table = new DataTable();
@@ -1048,6 +1055,7 @@ namespace stemSchedule
                         "</script>");
             }
             else {
+                
                 try
                 {
                     string command = "DELETE from SCHEDULE WHERE CRN = " + GridView2.SelectedRow.Cells[1].Text;
@@ -1060,6 +1068,7 @@ namespace stemSchedule
                 finally
                 {
                     connection.Close();
+                    checkAll();
                     Response.Redirect("main.aspx");
                 }
             }
@@ -1121,7 +1130,7 @@ namespace stemSchedule
             try
             {
                 connection.Open();
-                string updateQuery = "update schedule set RCon='',MCon='' WHERE NOT CRN =''";
+                string updateQuery = "update schedule set Conflicts='',RCon='',MCon='' WHERE NOT CRN =''";
 
                 command = new MySqlCommand(updateQuery, connection);
 
@@ -1138,6 +1147,41 @@ namespace stemSchedule
             
             //checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se, "2017");
             //Response.Write("test" + i);
+        }
+
+        public void checkAll()
+        {
+            resetCheck();
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                String CRN = GridView1.Rows[i].Cells[1].Text;
+                String Faculty = GridView1.Rows[i].Cells[2].Text;
+                String ClassNum = GridView1.Rows[i].Cells[3].Text;
+                String startTime = GridView1.Rows[i].Cells[5].Text;
+                String endTime = GridView1.Rows[i].Cells[6].Text;
+                String term = GridView1.Rows[i].Cells[7].Text;
+                String room = GridView1.Rows[i].Cells[8].Text;
+                String M1 = GridView1.Rows[i].Cells[9].Text;
+                String M2 = GridView1.Rows[i].Cells[10].Text;
+                String M3 = GridView1.Rows[i].Cells[11].Text;
+                String M4 = GridView1.Rows[i].Cells[12].Text;
+                String M = GridView1.Rows[i].Cells[14].Text;
+                String T = GridView1.Rows[i].Cells[15].Text;
+                String W = GridView1.Rows[i].Cells[16].Text;
+                String Th = GridView1.Rows[i].Cells[17].Text;
+                String F = GridView1.Rows[i].Cells[18].Text;
+                String Sa = GridView1.Rows[i].Cells[19].Text;
+                String Su = GridView1.Rows[i].Cells[20].Text;
+                String Fr = GridView1.Rows[i].Cells[21].Text;
+                String So = GridView1.Rows[i].Cells[22].Text;
+                String Jr = GridView1.Rows[i].Cells[23].Text;
+                String Se = GridView1.Rows[i].Cells[24].Text;
+                String calYear = GridView1.Rows[i].Cells[32].Text;
+
+
+                checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se, calYear);
+
+            }
         }
 
         protected void checkSpecific(object sender, EventArgs e)
@@ -1173,9 +1217,10 @@ namespace stemSchedule
                 String So = GridView1.SelectedRow.Cells[22].Text;
                 String Jr = GridView1.SelectedRow.Cells[23].Text;
                 String Se = GridView1.SelectedRow.Cells[24].Text;
+                String calYear = GridView1.SelectedRow.Cells[32].Text;
 
-
-                checkConflict(false, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se,"2017");
+                
+                checkConflict(true, CRN, Faculty, ClassNum, "", startTime, endTime, term, room, M1, M2, M3, M4, "", M, T, W, Th, F, Sa, Su, Fr, So, Jr, Se,calYear);
                 GridView1.SelectedIndex = -1;
                 GridView2.SelectedIndex = -1;
             }
@@ -2855,6 +2900,11 @@ namespace stemSchedule
                 query += " AND Ju = 1";
             else if (DropDownList_searchClassYear.SelectedIndex == 4)
                 query += " AND Se = 1";
+
+            if (CheckBox_conflicts.Checked)
+            {
+                query += " AND Conflicts = 1";
+            }
 
             
 

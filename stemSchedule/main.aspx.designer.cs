@@ -67,6 +67,15 @@ namespace stemSchedule {
         protected global::System.Web.UI.HtmlControls.HtmlButton button_checkConflict;
         
         /// <summary>
+        /// button8 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton button8;
+        
+        /// <summary>
         /// Button2 control.
         /// </summary>
         /// <remarks>
@@ -299,6 +308,15 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList DropDownList_searchClassYear;
+        
+        /// <summary>
+        /// CheckBox_conflicts control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox CheckBox_conflicts;
         
         /// <summary>
         /// CheckBox_default control.
@@ -758,23 +776,5 @@ namespace stemSchedule {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button3;
-        
-        /// <summary>
-        /// checkMark_image control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image checkMark_image;
-        
-        /// <summary>
-        /// Button_Finalize control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button_Finalize;
     }
 }

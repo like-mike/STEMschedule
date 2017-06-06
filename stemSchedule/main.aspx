@@ -110,6 +110,7 @@
 			
 			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
 			<button id="button_checkConflict" runat="server" onserverclick="checkSpecific" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
+            <button id="button8" runat="server" onserverclick="Button_Finalize_Click" class="waves-effect waves-light btn red darken-4" >Confirm</button>
 			
 		  </div>
 		  <div style="float:right">
@@ -356,6 +357,13 @@
 						<asp:ListItem>Junior</asp:ListItem>
 						<asp:ListItem>Senior</asp:ListItem>
 					</asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">&nbsp;</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:CheckBox ID="CheckBox_conflicts" runat="server" />
 				</td>
 			</tr>
 			<tr>
@@ -957,8 +965,6 @@
 	
 			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" Visible="False" />
 		  </div>
-		  <asp:Image ID="checkMark_image" runat="server" Height="28px" ImageUrl="~/Content/check-mark.png" Width="31px" />
-		  <asp:Button ID="Button_Finalize" runat="server" OnClick="Button_Finalize_Click" Text="Button_Finalize" />
 		</div>
 
 		
