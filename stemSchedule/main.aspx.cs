@@ -26,7 +26,7 @@ namespace stemSchedule
         //select *,TIME_FORMAT(StartTime, '%h:%i %p')startTime,TIME_FORMAT(EndTime, '%h:%i %p')EndTime from schedule
         public const string DB_CREDENTIALS = "SERVER = cs.spu.edu; DATABASE = stemschedule; UID = stemschedule; PASSWORD = stemschedule.stemschedule";
         public string PUBLIC_SCHEDULE = "Select * FROM SCHEDULE WHERE PUBLIC = 1";
-        public string PRIVATE_SCHEDULE = "SELECT * FROM SCHEDULE WHERE PUBLIC = 0";
+        
        
         public bool G1Selected = false;
 
@@ -143,7 +143,7 @@ namespace stemSchedule
                 try
                 { //private schedule
                     connection.Open();
-                    command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
+                    command = new MySqlCommand("Select * from schedule where public = 0 AND user = '" +Session["New"]+ "'", connection);
                     table = new DataTable();
                     data = new MySqlDataAdapter(command);
                     data.Fill(table);
@@ -701,7 +701,7 @@ namespace stemSchedule
                 GridView1.DataBind();
 
 
-                command = new MySqlCommand(PRIVATE_SCHEDULE, connection);
+                command = new MySqlCommand("Select * from schedule where public = 0 AND user = '" + Session["New"] + "'", connection);
                 table = new DataTable();
                 data = new MySqlDataAdapter(command);
                 data.Fill(table);
@@ -2099,6 +2099,14 @@ namespace stemSchedule
                     data.Fill(table);
                     GridView1.DataSource = table;
                     GridView1.DataBind();
+
+
+                    command = new MySqlCommand("Select * from schedule where public = 0 AND user = '" + Session["New"] + "'", connection);
+                    table = new DataTable();
+                    data = new MySqlDataAdapter(command);
+                    data.Fill(table);
+                    GridView2.DataSource = table;
+                    GridView2.DataBind();
 
                 }
                 catch (Exception ex) { Response.Write(ex); }
