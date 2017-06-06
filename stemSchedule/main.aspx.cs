@@ -1118,16 +1118,16 @@ namespace stemSchedule
 
         protected void Button_ShowAll_Click(object sender, EventArgs e)
         {
+            
             try
             { // user schedule
                 connection.Open();
                 command = new MySqlCommand("SELECT query from userdata where username = '" + Session["New"] + "'", connection);
                 string query = command.ExecuteScalar().ToString();
-
-
-
-                //Response.Write(query);
-
+                if (query == "")
+                {
+                    query = "Select * from schedule where public = 1";
+                }
                 command = new MySqlCommand(query, connection);
                 table = new DataTable();
                 data = new MySqlDataAdapter(command);
@@ -1135,9 +1135,17 @@ namespace stemSchedule
                 GridView1.DataSource = table;
                 GridView1.DataBind();
 
+                //Response.Write(query);
+
+
+
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {
+                
+            }
             finally { connection.Close(); }
+
+            
         }
 
 
