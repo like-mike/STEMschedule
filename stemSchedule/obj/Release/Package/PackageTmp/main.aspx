@@ -35,6 +35,9 @@
 			.auto-style9 {
 				width: 98px;
 			}
+			.auto-style10 {
+                width: 389px;
+            }
 			</style>
 		</head>
 
@@ -47,6 +50,7 @@
 	<li><a href="#" runat="server" onserverclick="Button_ChangePwShow_Click">Change Password</a></li>
 	<li class="divider"></li>
 	<li><a href="#" runat="server" onserverclick="Button_CopyShow_Click">Copy Classes</a></li>
+	<li><a href="#" runat="server" onserverclick="Button_DeleteClassesShow_Click">Delete Classes</a></li>
 	
 	
 </ul>
@@ -92,7 +96,7 @@
 	  <div class="row center">
 	   
   
-		  <asp:Label ID="Label_showSearch" runat="server" BackColor="#B71C1C" Font-Bold="True" Font-Size="Large" ForeColor="White" Text="Showing: ALL" Visible="False"></asp:Label>
+		  <h4>Public Schedule</h4>
 	   
   
 	  </div>
@@ -110,6 +114,7 @@
 			
 			<button id="btnExport" runat="server" onserverclick="ExportToExcel" class="waves-effect waves-light btn red darken-4" >Export To Excel</button>
 			<button id="button_checkConflict" runat="server" onserverclick="checkSpecific" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
+			<button id="button8" runat="server" onserverclick="Button_Finalize_Click" class="waves-effect waves-light btn red darken-4" >Confirm</button>
 			
 		  </div>
 		  <div style="float:right">
@@ -266,6 +271,68 @@
 	</div>
   </div>
 
+		<!-- Modal Structure -->
+  <div id="modal_deleteClasses" class="modal">
+	<div class="modal-content">
+	  <h4>Delete Classes</h4>
+	  <table align="center" class="auto-style1">
+		  <tr>
+			  <td class="auto-style10">
+				  <asp:DropDownList ID="DropDownList_deleteSelectMajor" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+			  </td>
+			  <td>
+				  <asp:DropDownList ID="DropDownList_deleteSelectQuarters" runat="server" class="browser-default" Width="200px">
+					  <asp:ListItem>Autumn</asp:ListItem>
+					  <asp:ListItem>Winter</asp:ListItem>
+					  <asp:ListItem>Spring</asp:ListItem>
+					  <asp:ListItem>Summer</asp:ListItem>
+			  </asp:DropDownList>
+			  </td>
+			  <td>
+				  &nbsp;</td>
+		  </tr>
+		  <tr>
+			  <td class="auto-style10">
+                  <button id="Button4" runat="server" onserverclick="Button_deleteUpdateMajor_Click"  class="btn modal-trigger red darken-4">Update</button>
+				  
+			  </td>
+			  <td>
+				  <asp:DropDownList ID="DropDownList_deleteSelectYear" runat="server" class="browser-default" Width="200px">
+			  </asp:DropDownList>
+			  </td>
+			  <td>
+				  &nbsp;</td>
+		  </tr>
+		  <tr>
+			  <td class="auto-style10">Select Class(es):</td>
+			  <td>
+				  <asp:CheckBoxList ID="CheckBoxList_deleteSelect" runat="server">
+				  </asp:CheckBoxList>
+			  </td>
+			  <td>
+				  &nbsp;</td>
+		  </tr>
+		  <tr>
+			  <td class="auto-style10">&nbsp;</td>
+			  <td>
+                  <button id="Button9" runat="server" onserverclick="Button_deleteSelectAll_Click"  class="btn modal-trigger red darken-4">Select All</button>
+                  <button id="Button10" runat="server" onserverclick="Button_deleteUnselectAll_Click"  class="btn modal-trigger red darken-4">Unselect All</button></td>
+				  
+				  
+			  </td>
+			  <td>
+                  
+		  </tr>
+		  </table>
+		
+	</div>
+	<div class="modal-footer">
+	  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Exit</a>
+        <a href="#" runat="server" onserverclick="Button_deleteClasses_Click" class="modal-action modal-close waves-effect waves-green btn-flat ">Delete Class</a>
+	</div>
+  </div>
+
 		
 
 <!-- Modal Structure -->
@@ -356,6 +423,13 @@
 						<asp:ListItem>Junior</asp:ListItem>
 						<asp:ListItem>Senior</asp:ListItem>
 					</asp:DropDownList>
+				</td>
+			</tr>
+			<tr>
+				<td class="auto-style8">&nbsp;</td>
+				<td class="auto-style9">&nbsp;</td>
+				<td>
+					<asp:CheckBox ID="CheckBox_conflicts" runat="server" Text="Show Conflicts" />
 				</td>
 			</tr>
 			<tr>
@@ -913,6 +987,14 @@
 	  <!--   Icon Section   -->
 	  <div class="row">
 		<div class="col s12">
+			<div class="row center">
+	   
+  
+		  
+		  <h4>Private Schedule</h4>
+	   
+  
+	  </div>
 		
 		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
 			</asp:GridView>
@@ -921,7 +1003,7 @@
 	 <button id="Button_editSession" runat="server" onserverclick="Button_editSessionShow_Click"  class="btn modal-trigger red darken-4">Edit</button>
 		<button id="Button1" runat="server" onserverclick="Button_delete_Click" class="waves-effect waves-light btn red darken-4" >Delete</button>
 		<button id="Button_Push" runat="server" OnServerClick="Button_Push_Click" class="btn modal-trigger red darken-4">Selected Public</button>
-	 <button id="button4" runat="server" onserverclick="checkSpecificPrivate" class="waves-effect waves-light btn red darken-4" >Check Conflict</button>
+	 
 		<!--<button data-target="modal2" class="btn modal-trigger red darken-4">Import</button>-->
   
 	  
@@ -957,8 +1039,6 @@
 	
 			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" Visible="False" />
 		  </div>
-		  <asp:Image ID="checkMark_image" runat="server" Height="28px" ImageUrl="~/Content/check-mark.png" Width="31px" />
-		  <asp:Button ID="Button_Finalize" runat="server" OnClick="Button_Finalize_Click" Text="Button_Finalize" />
 		</div>
 
 		

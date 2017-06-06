@@ -251,7 +251,7 @@ namespace stemSchedule
         {
             //resetCheck();
             string check = "";
-            string time = " where((startTime >= '" + StartTime + "' and endTime <= '" + EndTime + "') OR (endTime >= '" + StartTime + "' AND endTime <= '" + EndTime + "') OR (startTime <= '" + EndTime + "' AND startTime >= '" + StartTime + "')) AND Public = 1 AND CalYear = '" + Year + "' AND M = '" + M + "' AND W = '" + W + "'";
+            string time = " where((startTime >= '" + StartTime + "' and endTime <= '" + EndTime + "') OR (endTime >= '" + StartTime + "' AND endTime <= '" + EndTime + "') OR (startTime <= '" + EndTime + "' AND startTime >= '" + StartTime + "')) AND Public = 1 AND CalYear = '" + Year + "' AND (M = '" + M + "' AND T = '" + T + "' AND W = '"+ W + "' AND Th = '" + Th + "' AND Fr = '" + Fr + "')";
             string roomQuery = time + " AND Room = '" + Room + "'";
             Response.Write(M + " " + T + " " + F);
             bool roomConflicts = false, majorConflicts = false;
@@ -386,6 +386,8 @@ namespace stemSchedule
             catch (Exception ex) { Response.Write(ex); }
             finally { connection.Close(); }
 
+            
+
 
             if (output)
             {
@@ -402,7 +404,7 @@ namespace stemSchedule
                 else if (countRoom > 0 && countMajor > 0)
                     Response.Write(
                   "<script type=\"text/javascript\">" +
-                  "alert('(" + countMajor + ") Major Conflict(s) Found AND (" + countMajor + ") Room Conflicts Found')" +
+                  "alert('(" + countMajor + ") Major Conflict(s) Found AND (" + countRoom + ") Room Conflicts Found')" +
                    "</script>");
 
 
@@ -433,19 +435,30 @@ namespace stemSchedule
                 {
                     if (row.Cells[30].Text == "1" && row.Cells[31].Text == "1")
                     {
-                        row.BackColor = ColorTranslator.FromHtml("#42cbf4");
+                        row.BackColor = ColorTranslator.FromHtml("#FFBBBB");//red
                         row.ToolTip = "Room & Major Conflicts";
                     }
-                    else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")
+                    else if (row.Cells[30].Text == "1" && row.Cells[31].Text != "1")//blue
                     {
-                        row.BackColor = ColorTranslator.FromHtml("#f44165");
+                        row.BackColor = ColorTranslator.FromHtml("#BBBBFF");
                         row.ToolTip = "Room Conflict";
                     }
                     else if (row.Cells[30].Text != "1" && row.Cells[31].Text == "1")
                     {
-                        row.BackColor = ColorTranslator.FromHtml("#f4d641");
+                        row.BackColor = ColorTranslator.FromHtml("#FFFFC8");//yellow
                         row.ToolTip = "Major Conflict";
                     }
+                }
+
+
+                foreach (GridViewRow row in GridView1.Rows)
+                {
+                    if (row.Cells[1].Text == CRN)
+                    {
+                        row.BackColor = ColorTranslator.FromHtml("#CCFFCC");
+                        //row.ToolTip = "Room & Major Conflicts";
+                    }
+
                 }
             }
 
@@ -565,7 +578,22 @@ namespace stemSchedule
                         days += "Su";
                         Su = "1";
                     }
+                    
                 }
+                if (M != "1")
+                    M = "0";
+                if (T != "1")
+                    T = "0";
+                if (W != "1")
+                    W = "0";
+                if (Th != "1")
+                    Th = "0";
+                if (F != "1")
+                    F = "0";
+                if (Sa != "1")
+                    Sa = "0";
+                if (Su != "1")
+                    Su = "0";
 
 
                 command.Parameters.AddWithValue("@M", M);
@@ -718,7 +746,7 @@ namespace stemSchedule
                 connection.Close();
 
             }
-            Label_AddClassDesc.Visible = false;
+            //Label_AddClassDesc.Visible = false;
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -923,7 +951,7 @@ namespace stemSchedule
             else
             {
                 string CRN = GridView1.SelectedRow.Cells[1].Text;
-                string c = "UPDATE schedule SET PUBLIC = 0 WHERE CRN = " + CRN;
+                string c = "UPDATE schedule SET PUBLIC = 0, User = '" + Session["New"] + "' WHERE CRN = " + CRN;
                 try
                 {
                     connection.Open();
@@ -1008,11 +1036,18 @@ namespace stemSchedule
                 string endTime = row.Cells[5].Text;
                 string term = row.Cells[6].Text;
                 string room = row.Cells[7].Text;
+                if (room == "")
+                    room = "-";
                 M[0] = row.Cells[8].Text;
                 M[1] = row.Cells[9].Text;
                 M[2] = row.Cells[10].Text;
                 M[3] = row.Cells[11].Text;
-
+                for(int i = 0; i < 4; i++)
+                {
+                    if (M[i] == "nbsp;")
+                        M[i] = "-";
+                    
+                }
                 
                
                 string year = row.Cells[26].Text;
@@ -1025,7 +1060,7 @@ namespace stemSchedule
             Response.ContentType = "text/csv";
             Response.AddHeader("Content-Disposition", "attachment;filename=" + strFileName);
             string built = builder.ToString();
-            built = ScrubHtml(built);
+            //built = ScrubHtml(built);
             Response.Write(built);
             Response.End();
             
@@ -1033,9 +1068,13 @@ namespace stemSchedule
 
         public static string ScrubHtml(string value)
         {
-            var step1 = Regex.Replace(value, @"<[^>]+>|&nbsp;", "").Trim();
-            var step2 = Regex.Replace(step1, @"\s{2,}", " ");
-            return step2;
+            value = value.Replace(System.Environment.NewLine, "new");
+            var step1 = Regex.Replace(value, @"<[^>]+>|&nbsp;", "-").Trim();
+            var step2 = Regex.Replace(step1, @"\s{2,}", "-");
+
+            
+            value = value.Replace("new", System.Environment.NewLine);
+            return value;
         }
 
 
@@ -1605,7 +1644,7 @@ namespace stemSchedule
 
 
                 editing = true;
-                Label_AddClassDesc.Visible = true;
+                //Label_AddClassDesc.Visible = true;
 
 
 
@@ -2903,7 +2942,7 @@ namespace stemSchedule
 
             if (CheckBox_conflicts.Checked)
             {
-                query += " AND Conflicts = 1";
+                query += " AND Conflicts = 1 AND Final = 0 ";
             }
 
             
@@ -2999,6 +3038,8 @@ namespace stemSchedule
                 }
 
                 
+
+                //save search query -- works but not sure if they want this
                 string str = "update userdata SET lastquery = @lastquery WHERE username = '" + Session["New"] + "'";
                 try
                 {
@@ -3082,6 +3123,196 @@ namespace stemSchedule
                 
                 
             }
+        }
+
+        protected void Button_deleteSelectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem item in CheckBoxList_deleteSelect.Items)
+                item.Selected = true;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClasses').openModal({ });", true);
+        }
+
+        protected void Button_deleteUnselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListItem item in CheckBoxList_deleteSelect.Items)
+                item.Selected = false;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClasses').openModal({ });", true);
+        }
+
+        protected void Button_deleteUpdateMajor_Click(object sender, EventArgs e)
+        {
+            //unselect all
+            foreach (ListItem item in CheckBoxList_deleteSelect.Items)
+                item.Selected = false;
+
+            string query = "";
+            if (DropDownList_deleteSelectMajor.SelectedIndex == 0 || DropDownList_deleteSelectMajor.SelectedIndex == 1)
+                query = "SELECT * FROM schedule WHERE CalYear = '" + DropDownList_deleteSelectYear.SelectedValue + "' AND Term = '" + DropDownList_deleteSelectQuarters.SelectedValue + "' AND calYEAR = '" + DropDownList_deleteSelectYear.SelectedValue + "' ORDER BY ClassNum ASC";
+            else
+                query = "SELECT * FROM schedule WHERE CalYear = '" + DropDownList_deleteSelectYear.SelectedValue + "' AND TERM = '" + DropDownList_deleteSelectQuarters.SelectedValue + "' AND calYEAR = '" + DropDownList_deleteSelectYear.SelectedValue + "' AND(M1 = '" + DropDownList_deleteSelectMajor.SelectedValue + "' OR M2 = '" + DropDownList_deleteSelectMajor.SelectedValue + "' OR M3 = '" + DropDownList_deleteSelectMajor.SelectedValue + "' OR M4 = '" + DropDownList_deleteSelectMajor.SelectedValue + "') ORDER BY ClassNum ASC";
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            CheckBoxList_deleteSelect.DataSource = reader;
+                            CheckBoxList_deleteSelect.DataValueField = "CRN";
+                            CheckBoxList_deleteSelect.DataTextField = "ClassNum";
+                            CheckBoxList_deleteSelect.DataBind();
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No Classes Exist')" +
+                        "</script>");
+                //
+            }
+            finally { connection.Close(); }
+
+
+
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClasses').openModal({ });", true);
+        }
+
+        protected void Button_deleteClasses_Click(object sender, EventArgs e)
+        {
+            int CRN = 0;
+            bool success = false;
+            int count = 0;
+            for (int i = 0; i < CheckBoxList_deleteSelect.Items.Count; i++)
+            {
+                if (CheckBoxList_deleteSelect.Items[i].Selected)
+                {
+                    try
+                    {
+                        //Response.Write(CheckBoxList_deleteSelect.SelectedValue);
+                        string sqlCommand = "DELETE FROM SCHEDULE WHERE CRN = '" + CheckBoxList_deleteSelect.SelectedValue + "'";
+                        connection.Open();
+                        command = new MySqlCommand(sqlCommand, connection);
+                        int numRowsUpdated = command.ExecuteNonQuery();
+                        count++;
+                        success = false;
+                    }
+                    catch(Exception ex) { }
+                    finally { connection.Close(); success = true; }
+
+                }
+                
+            }
+            if (count == 0)
+            {
+                Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('No classes selected')" +
+                            "</script>");
+            }
+            if (success)
+            {
+                Response.Write(
+                            "<script type=\"text/javascript\">" +
+                            "alert('(" + count + ") classes successfully deleted')" +
+                            "</script>");
+            }
+        }
+
+
+        protected void Button_DeleteClassesShow_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("select * from major ORDER BY major ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteSelectMajor.DataSource = reader;
+                            DropDownList_deleteSelectMajor.DataValueField = "major";
+                            DropDownList_deleteSelectMajor.DataTextField = "major";
+                            DropDownList_deleteSelectMajor.DataBind();
+                        }
+                    }
+                }
+                //Add blank item at index 0.
+                DropDownList_deleteSelectMajor.Items.Insert(0, new ListItem("Select Major", ""));
+                DropDownList_deleteSelectMajor.Items.Insert(1, new ListItem("All", ""));
+
+            }
+            catch (Exception ex) { }
+            finally { connection.Close(); }
+
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("select DISTINCT calYear from schedule order by calYear ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            DropDownList_deleteSelectYear.DataSource = reader;
+                            DropDownList_deleteSelectYear.DataValueField = "calYear";
+                            DropDownList_deleteSelectYear.DataTextField = "calYear";
+                            DropDownList_deleteSelectYear.DataBind();
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex) { }
+            finally { connection.Close(); }
+
+
+            try
+            {
+                connection.Open();
+                using (var cmd = new MySqlCommand("SELECT * FROM schedule WHERE CalYear = '" + DropDownList_copiedYear.SelectedValue + "' AND Term = '" + DropDownList_CopyTerm.SelectedValue + "' ORDER BY ClassNum ASC", connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            CheckBoxList_deleteSelect.DataSource = reader;
+                            CheckBoxList_deleteSelect.DataValueField = "CRN";
+                            CheckBoxList_deleteSelect.DataTextField = "ClassNum";
+                            CheckBoxList_deleteSelect.DataBind();
+
+                        }
+                    }
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(
+                        "<script type=\"text/javascript\">" +
+                        "alert('No Classes Exist')" +
+                        "</script>");
+
+            }
+            finally { connection.Close(); }
+
+
+
+
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClasses').openModal({ });", true);
         }
     }
     
