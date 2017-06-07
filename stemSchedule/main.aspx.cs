@@ -68,16 +68,33 @@ namespace stemSchedule
 
         }
 
-        DateTime getTime(string textTime)
+        string militaryTime(string civTime)
         {
-            int hour = Int32.Parse(textTime.Substring(0, 2));
-            int min = Int32.Parse(textTime.Substring(3, 2));
-            if (textTime.Substring(6, 2).ToUpper() == "PM")
+            string[] result = civTime.Split(':');
+            int hour = Int32.Parse(result[0]);
+            string min = result[1].Substring(0, 2);
+            if (result[1].Substring(3, 2).ToUpper() == "PM")
                 hour += 12;
-            var time = new DateTime(1988, 10, 13, hour, min, 0);
-            return time;
+            var milTime = hour.ToString() + ":" + min + ":00";
+            return milTime;
         }
 
+        string civilianTime(string textTime)
+        {
+            string civTime = "";
+            int hour = Int32.Parse(textTime.Substring(0, 2));
+            string min = textTime.Substring(3, 2);
+            if (hour > 12)
+            {
+                hour -= 12;
+                civTime = hour.ToString() + ":" + min + " PM";
+            }
+            else
+            {
+                civTime = hour.ToString() + ":" + min + " AM";
+            }
+            return civTime;
+        }
 
 
 
@@ -1245,8 +1262,8 @@ namespace stemSchedule
                 String CRN = GridView1.SelectedRow.Cells[1].Text;
                 String Faculty = GridView1.SelectedRow.Cells[2].Text;
                 String ClassNum = GridView1.SelectedRow.Cells[3].Text;
-                String startTime = GridView1.SelectedRow.Cells[5].Text;
-                String endTime = GridView1.SelectedRow.Cells[6].Text;
+                String startTime = militaryTime(GridView1.SelectedRow.Cells[5].Text);
+                String endTime = militaryTime(GridView1.SelectedRow.Cells[6].Text);
                 String term = GridView1.SelectedRow.Cells[7].Text;
                 String room = GridView1.SelectedRow.Cells[8].Text;
                 String M1 = GridView1.SelectedRow.Cells[9].Text;
@@ -1291,8 +1308,8 @@ namespace stemSchedule
                 String CRN = GridView2.SelectedRow.Cells[1].Text;
                 String Faculty = GridView2.SelectedRow.Cells[2].Text;
                 String ClassNum = GridView2.SelectedRow.Cells[3].Text;
-                String startTime = GridView2.SelectedRow.Cells[5].Text;
-                String endTime = GridView2.SelectedRow.Cells[6].Text;
+                String startTime = militaryTime(GridView2.SelectedRow.Cells[5].Text);
+                String endTime = militaryTime(GridView2.SelectedRow.Cells[6].Text);
                 String term = GridView2.SelectedRow.Cells[7].Text;
                 String room = GridView2.SelectedRow.Cells[8].Text;
                 String M1 = GridView2.SelectedRow.Cells[9].Text;
@@ -2918,7 +2935,9 @@ namespace stemSchedule
         {
             for(int i = 0; i < GridView1.Rows.Count; i++)
             {
-                if(GridView1.Rows[i].Cells[34].Text == "1")
+                GridView1.Rows[i].Cells[5].Text = civilianTime(GridView1.Rows[i].Cells[5].Text);
+                GridView1.Rows[i].Cells[6].Text = civilianTime(GridView1.Rows[i].Cells[6].Text);
+                if (GridView1.Rows[i].Cells[34].Text == "1")
                 {
                     GridView1.Rows[i].Cells[34].Text = "<img src='http://reesem2.cs.spu.edu/files/check-mark.png' height='28px' width='28px'/>";
                     GridView1.Rows[i].Cells[33].Text = "";
@@ -3348,6 +3367,15 @@ namespace stemSchedule
         protected void Button_returnDefault(object sender, EventArgs e)
         {
 
+        }
+
+        protected void GridView2_DataBound(object sender, EventArgs e)
+        {
+            for (int i = 0; i < GridView2.Rows.Count; i++)
+            {
+                GridView2.Rows[i].Cells[5].Text = civilianTime(GridView2.Rows[i].Cells[5].Text);
+                GridView2.Rows[i].Cells[6].Text = civilianTime(GridView2.Rows[i].Cells[6].Text);
+            }
         }
     }
     

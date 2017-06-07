@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="main.aspx.cs" Inherits="stemSchedule.main" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true" Language="C#" AutoEventWireup="true" CodeBehind="main.aspx.cs" Inherits="stemSchedule.main" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -1001,7 +1001,7 @@
   
 	  </div>
 		
-		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
+		<asp:GridView ID="GridView2" runat="server" class ="striped" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated" OnDataBound="GridView2_DataBound">
 			</asp:GridView>
  &nbsp;<div align="left">
 	   <button id="Button_addSession" runat="server" onserverclick="Button_addSessionShow_Click"  class="btn modal-trigger red darken-4">Add</button>
@@ -1078,27 +1078,21 @@
 	<div class="container">
 	  <div class="row">
 		<div class="col l6 s12">
-		  <h5 class="white-text">Company Bio</h5>
+		  <h5 class="white-text">Sisyphus Technologies</h5>
 		  <p class="grey-text text-lighten-4">We are a team of college students</p>
 
 
 		</div>
 		<div class="col l3 s12">
-		  <h5 class="white-text">Settings</h5>
+		  
 		  <ul>
-			<li><a class="white-text" href="#!">Link 1</a></li>
-			<li><a class="white-text" href="#!">Link 2</a></li>
-			<li><a class="white-text" href="#!">Link 3</a></li>
-			<li><a class="white-text" href="#!">Link 4</a></li>
+			<a href="http://spu.edu/" target="_blank">
+                    <img src="http://waldherj.cs.spu.edu/pictures/spulogo.bmp" style="width:452px;height:169px;"</img>
+		        </a>
 		  </ul>
 		</div>
 		<div class="col l3 s12">
-		  <h5 class="white-text">Connect</h5>
-		  <ul>
-			<li><a class="white-text" href="#!">Link 1</a></li>
-			<li><a class="white-text" href="#!">Link 2</a></li>
-			<li><a class="white-text" href="#!">Link 3</a></li>
-			<li><a class="white-text" href="#!">Link 4</a></li>
+		  
 		  </ul>
 		</div>
 	  </div>
