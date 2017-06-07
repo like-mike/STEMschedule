@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="main.aspx.cs" Inherits="stemSchedule.main" %>
+﻿<%@ Page MaintainScrollPositionOnPostback="true" Language="C#" AutoEventWireup="true" CodeBehind="main.aspx.cs" Inherits="stemSchedule.main" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +40,7 @@
             }
 			</style>
 		</head>
+
 
 
 
@@ -95,7 +96,7 @@
 	  <br><br>
 	  <div class="row center">
 	   
-  
+            </br></br>
 		  <h4>Public Schedule</h4>
 	   
   
@@ -990,13 +991,13 @@
 			<div class="row center">
 	   
   
-		  
+		  </br></br>
 		  <h4>Private Schedule</h4>
 	   
   
 	  </div>
 		
-		<asp:GridView ID="GridView2" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated">
+		<asp:GridView ID="GridView2" runat="server" class ="striped" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView2_SelectedIndexChanged" OnRowDataBound="GridView2_RowDataBound" OnRowCreated="GridView2_RowCreated" OnDataBound="GridView2_DataBound">
 			</asp:GridView>
  &nbsp;<div align="left">
 	   <button id="Button_addSession" runat="server" onserverclick="Button_addSessionShow_Click"  class="btn modal-trigger red darken-4">Add</button>
@@ -1037,7 +1038,22 @@
 				<br />
 	</div>
 	
-			&nbsp;<asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" Visible="False" />
+			&nbsp;<asp:Button ID="Button_default" style="display: none" runat="server" OnClick="Button_returnDefault" Text="Button" />
+		    <asp:Button ID="Button_returnLogin" style="display: none" runat="server" OnClick="Button_Login_Click" Text="Button" />
+            <asp:Button ID="Button_returnAdd" style="display: none" runat="server" OnClick="Button_AddClass_Click1" Text="Button"  />
+            <asp:Button ID="Button_returnAddUser" style="display: none" runat="server" OnClick="Button_UserAdd_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDeleteUser" style="display: none" runat="server" OnClick="Button_deleteUser_Click" Text="Button"  />
+            <asp:Button ID="Button_returnChgPw" style="display: none" runat="server" OnClick="Button_chgPw_Click" Text="Button"  />
+            <asp:Button ID="Button_returnShowCopy" style="display: none" runat="server" OnClick="Button_copy_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDelClasses" style="display: none" runat="server" OnClick="Button_deleteClasses_Click" Text="Button"  />
+            <asp:Button ID="Button_returnAddClass" style="display: none" runat="server" OnClick="Button_addClass_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDeleteClass" style="display: none" runat="server" OnClick="Button_deleteClass_Click" Text="Button"  />
+            <asp:Button ID="Button_returnAddRoom" style="display: none" runat="server" OnClick="Button_AddRoom_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDelRoom" style="display: none" runat="server" OnClick="Button_deleteRoom_Click" Text="Button"  />
+            <asp:Button ID="Button_returnAddInstr" style="display: none" runat="server" OnClick="Button_AddInstructor_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDelInstr" style="display: none" runat="server" OnClick="Button_deleteInstructor_Click" Text="Button"  />
+            <asp:Button ID="Button_returnAddMajor" style="display: none" runat="server" OnClick="Button_AddMajor_Click" Text="Button"  />
+            <asp:Button ID="Button_returnDelMajor" style="display: none" runat="server" OnClick="Button_deleteMajor_Click" Text="Button"  />
 		  </div>
 		</div>
 
@@ -1058,27 +1074,21 @@
 	<div class="container">
 	  <div class="row">
 		<div class="col l6 s12">
-		  <h5 class="white-text">Company Bio</h5>
+		  <h5 class="white-text">Sisyphus Technologies</h5>
 		  <p class="grey-text text-lighten-4">We are a team of college students</p>
 
 
 		</div>
 		<div class="col l3 s12">
-		  <h5 class="white-text">Settings</h5>
+		  
 		  <ul>
-			<li><a class="white-text" href="#!">Link 1</a></li>
-			<li><a class="white-text" href="#!">Link 2</a></li>
-			<li><a class="white-text" href="#!">Link 3</a></li>
-			<li><a class="white-text" href="#!">Link 4</a></li>
+			<a href="http://spu.edu/" target="_blank">
+                    <img src="http://waldherj.cs.spu.edu/pictures/spulogo.bmp" style="width:452px;height:169px;"</img>
+		        </a>
 		  </ul>
 		</div>
 		<div class="col l3 s12">
-		  <h5 class="white-text">Connect</h5>
-		  <ul>
-			<li><a class="white-text" href="#!">Link 1</a></li>
-			<li><a class="white-text" href="#!">Link 2</a></li>
-			<li><a class="white-text" href="#!">Link 3</a></li>
-			<li><a class="white-text" href="#!">Link 4</a></li>
+		  
 		  </ul>
 		</div>
 	  </div>

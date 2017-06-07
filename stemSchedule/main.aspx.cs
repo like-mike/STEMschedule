@@ -102,7 +102,7 @@ namespace stemSchedule
         protected void Page_Load(object sender, EventArgs e)
         {
             checkAll();
-
+            
             rows = 0;
             this.Form.DefaultButton = this.Button_returnLogin.UniqueID;
             if (!IsPostBack)
@@ -122,7 +122,7 @@ namespace stemSchedule
                         query = findQuery.ExecuteScalar().ToString();
                         
 
-                        Response.Write(query);
+                        
                         command = new MySqlCommand(query, connection);
                         table = new DataTable();
                         data = new MySqlDataAdapter(command);
@@ -170,13 +170,13 @@ namespace stemSchedule
                 }
                 catch (Exception ex) {  }
                 finally { connection.Close(); }
+
+
+
+
+
+
                 
-
-
-                
-
-
-
 
 
 
@@ -270,7 +270,7 @@ namespace stemSchedule
             string check = "";
             string time = " where((startTime >= '" + StartTime + "' and endTime <= '" + EndTime + "') OR (endTime >= '" + StartTime + "' AND endTime <= '" + EndTime + "') OR (startTime <= '" + EndTime + "' AND startTime >= '" + StartTime + "')) AND Public = 1 AND CalYear = '" + Year + "' AND (M = '" + M + "' AND T = '" + T + "' AND W = '"+ W + "' AND Th = '" + Th + "' AND Fr = '" + Fr + "')";
             string roomQuery = time + " AND Room = '" + Room + "'";
-            Response.Write(M + " " + T + " " + F);
+            
             bool roomConflicts = false, majorConflicts = false;
             string finalQuery = "select * from schedule where public = 3";
             //command.ExecuteScalar().ToString();
@@ -300,7 +300,7 @@ namespace stemSchedule
 
                 //Response.Write(temp.ToString());
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
 
@@ -328,7 +328,7 @@ namespace stemSchedule
 
                 //Response.Write(temp.ToString());
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             //M2
@@ -352,7 +352,7 @@ namespace stemSchedule
                     com.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             //M3
@@ -376,7 +376,7 @@ namespace stemSchedule
                     com.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             //M4
@@ -400,7 +400,7 @@ namespace stemSchedule
                     com.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
             
@@ -441,7 +441,7 @@ namespace stemSchedule
                     GridView1.DataBind();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
 
 
@@ -514,7 +514,7 @@ namespace stemSchedule
                         if (temp == 0)
                             match = 0;
                     }
-                    catch (Exception ex) { Response.Write(ex); }
+                    catch (Exception ex) {  }
                     finally { connection.Close(); }
                 }
                 CRN = CRN_random.ToString();
@@ -755,7 +755,7 @@ namespace stemSchedule
     "alert('Input Error!')" +
     "</script>"
   );
-                Response.Write(ex);
+                
 
             }
             finally
@@ -968,14 +968,14 @@ namespace stemSchedule
             else
             {
                 string CRN = GridView1.SelectedRow.Cells[1].Text;
-                string c = "UPDATE schedule SET PUBLIC = 0, User = '" + Session["New"] + "' WHERE CRN = " + CRN;
+                string c = "UPDATE schedule SET PUBLIC = 0, final = '', User = '" + Session["New"] + "' WHERE CRN = " + CRN;
                 try
                 {
                     connection.Open();
                     MySqlCommand cmd = new MySqlCommand(c, connection);
                     cmd.ExecuteNonQuery();
-                    
 
+                    
                     cmd = new MySqlCommand("SELECT lastquery from userdata where username = '" + Session["New"] + "'", connection);
                     string recentQuery = cmd.ExecuteScalar().ToString();
                     connection.Close();
@@ -1014,7 +1014,7 @@ namespace stemSchedule
                     }
 
                 }
-                catch (Exception ex) {  }
+                catch (Exception ex) { Response.Write(ex);  }
                 finally
                 {
                     connection.Close();
@@ -1044,6 +1044,9 @@ namespace stemSchedule
             string strFileName = "STEMschedule_" + DateTime.Now.ToShortDateString() + ".csv";
             builder.Append("CRN,Faculty,Class,Start Time,End Time,Term,Room,M1,M2,M3,M4,Year,Credits,Enrollment,Calendar Year," + Environment.NewLine);
             string[] M = new string[4];
+
+            
+
             foreach (GridViewRow row in GridView1.Rows)
             {
                 string CRN = row.Cells[1].Text;
@@ -1054,23 +1057,40 @@ namespace stemSchedule
                 string term = row.Cells[6].Text;
                 string room = row.Cells[7].Text;
                 if (room == "")
-                    room = "-";
-                M[0] = row.Cells[8].Text;
-                M[1] = row.Cells[9].Text;
-                M[2] = row.Cells[10].Text;
-                M[3] = row.Cells[11].Text;
-                for(int i = 0; i < 4; i++)
-                {
-                    if (M[i] == "nbsp;")
-                        M[i] = "-";
-                    
-                }
+                    room = " ";
+
                 
-               
+                M[0] = row.Cells[8].Text;
+                if (row.Cells[8].Text.Equals("&nbsp;")) {  
+                    M[0] = " ";
+                }
+                M[1] = row.Cells[9].Text;
+                if (row.Cells[9].Text.Equals("&nbsp;"))
+                {
+                    M[1] = " ";
+                }
+
+
+
+                M[2] = row.Cells[10].Text;
+                if (row.Cells[10].Text.Equals("&nbsp;")){
+                    M[2] = " ";
+                }
+
+                M[3] = row.Cells[11].Text;
+                if (row.Cells[11].Text.Equals("&nbsp;"))
+                {
+                    M[3] = " ";
+                }
+
+
                 string year = row.Cells[26].Text;
                 string credits = row.Cells[27].Text;
                 string enrollNum = row.Cells[28].Text;
                 string calYear = row.Cells[32].Text;
+                
+
+
                 builder.Append(CRN + "," + Faculty + "," + numClass+ "," + startTime + "," + endTime + "," + term + "," + room + "," + M[0] + "," + M[1] + "," + M[2] + "," + M[3] + "," + year + "," + credits + "," + enrollNum + "," + calYear +  Environment.NewLine);
             }
             Response.Clear();
@@ -1221,8 +1241,8 @@ namespace stemSchedule
                 String CRN = GridView1.Rows[i].Cells[1].Text;
                 String Faculty = GridView1.Rows[i].Cells[2].Text;
                 String ClassNum = GridView1.Rows[i].Cells[3].Text;
-                String startTime = GridView1.Rows[i].Cells[5].Text;
-                String endTime = GridView1.Rows[i].Cells[6].Text;
+                String startTime = militaryTime(GridView1.Rows[i].Cells[5].Text);
+                String endTime = militaryTime(GridView1.Rows[i].Cells[6].Text);
                 String term = GridView1.Rows[i].Cells[7].Text;
                 String room = GridView1.Rows[i].Cells[8].Text;
                 String M1 = GridView1.Rows[i].Cells[9].Text;
@@ -1339,18 +1359,24 @@ namespace stemSchedule
         protected void GridView1_RowCreated(object sender, GridViewRowEventArgs e)
         {
             
-            for(int i = 13; i <= 24; i++)
+            for(int i = 13; i <= 25; i++)
             {
                 e.Row.Cells[i].Visible = false;
             }
+            e.Row.Cells[30].Visible = false;
+            e.Row.Cells[31].Visible = false;
         }
 
         protected void GridView2_RowCreated(object sender, GridViewRowEventArgs e)
         {
-            for (int i = 13; i <= 24; i++)
+            for (int i = 13; i <= 25; i++)
             {
                 e.Row.Cells[i].Visible = false;
             }
+            e.Row.Cells[30].Visible = false;
+            e.Row.Cells[31].Visible = false;
+            e.Row.Cells[33].Visible = false;
+            e.Row.Cells[34].Visible = false;
         }
 
         protected void Button_AddUserShow_Click(object sender, EventArgs e)
@@ -1382,7 +1408,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_searchInstructor.Items.Insert(0, new ListItem("", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) {  }
             finally { connection.Close(); }
 
 
@@ -1406,7 +1432,7 @@ namespace stemSchedule
                 //Add blank item at index 0.
                 DropDownList_searchCalYear.Items.Insert(0, new ListItem("", ""));
             }
-            catch (Exception ex) { Response.Write(ex); }
+            catch (Exception ex) { }
             finally { connection.Close(); }
 
             try
@@ -1604,9 +1630,9 @@ namespace stemSchedule
                 String Faculty = GridView2.SelectedRow.Cells[2].Text;
                 String ClassNum = GridView2.SelectedRow.Cells[3].Text;
 
-
-                String startTime = GridView2.SelectedRow.Cells[5].Text;
-                String endTime = GridView2.SelectedRow.Cells[6].Text;
+                
+                String startTime = militaryTime(GridView2.SelectedRow.Cells[5].Text);
+                String endTime = militaryTime(GridView2.SelectedRow.Cells[6].Text);
                 String term = GridView2.SelectedRow.Cells[7].Text;
                 String room = GridView2.SelectedRow.Cells[8].Text;
                 String enrollment = GridView2.SelectedRow.Cells[28].Text;
@@ -1930,7 +1956,7 @@ namespace stemSchedule
                                     "alert('Error Adding New User. Please make sure valid username/password')" + 
                                     "</script>");
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
-                        Response.Write(ex.ToString());
+                        
                     }
                     finally
                     {
@@ -2140,7 +2166,7 @@ namespace stemSchedule
                     GridView2.DataBind();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
             }
         }
@@ -3045,7 +3071,7 @@ namespace stemSchedule
                     GridView1.DataBind();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) {  }
                 finally { connection.Close(); }
                 //query = "Select * from schedule where public = 3 intersect select * from schedule where public = 1 AND ClassNum LIKE '%123%' ORDER BY CRN ASC";
 
@@ -3061,7 +3087,7 @@ namespace stemSchedule
                         cmd.ExecuteNonQuery();
 
                     }
-                    catch (Exception ex) { Response.Write( ex); }
+                    catch (Exception ex) {  }
                     finally
                     {
                         connection.Close();
@@ -3098,7 +3124,7 @@ namespace stemSchedule
                     cmd.ExecuteNonQuery();
 
                 }
-                catch (Exception ex) { Response.Write(ex); }
+                catch (Exception ex) { }
                 finally
                 {
                     connection.Close();

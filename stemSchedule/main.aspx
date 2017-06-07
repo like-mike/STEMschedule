@@ -7,11 +7,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <!-- Compiled and minified CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
-        <style type="text/css">
-  div { position:relative }
-  #button1  { z-index:-3  }
-  #button2 { z-index:-3 }
-</style>
 
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
@@ -45,6 +40,7 @@
             }
 			</style>
 		</head>
+
 
 
 
@@ -100,7 +96,7 @@
 	  <br><br>
 	  <div class="row center">
 	   
-  
+            </br></br>
 		  <h4>Public Schedule</h4>
 	   
   
@@ -995,7 +991,7 @@
 			<div class="row center">
 	   
   
-		  
+		  </br></br>
 		  <h4>Private Schedule</h4>
 	   
   
