@@ -87,14 +87,14 @@ namespace stemSchedule
             checkAll();
 
             rows = 0;
-            this.Form.DefaultButton = this.Button3.UniqueID;
+            this.Form.DefaultButton = this.Button_returnLogin.UniqueID;
             if (!IsPostBack)
             {
                 
                 if (Session["New"] != null)
                 {
                     //label_welcome.Text += Session["New"].ToString();
-                    this.Form.DefaultButton = this.Button3.UniqueID;
+                    this.Form.DefaultButton = this.Button_default.UniqueID;
 
                     string query;
 
@@ -1339,6 +1339,7 @@ namespace stemSchedule
         protected void Button_AddUserShow_Click(object sender, EventArgs e)
         {
             //divControl.Attributes("sty") = "height:200px; color:Red"
+            this.Form.DefaultButton = this.Button_returnAddUser.UniqueID;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_settings').openModal({ });", true);
         }
 
@@ -1426,6 +1427,7 @@ namespace stemSchedule
 
         protected void Button_DeleteUserShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnDeleteUser.UniqueID;
             try
             {
                 connection.Open();
@@ -1455,6 +1457,7 @@ namespace stemSchedule
 
         protected void Button_CopyShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnShowCopy.UniqueID;
             try
             {
                 connection.Open();
@@ -1542,6 +1545,7 @@ namespace stemSchedule
 
         protected void Button_ChangePwShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnChgPw.UniqueID;
             try
             {
                 connection.Open();
@@ -1569,6 +1573,7 @@ namespace stemSchedule
 
         protected void Button_editSessionShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAdd.UniqueID;
             if (GridView2.SelectedIndex == -1)
             {
                 Response.Write(
@@ -1757,6 +1762,7 @@ namespace stemSchedule
 
         protected void Button_addSessionShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAdd.UniqueID;
             try
             {
                 connection.Open();
@@ -2129,11 +2135,13 @@ namespace stemSchedule
 
         protected void Button_AddMajorShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAddMajor.UniqueID;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addMajor').openModal({ });", true);
         }
 
         protected void Button_DeleteInstructorShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnDelInstr.UniqueID;
             try
             {
                 connection.Open();
@@ -2162,6 +2170,7 @@ namespace stemSchedule
 
         protected void Button_DeleteRoomShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnDelRoom.UniqueID;
             try
             {
                 connection.Open();
@@ -2189,6 +2198,7 @@ namespace stemSchedule
 
         protected void Button_DeleteClassShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnDeleteClass.UniqueID;
             try
             {
                 connection.Open();
@@ -2216,11 +2226,13 @@ namespace stemSchedule
 
         protected void Button_AddInstructorShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAddInstr.UniqueID;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addInstructor').openModal({ });", true);
         }
 
         protected void Button_AddClassShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAddClass.UniqueID;
             try
             {
                 connection.Open();
@@ -2251,6 +2263,7 @@ namespace stemSchedule
 
         protected void Button_AddRoomShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnAddRoom.UniqueID;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_addRoom').openModal({ });", true);
         }
 
@@ -3246,6 +3259,7 @@ namespace stemSchedule
 
         protected void Button_DeleteClassesShow_Click(object sender, EventArgs e)
         {
+            this.Form.DefaultButton = this.Button_returnDelClasses.UniqueID;
             try
             {
                 connection.Open();
@@ -3329,6 +3343,11 @@ namespace stemSchedule
 
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "$('#modal_deleteClasses').openModal({ });", true);
+        }
+
+        protected void Button_returnDefault(object sender, EventArgs e)
+        {
+
         }
     }
     
