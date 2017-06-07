@@ -75,7 +75,12 @@ namespace stemSchedule
             string min = result[1].Substring(0, 2);
             if (result[1].Substring(3, 2).ToUpper() == "PM")
                 hour += 12;
-            var milTime = hour.ToString() + ":" + min + ":00";
+            string newHour = "";
+            if (hour < 10)
+                newHour = "0" + hour.ToString();
+            else
+                newHour = hour.ToString();
+            var milTime = newHour + ":" + min + ":00";
             return milTime;
         }
 
@@ -102,7 +107,7 @@ namespace stemSchedule
         protected void Page_Load(object sender, EventArgs e)
         {
             checkAll();
-            
+            Page.MaintainScrollPositionOnPostBack = true;
             rows = 0;
             this.Form.DefaultButton = this.Button_returnLogin.UniqueID;
             if (!IsPostBack)
